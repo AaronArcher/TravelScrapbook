@@ -102,7 +102,7 @@
 				EE0F17FF285E27070046BB7C /* Views */,
 				EE0F1800285E27160046BB7C /* ViewModels */,
 				EE0F1801285E271D0046BB7C /* Models */,
-				EEC032EE2864FC3600CE6682 /* Constants */,
+				EEC032EE2864FC3600CE6682 /* Helpers */,
 				EE5052232857BD0900C3DF50 /* Assets.xcassets */,
 				EE5052252857BD0900C3DF50 /* Preview Content */,
 			);
@@ -117,13 +117,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		EEC032EE2864FC3600CE6682 /* Constants */ = {
+		EEC032EE2864FC3600CE6682 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				EEC032EF2864FC4E00CE6682 /* Constants.swift */,
 				EEC032F12864FCC600CE6682 /* Extensions.swift */,
 			);
-			path = Constants;
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

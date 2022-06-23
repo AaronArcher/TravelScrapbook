@@ -13,4 +13,8 @@ struct Constants {
     static var screenWidth = UIScreen.main.bounds.width
     static var screenHeight = UIScreen.main.bounds.height
     
+    static var isScreenLarge: Bool {
+        UIScreen.main.bounds.height > 680
+    }
+    
 }

@@ -40,10 +40,11 @@ struct HomeView2: View {
                 Button {
                     
                 } label: {
-                    Image(systemName: "line.3.horizontal")
+                    Image(systemName: "line.3.horizontal.decrease")
                         .font(.title)
                         .foregroundColor(Color("Green2"))
-                        .padding(15)
+                        .frame(width: 30, height: 30)
+                        .padding(8)
                         .background(
                             Circle()
                                 .foregroundColor(.white)
@@ -51,22 +52,23 @@ struct HomeView2: View {
 
                         )
                 }
-                .frame(width: 40, height: 40)
                 .offset(x: (openSearch || addNew) ? -60 : 0)
                 
                 Spacer()
                 
                 searchButton
+                    .offset(y: addNew ? -80 : 0)
                 
                 Spacer()
                 
                 Button {
                     
                 } label: {
-                    Image(systemName: "line.3.horizontal")
+                    Image(systemName: "list.bullet")
                         .font(.title)
                         .foregroundColor(Color("Green2"))
-                        .padding(15)
+                        .frame(width: 30, height: 30)
+                        .padding(8)
                         .background(
                             Circle()
                                 .foregroundColor(.white)
@@ -74,22 +76,23 @@ struct HomeView2: View {
 
                         )
                 }
-                .frame(width: 40, height: 40)
                 .offset(x: (openSearch || addNew) ? 60 : 0)
             }
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(20)
-            .padding(.top, 40)
+            .padding(.top, Constants.isScreenLarge ? 40 : 20)
             
             MapView(region: $region)
                 .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
                 .padding(.horizontal, 20)
                 .padding(.bottom, 30)
-                .frame(height: Constants.screenHeight / 1.18)
+                .frame(maxHeight: Constants.screenHeight / 1.18)
                 .frame(maxHeight: .infinity, alignment: .bottom)
             
-            newHolidayButton
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                newHolidayButton
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            
+            
             
             VStack {
                 
@@ -105,14 +108,13 @@ struct HomeView2: View {
                 
             }
             .frame(maxHeight: .infinity)
-            
+
         
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea()
         .background(
 //            Color("Green3").opacity(0.1)
-            LinearGradient(colors: [Color("Green3").opacity(0.1), Color("Green3").opacity(0.2)], startPoint: .top, endPoint: .bottom)
+            LinearGradient(colors: [Color("Green3").opacity(0.08), Color("Green3").opacity(0.2)], startPoint: .top, endPoint: .bottom)
         )
     }
     
@@ -221,7 +223,7 @@ struct HomeView2: View {
                 
             }
             .padding(.horizontal, 25)
-            .padding(.top, 60)
+            .padding(.top, Constants.isScreenLarge ? 60 : 40)
             .padding(.bottom, 10)
             
             VStack {
@@ -248,13 +250,15 @@ struct HomeView2: View {
                         }
 
                     } label: {
+
                         VStack {
-                            Text(location.city)
-                            
-                            Text(location.country)
-                                .foregroundColor(location.city.isEmpty ? .primary : .secondary)
-                            
-                        }
+                                Text(location.city)
+                                
+                                Text(location.country)
+                                    .foregroundColor(location.city.isEmpty ? .primary : .secondary)
+                                
+                            }
+                        
 
                     }
 
@@ -269,7 +273,8 @@ struct HomeView2: View {
         }
         .foregroundColor(Color("Green2"))
         .frame(maxWidth: .infinity)
-        .frame(height: 160)
+        .padding(.bottom)
+        .frame(maxHeight: 160)
         .mask {
             RoundedRectangle(cornerRadius: 25, style: .continuous)
                 .matchedGeometryEffect(id: "mask", in: namespace)
@@ -277,9 +282,6 @@ struct HomeView2: View {
         .background(
             RoundedRectangle(cornerRadius: 25, style: .continuous)
                 .foregroundColor(.white)
-//                .foregroundStyle(
-//                    LinearGradient(colors: [Color("Green1"), Color("Green1"), Color("Green1"), Color("Green2")], startPoint: .topLeading, endPoint: .bottomTrailing)
-//                )
                 .matchedGeometryEffect(id: "bg", in: namespace)
                 .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
 
@@ -444,7 +446,7 @@ struct HomeView2: View {
         .foregroundColor(Color("Green2"))
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 25)
-        .padding(.top, 60)
+        .padding(.top, Constants.isScreenLarge ? 60 : 40)
         .padding(.bottom, 20)
         .mask {
             RoundedRectangle(cornerRadius: 25, style: .continuous)
