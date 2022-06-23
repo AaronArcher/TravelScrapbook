@@ -11,10 +11,15 @@
 		EE0F1805285E34E20046BB7C /* MapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0F1804285E34E20046BB7C /* MapAnnotationView.swift */; };
 		EE245EA2285DF1F2009B63D0 /* Holiday.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE245EA1285DF1F2009B63D0 /* Holiday.swift */; };
 		EE5052202857BD0300C3DF50 /* TravelScrapbookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE50521F2857BD0300C3DF50 /* TravelScrapbookApp.swift */; };
-		EE5052222857BD0300C3DF50 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5052212857BD0300C3DF50 /* ContentView.swift */; };
+		EE5052222857BD0300C3DF50 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5052212857BD0300C3DF50 /* HomeView.swift */; };
 		EE5052242857BD0900C3DF50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5052232857BD0900C3DF50 /* Assets.xcassets */; };
 		EE5052272857BD0900C3DF50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5052262857BD0900C3DF50 /* Preview Assets.xcassets */; };
 		EE5052302857E10000C3DF50 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE50522F2857E10000C3DF50 /* LocationManager.swift */; };
+		EEC032E62864F51C00CE6682 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032E52864F51C00CE6682 /* MapView.swift */; };
+		EEC032E82864F52300CE6682 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032E72864F52300CE6682 /* ListView.swift */; };
+		EEC032EA2864F71000CE6682 /* HomeView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032E92864F71000CE6682 /* HomeView2.swift */; };
+		EEC032F02864FC4E00CE6682 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032EF2864FC4E00CE6682 /* Constants.swift */; };
+		EEC032F22864FCC600CE6682 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032F12864FCC600CE6682 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,10 +28,15 @@
 		EE245EA1285DF1F2009B63D0 /* Holiday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Holiday.swift; sourceTree = "<group>"; };
 		EE50521C2857BD0300C3DF50 /* TravelScrapbook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelScrapbook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE50521F2857BD0300C3DF50 /* TravelScrapbookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelScrapbookApp.swift; sourceTree = "<group>"; };
-		EE5052212857BD0300C3DF50 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EE5052212857BD0300C3DF50 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EE5052232857BD0900C3DF50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EE5052262857BD0900C3DF50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EE50522F2857E10000C3DF50 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		EEC032E52864F51C00CE6682 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		EEC032E72864F52300CE6682 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		EEC032E92864F71000CE6682 /* HomeView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView2.swift; sourceTree = "<group>"; };
+		EEC032EF2864FC4E00CE6682 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		EEC032F12864FCC600CE6682 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,8 +53,11 @@
 		EE0F17FF285E27070046BB7C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EE5052212857BD0300C3DF50 /* ContentView.swift */,
+				EE5052212857BD0300C3DF50 /* HomeView.swift */,
+				EEC032E92864F71000CE6682 /* HomeView2.swift */,
 				EE0F1804285E34E20046BB7C /* MapAnnotationView.swift */,
+				EEC032E52864F51C00CE6682 /* MapView.swift */,
+				EEC032E72864F52300CE6682 /* ListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -89,6 +102,7 @@
 				EE0F17FF285E27070046BB7C /* Views */,
 				EE0F1800285E27160046BB7C /* ViewModels */,
 				EE0F1801285E271D0046BB7C /* Models */,
+				EEC032EE2864FC3600CE6682 /* Constants */,
 				EE5052232857BD0900C3DF50 /* Assets.xcassets */,
 				EE5052252857BD0900C3DF50 /* Preview Content */,
 			);
@@ -101,6 +115,15 @@
 				EE5052262857BD0900C3DF50 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EEC032EE2864FC3600CE6682 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				EEC032EF2864FC4E00CE6682 /* Constants.swift */,
+				EEC032F12864FCC600CE6682 /* Extensions.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,11 +196,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEC032E82864F52300CE6682 /* ListView.swift in Sources */,
+				EEC032E62864F51C00CE6682 /* MapView.swift in Sources */,
 				EE0F1805285E34E20046BB7C /* MapAnnotationView.swift in Sources */,
 				EE0F1803285E286A0046BB7C /* HolidayViewModel.swift in Sources */,
 				EE5052302857E10000C3DF50 /* LocationManager.swift in Sources */,
-				EE5052222857BD0300C3DF50 /* ContentView.swift in Sources */,
+				EEC032F02864FC4E00CE6682 /* Constants.swift in Sources */,
+				EEC032EA2864F71000CE6682 /* HomeView2.swift in Sources */,
+				EE5052222857BD0300C3DF50 /* HomeView.swift in Sources */,
 				EE245EA2285DF1F2009B63D0 /* Holiday.swift in Sources */,
+				EEC032F22864FCC600CE6682 /* Extensions.swift in Sources */,
 				EE5052202857BD0300C3DF50 /* TravelScrapbookApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
