@@ -32,6 +32,10 @@ struct HomeView2: View {
     @Namespace var namespace
     @FocusState var isFocused: Bool
     
+    @State var showMap = true
+    
+    @State var showHoliday = false
+    
     var body: some View {
         ZStack {
             
@@ -41,10 +45,10 @@ struct HomeView2: View {
                     
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease")
-                        .font(.title)
-                        .foregroundColor(Color("Green2"))
-                        .frame(width: 30, height: 30)
-                        .padding(8)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .padding(11)
                         .background(
                             Circle()
                                 .foregroundColor(.white)
@@ -52,7 +56,7 @@ struct HomeView2: View {
 
                         )
                 }
-                .offset(x: (openSearch || addNew) ? -60 : 0)
+                .offset(x: (openSearch || addNew) ? -80 : 0)
                 
                 Spacer()
                 
@@ -62,35 +66,78 @@ struct HomeView2: View {
                 Spacer()
                 
                 Button {
+                    DispatchQueue.main.async {
+                        withAnimation {
+                            showMap.toggle()
+                        }
+                    }
                     
                 } label: {
-                    Image(systemName: "list.bullet")
-                        .font(.title)
-                        .foregroundColor(Color("Green2"))
-                        .frame(width: 30, height: 30)
-                        .padding(8)
-                        .background(
-                            Circle()
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-
-                        )
+                    
+                    ZStack {
+                        
+                        Image(systemName: "map")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .offset(x: showMap ? -80 : 0)
+                        
+                        Image(systemName: "list.bullet")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .offset(x: showMap ? 0 : 80)
+                        
+                    }
+                    .padding(11)
+                    .mask({
+                        Circle()
+                    })
+                    .background(
+                        Circle()
+                            .foregroundColor(.white)
+                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                    )
+                    
+//                    Image(systemName: "list.bullet")
+//                        .font(.title)
+//                        .foregroundColor(Color("Green2"))
+//                        .frame(width: 30, height: 30)
+//                        .padding(8)
+//                        .background(
+//                            Circle()
+//                                .foregroundColor(.white)
+//                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+//
+//                        )
                 }
-                .offset(x: (openSearch || addNew) ? 60 : 0)
+                .offset(x: (openSearch || addNew) ? 80 : 0)
             }
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(20)
             .padding(.top, Constants.isScreenLarge ? 40 : 20)
             
-            MapView(region: $region)
-                .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-                .padding(.horizontal, 20)
-                .padding(.bottom, 30)
-                .frame(maxHeight: Constants.screenHeight / 1.18)
-                .frame(maxHeight: .infinity, alignment: .bottom)
+//            MapView(region: $region)
+//                .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+//                .padding(.horizontal, 20)
+//                .padding(.bottom, 30)
+//                .frame(maxHeight: Constants.screenHeight / 1.18)
+//                .frame(maxHeight: .infinity, alignment: .bottom)
             
-                newHolidayButton
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            ZStack {
+                mapOrList
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+            .padding(.horizontal, 20)
+            .padding(.bottom, Constants.isScreenLarge ? 30 : 20)
+            .frame(maxHeight: Constants.screenHeight / 1.18)
+            .frame(maxHeight: .infinity, alignment: .bottom)
+            .shadow(color: Color("Green2").opacity(0.3), radius: 15, x: 5, y: 5)
+            
+            
+//                newHolidayButton
+//                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+//                    .offset(x: showMap ? 0 : 180)
             
             
             
@@ -111,11 +158,15 @@ struct HomeView2: View {
 
         
         }
+        .foregroundColor(Color("Green1"))
         .ignoresSafeArea()
         .background(
 //            Color("Green3").opacity(0.1)
-            LinearGradient(colors: [Color("Green3").opacity(0.08), Color("Green3").opacity(0.2)], startPoint: .top, endPoint: .bottom)
+            LinearGradient(colors: [Color("Green3").opacity(0.05), Color("Green3").opacity(0.12)], startPoint: .top, endPoint: .bottom)
         )
+        .fullScreenCover(isPresented: $showHoliday) {
+            HolidayView()
+        }
     }
     
     var searchButton: some View {
@@ -288,55 +339,7 @@ struct HomeView2: View {
         )
 
     }
-    
-    var newHolidayButton: some View {
-        HStack {
-            
-            Spacer()
-            
-            Button {
-                DispatchQueue.main.async {
-                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                        addNew.toggle()
-                    }
-                    withAnimation(.default.delay(0.3)) {
-                        showAddNewContent.toggle()
-                    }
-                    
-                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                        openSearch = false
-                    }
-                    withAnimation(.default.delay(0.2)) {
-                        showSearchContent = false
-                    }
-                }
-                
-            } label: {
-                Image(systemName: "plus")
-                    .resizable()
-                    .matchedGeometryEffect(id: "plus", in: namespace)
-                    .foregroundColor(Color("Green2"))
-                    .frame(width: 30, height: 30)
-                
-            }
-            .padding(15)
-            .mask {
-                RoundedRectangle(cornerRadius: 35, style: .continuous)
-                    .matchedGeometryEffect(id: "maskAddNew", in: namespace)
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 35, style: .continuous)
-                    .matchedGeometryEffect(id: "addbg", in: namespace)
-                    .foregroundColor(.white)
-                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-
-            )
-            .padding(.bottom, 70)
-            .padding(.trailing, 50)
-            
-        }
-    }
-    
+        
     var newHolidayView: some View {
         
         VStack(alignment: .leading, spacing: 20) {
@@ -432,10 +435,10 @@ struct HomeView2: View {
                     
                 } label: {
                     
-                    Image(systemName: "plus")
+                    Image(systemName: "checkmark")
                         .resizable()
-                        .matchedGeometryEffect(id: "plus", in: namespace)
-                        .foregroundColor(Color("Green2"))
+                        .matchedGeometryEffect(id: "checkmark", in: namespace)
+                        .foregroundColor(Color("Green1"))
                         .frame(width: 30, height: 30)
                 }
                 
@@ -457,6 +460,19 @@ struct HomeView2: View {
                 .foregroundColor(.white)
                 .matchedGeometryEffect(id: "addbg", in: namespace)
         )
+    }
+    
+    @ViewBuilder
+    var mapOrList: some View {
+        
+        if showMap {
+            MapView(namespace: namespace, region: $region, openSearch: $openSearch, showSearchContent: $showSearchContent, addNew: $addNew, showAddNewContent: $showAddNewContent)
+                .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+        } else {
+            ListView(showHoliday: $showHoliday)
+                .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
+        }
+        
     }
 
 }
