@@ -14,7 +14,7 @@ struct TravelScrapbookApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeView2()
+            HomeView()
                 .environmentObject(vm)
         }
     }

@@ -14,8 +14,8 @@ struct MapView: View {
     let namespace: Namespace.ID
     
     @Binding var region: MKCoordinateRegion
-    @State var showMarker = false
-    @State var showCancel = false
+    @Binding var showMarker: Bool
+    @Binding var showCancel: Bool
     
     @Binding var openSearch: Bool
     @Binding var showSearchContent: Bool
@@ -28,7 +28,7 @@ struct MapView: View {
         ZStack {
             Map(coordinateRegion: $region, annotationItems: holidayvm.holidays) { holiday in
                 MapAnnotation(coordinate: holiday.location.coordinates ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)) {
-                    MapAnnotationView(holiday: holiday)
+                    MapAnnotationView(holiday: holiday, region: $region)
                 }
             }
             
@@ -74,7 +74,7 @@ struct MapView: View {
             if showCancel {
             Button {
                 DispatchQueue.main.async {
-                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                    withAnimation(.easeInOut) {
                         showMarker = false
                         showCancel = false
                     }
@@ -94,71 +94,74 @@ struct MapView: View {
 
             )
             .transition(.scale)
-            .scaleEffect(addNew ? 0 : 1)
+            .scaleEffect(addNew ? 0.001 : 1)
             }
 
 
-            Button {
-                if showMarker == false {
-                    DispatchQueue.main.async {
-                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                            showMarker = true
-                            showCancel = true
+            if !addNew {
+                Button {
+                    if showMarker == false {
+                        DispatchQueue.main.async {
+                            withAnimation(.easeInOut) {
+                                showMarker = true
+                                showCancel = true
+                            }
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                addNew.toggle()
+                                openSearch = false
+                            }
+                            withAnimation(.default.delay(0.2)) {
+                                showAddNewContent.toggle()
+                                showSearchContent = false
+
+                            }
                         }
                     }
-                } else {
-                    DispatchQueue.main.async {
-                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                            addNew.toggle()
-                            openSearch = false
-                        }
-                        withAnimation(.default.delay(0.2)) {
-                            showAddNewContent.toggle()
-                            showSearchContent = false
 
-                        }
+                } label: {
+
+                    ZStack {
+
+                        Image(systemName: "plus")
+                            .resizable()
+                            .foregroundColor(Color("Green1"))
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                            .offset(y: showMarker ? 80 : 0)
+
+
+
+                        Image(systemName: "checkmark")
+                            .resizable()
+                            .matchedGeometryEffect(id: "checkmark", in: namespace)
+                            .scaledToFit()
+                            .foregroundColor(Color("Green1"))
+                            .frame(width: 30, height: 30)
+                            .offset(y: showMarker ? 0 : -80)
+
                     }
-                }
 
-            } label: {
-
-                ZStack {
-
-                    Image(systemName: "plus")
-                        .resizable()
-                        .foregroundColor(Color("Green1"))
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .offset(y: showMarker ? 80 : 0)
-
-
-
-                    Image(systemName: "checkmark")
-                        .resizable()
-                        .matchedGeometryEffect(id: "checkmark", in: namespace)
-                        .scaledToFit()
-                        .foregroundColor(Color("Green1"))
-                        .frame(width: 30, height: 30)
-                        .offset(y: showMarker ? 0 : -80)
 
                 }
+                .padding(20)
+                .mask {
+                    RoundedRectangle(cornerRadius: 35, style: .continuous)
+                        .matchedGeometryEffect(id: "maskAddNew", in: namespace)
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 35, style: .continuous)
+                        .matchedGeometryEffect(id: "addbg", in: namespace)
+                        .foregroundColor(.white)
+                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
 
+                )
+                .padding(.trailing, showMarker ? 20 : 40)
 
             }
-            .padding(20)
-            .mask {
-                RoundedRectangle(cornerRadius: 35, style: .continuous)
-                    .matchedGeometryEffect(id: "maskAddNew", in: namespace)
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 35, style: .continuous)
-                    .matchedGeometryEffect(id: "addbg", in: namespace)
-                    .foregroundColor(.white)
-                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-
-            )
-            .padding(.trailing, showMarker ? 20 : 40)
-
+            
             
         }
         .padding(.bottom, 40)

@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import UIKit
 
 class HolidayViewModel: ObservableObject {
     
@@ -18,7 +19,7 @@ class HolidayViewModel: ObservableObject {
     @Published var holidayDate = Date()
     
     
-    func addHoliday(name: String, city: String, country: String, date: Date, coordinates: CLLocationCoordinate2D) {
+    func addHoliday(name: String, city: String, country: String, date: Date, coordinates: CLLocationCoordinate2D, mainImage: UIImage) {
         
         DispatchQueue.main.async {
             self.holidays.append(
@@ -28,7 +29,8 @@ class HolidayViewModel: ObservableObject {
                     location: Location(
                         city: city,
                         country: country,
-                        coordinates: coordinates)
+                        coordinates: coordinates),
+                    mainImage: mainImage
                 )
             )
         }

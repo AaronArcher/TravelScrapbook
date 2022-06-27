@@ -7,12 +7,14 @@
 
 import Foundation
 import CoreLocation
+import UIKit
 
 struct Holiday: Identifiable {
     let id = UUID()
     let name: String
     let date: Date
     let location: Location
+    let mainImage: UIImage?
 }
 
 struct Location: Identifiable {

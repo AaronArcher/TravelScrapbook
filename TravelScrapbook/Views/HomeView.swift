@@ -1,8 +1,8 @@
 //
-//  ContentView.swift
+//  HomeView.swift
 //  TravelScrapbook
 //
-//  Created by Aaron Johncock on 13/06/2022.
+//  Created by Aaron Johncock on 23/06/2022.
 //
 
 import SwiftUI
@@ -10,9 +10,9 @@ import MapKit
 
 struct HomeView: View {
     
-    @State var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 160, longitudeDelta: 160))
+    @EnvironmentObject var holidayvm: HolidayViewModel
     
-    let holidayvm = HolidayViewModel()
+    @State var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 45, longitude: 15), span: MKCoordinateSpan(latitudeDelta: 70, longitudeDelta: 70))
     
     @State var searchText = ""
     @State var locations = [Location]()
@@ -32,208 +32,136 @@ struct HomeView: View {
     @Namespace var namespace
     @FocusState var isFocused: Bool
     
+    @State var showMap = true
+    @State var showHoliday = false
+    
+    @State private var image: Image?
+    @State private var inputImage: UIImage?
+    @State private var showImagePicker = false
+    
+    @State var showMarker = false
+    @State var showCancel = false
     
     var body: some View {
-        
         ZStack {
             
-            Map(coordinateRegion: $region, annotationItems: holidayvm.holidays) { holiday in
-                MapAnnotation(coordinate: holiday.location.coordinates ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)) {
-                    MapAnnotationView(holiday: holiday)
-                }
-            }
-            .disabled(addNew)
-            
-            Circle()
-                .frame(width: 4, height: 4)
-                .foregroundColor(.teal)
-            
-            Button {
+            HStack {
                 
-            } label: {
-                Image(systemName: "slider.horizontal.3")
-                    .font(.title2)
-                    .foregroundColor(.gray)
-                    .padding(10)
+                Button {
+                    
+                } label: {
+                    Image(systemName: "line.3.horizontal.decrease")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .padding(11)
+                        .background(
+                            Circle()
+                                .foregroundColor(.white)
+                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+
+                        )
+                }
+                .offset(x: (openSearch || addNew) ? -80 : 0)
+                
+                Spacer()
+                
+                if !openSearch {
+                    searchButton
+                        .offset(y: addNew ? -80 : 0)
+                        .disabled(!showMap)
+                        .opacity(showMap ? 1 : 0.5)
+                }
+               
+                
+                Spacer()
+                
+                Button {
+                    DispatchQueue.main.async {
+                        withAnimation {
+                            showMap.toggle()
+                        }
+                    }
+                    
+                } label: {
+                    
+                    ZStack {
+                        
+                        Image(systemName: "map")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .offset(x: showMap ? -80 : 0)
+                        
+                        Image(systemName: "list.bullet")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .offset(x: showMap ? 0 : 80)
+                        
+                    }
+                    .padding(11)
+                    .mask({
+                        Circle()
+                    })
                     .background(
                         Circle()
                             .foregroundColor(.white)
+                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                     )
+                    
+                }
+                .offset(x: (openSearch || addNew) ? 80 : 0)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .padding(20)
-            .padding(.top, 50)
-            .offset(x: (openSearch || addNew) ? -60 : 0)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .padding(15)
+            .padding(.top, Constants.isScreenLarge ? 40 : 20)
             
-            //New Buttons
-            VStack {
-                // Search Button
-                HStack {
-                    Spacer()
-                    
-                    HStack {
-                        
-                        Button {
-                            
-                            DispatchQueue.main.async {
-                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                    openSearch.toggle()
-                                }
-                                withAnimation(.default.delay(0.2)) {
-                                    showSearchContent.toggle()
-                                }
-                                
-                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                    addNew = false
-                                }
-                                withAnimation(.default.delay(0.3)) {
-                                    showAddNewContent = false
-                                }
-                            }
-
-                            
-                        } label: {
-                            Image(systemName: "magnifyingglass")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 25, height: 25)
-                                .matchedGeometryEffect(id: "mg", in: namespace)
-                                .foregroundColor(.teal)
-                        }
-                        
-                        Color.white
-                            .frame(width: 30, height: 30)
-
-                        
-                    }
-                    .padding(12)
-                    .padding(.leading,3)
-                    .mask {
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .matchedGeometryEffect(id: "mask", in: namespace)
-                    }
-                    .background(
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .foregroundColor(.white)
-                            .matchedGeometryEffect(id: "bg", in: namespace)
-                    )
-                    .offset(x: 40)
-                    .offset(x: addNew ? 90 : 0)
-
-                    
-
-                }
-                .padding(.top, 150)
-                
-                // Add Button
-                HStack {
-                    Spacer()
-                    
-                    HStack {
-                        
-                        Button {
-                            
-                            DispatchQueue.main.async {
-                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                    addNew.toggle()
-                                }
-                                withAnimation(.default.delay(0.3)) {
-                                    showAddNewContent.toggle()
-                                }
-                                
-                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                    openSearch = false
-                                }
-                                withAnimation(.default.delay(0.2)) {
-                                    showSearchContent = false
-                                }
-                            }
-
-                            
-                        } label: {
-                            Image(systemName: "plus")
-                                .resizable()
-                                .matchedGeometryEffect(id: "plus", in: namespace)
-                                .foregroundColor(.teal)
-                                .frame(width: 25, height: 25)
-                        }
-                        
-                        Color.white
-                            .frame(width: 30, height: 30)
-
-                        
-                    }
-                    .padding(12)
-                    .padding(.leading,3)
-                    .mask {
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .matchedGeometryEffect(id: "maskAddNew", in: namespace)
-                    }
-                    .background(
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .matchedGeometryEffect(id: "addbg", in: namespace)
-                            .foregroundColor(.white)
-                    )
-                    .offset(x: 40)
-                    .offset(x: openSearch ? 90 : 0)
-                    
-
-                }
-                
-                Spacer()
-                
+            
+            ZStack {
+                mapOrList
             }
-            .frame(maxHeight: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+            .padding(.horizontal, 15)
+            .padding(.bottom, Constants.isScreenLarge ? 30 : 15)
+            .frame(maxHeight: Constants.screenHeight / 1.18)
+            .frame(maxHeight: .infinity, alignment: .bottom)
+            .shadow(color: Color("Green2").opacity(0.3), radius: 15, x: 5, y: 5)
+            
+            
             
             VStack {
-                
-//                searchButton
-                
-                
-                
                 
                 if openSearch {
-                    searchView2
+                    searchView
                 } else if addNew {
-                    newHolidayView2
+                    newHolidayView
                 } else {
                    
                 }
-//
-                
-//                if openSearch {
-//                    searchView
-//                } else {
-//                    searchButton
-//                }
-//
-//                if addNew {
-//                    newHolidayView
-//                }
-                
-//                Spacer()
-                
-//                if addNew {
-//                    newHolidayView
-//                }
                 
                 Spacer()
                 
-//                if !addNew {
-//                    newHolidayButton
-//                }
-                
             }
             .frame(maxHeight: .infinity)
-            
-            
-            
-        }
-        .ignoresSafeArea()
+
         
+        }
+        .foregroundColor(Color("Green1"))
+        .ignoresSafeArea()
+        .background(
+//            Color("Green3").opacity(0.1)
+            LinearGradient(colors: [Color("Green3").opacity(0.05), Color("Green3").opacity(0.12)], startPoint: .top, endPoint: .bottom)
+        )
+        .fullScreenCover(isPresented: $showHoliday) {
+            HolidayView()
+        }
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker(image: $inputImage)
+        }
+        .onChange(of: inputImage) { _ in loadImage() }
         
     }
-    
     
     var searchButton: some View {
         Button {
@@ -254,9 +182,11 @@ struct HomeView: View {
             }
             
         } label: {
-            Text("Search")
+            Text("SEARCH")
                 .matchedGeometryEffect(id: "search", in: namespace)
-                .padding(5)
+                .foregroundColor(Color("Green1"))
+                .font(.callout)
+                .padding(6)
                 .padding(.horizontal)
                 .mask {
                     RoundedRectangle(cornerRadius: 15, style: .continuous)
@@ -266,239 +196,14 @@ struct HomeView: View {
                     RoundedRectangle(cornerRadius: 15, style: .continuous)
                         .foregroundColor(.white)
                         .matchedGeometryEffect(id: "bg", in: namespace)
+                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                 )
-                .padding(.top, 75)
             
         }
 
     }
-    
-//    var searchView: some View {
-//        VStack {
-//
-//            HStack {
-//
-//                Button {
-//
-//                    DispatchQueue.main.async {
-//                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-//                            openSearch.toggle()
-//                        }
-//                        withAnimation {
-//                            showSearchContent.toggle()
-//                        }
-//                    }
-//
-//                } label: {
-//                    Image(systemName: "chevron.left")
-//                        .foregroundColor(.secondary)
-//                }
-//                .opacity(showSearchContent ? 1 : 0)
-//                .offset(y: showSearchContent ? 0 : -10)
-//
-//                TextField("Enter Location", text: $searchText)
-//                    .padding(5)
-//                    .background(
-//                        RoundedRectangle(cornerRadius: 5, style: .continuous)
-//                            .foregroundColor(.gray.opacity(0.08))
-//                    )
-//                    .opacity(showSearchContent ? 1 : 0)
-//                    .offset(y: showSearchContent ? 0 : -10)
-//
-//
-//                Button {
-//                    searchLocation = [Location]()
-//                    searchText = ""
-//                } label: {
-//                    Image(systemName: "xmark")
-//                        .foregroundColor(.secondary)
-//                }
-//                .opacity(showSearchContent ? 1 : 0)
-//                .offset(y: showSearchContent ? 0 : -10)
-//
-//
-//                Button {
-//                    if !searchText.isEmpty {
-//                        LocationManager.shared.findLocations(with: searchText) { locations in
-//                            print(locations)
-//                            DispatchQueue.main.async {
-//                                self.searchLocation = locations
-//                            }
-//
-//                        }
-//
-//
-//                    }
-//                } label: {
-////                    Text("Search")
-////                        .matchedGeometryEffect(id: "search", in: namespace)
-//                    Image(systemName: "magnifyingglass")
-//                        .resizable()
-//                        .aspectRatio(contentMode: .fit)
-//                        .frame(width: 25, height: 25)
-//                        .matchedGeometryEffect(id: "mg", in: namespace)
-//                        .foregroundColor(.teal)
-//                }
-//
-//            }
-//            .padding(.horizontal, 25)
-//            .padding(.top, 60)
-//            .padding(.bottom, 10)
-//
-//            VStack {
-//                ForEach(searchLocation) { location  in
-//
-//                    Button {
-//                        DispatchQueue.main.async {
-//
-//                            guard let coordinates = location.coordinates else { return }
-//
-//                            holidayCity = location.city
-//                            holidayCountry = location.country
-//
-//                            withAnimation {
-//                                region = MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2))
-//                            }
-//                            withAnimation {
-//                                openSearch.toggle()
-//                            }
-//                            withAnimation {
-//                                showSearchContent.toggle()
-//                            }
-//
-//                        }
-//
-//                    } label: {
-//                        VStack {
-//                            Text(location.city)
-//
-//                            Text(location.country)
-//                                .foregroundColor(location.city.isEmpty ? .primary : .secondary)
-//
-//                        }
-//
-//                    }
-//
-//
-//                }
-//            }
-//            .opacity(showSearchContent ? 1 : 0)
-//            .offset(y: showSearchContent ? 0 : -10)
-//
-//
-//            Spacer()
-//        }
-//        .frame(maxWidth: .infinity)
-//        .frame(height: 160)
-//        .background(
-//            RoundedRectangle(cornerRadius: 15, style: .continuous)
-//                .foregroundColor(.white)
-//                .matchedGeometryEffect(id: "bg", in: namespace)
-//        )
-//        .mask {
-//            RoundedRectangle(cornerRadius: 15, style: .continuous)
-//                .matchedGeometryEffect(id: "mask", in: namespace)
-//        }
-//
-//    }
-    
-//    var newHolidayView: some View {
-//
-//        VStack(alignment: .leading, spacing: 20) {
-//
-//            TextField("Holiday Name", text: $holidayName)
-//                .opacity(showAddNewContent ? 1 : 0)
-//                .offset(y: showAddNewContent ? 0 : -10)
-//
-//
-//
-//            VStack(alignment: .leading, spacing: 5) {
-//
-//                Text("Holiday Location")
-//
-//                HStack {
-//
-//                    TextField("City", text: $holidayCity)
-//
-//                    TextField("Country", text: $holidayCountry)
-//
-//
-//                    Spacer()
-//
-//                }
-//
-//            }
-//            .opacity(showAddNewContent ? 1 : 0)
-//            .offset(y: showAddNewContent ? 0 : -10)
-//
-//            DatePicker("Holiday Date", selection: $holidayDate, displayedComponents: .date)
-//                .datePickerStyle(.automatic)
-//                .opacity(showAddNewContent ? 1 : 0)
-//                .offset(y: showAddNewContent ? 0 : -10)
-//
-//
-//            HStack {
-//
-//                Spacer()
-//
-//                Button {
-//                    DispatchQueue.main.async {
-//                        //
-//                        holidayvm.holidays.append(
-//                            Holiday(
-//                                name: holidayName,
-//                                date: holidayDate,
-//                                location: Location(
-//                                    city: holidayCity,
-//                                    country: holidayCountry,
-//                                    coordinates: CLLocationCoordinate2D(latitude: region.center.latitude, longitude: region.center.longitude))
-//                            )
-//                        )
-//
-//                    }
-//
-//
-//                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-//                        addNew.toggle()
-//                    }
-//                    withAnimation {
-//                        showAddNewContent.toggle()
-//                    }
-//
-//
-//                    //                    holidayName = ""
-//                    //                    holidayDate = Date()
-//                    //                    holidayCity = ""
-//                    //                    holidayCountry = ""
-//
-//                } label: {
-//
-//                    Image(systemName: "plus")
-//                        .resizable()
-//                        .matchedGeometryEffect(id: "plus", in: namespace)
-//                        .foregroundColor(.teal)
-//                        .frame(width: 30, height: 30)
-//                }
-//
-//                Spacer()
-//
-//            }
-//        }
-//        .frame(width: 250)
-//        .padding(.vertical, 20)
-//        .padding(.horizontal, 30)
-//        .mask {
-//            RoundedRectangle(cornerRadius: 25, style: .continuous)
-//                .matchedGeometryEffect(id: "maskAddNew", in: namespace)
-//        }
-//        .background(
-//            RoundedRectangle(cornerRadius: 25, style: .continuous)
-//                .foregroundColor(.white)
-//                .matchedGeometryEffect(id: "addbg", in: namespace)
-//        )
-//    }
-    
-    var searchView2: some View {
+
+    var searchView: some View {
         VStack {
             
             HStack {
@@ -516,7 +221,6 @@ struct HomeView: View {
                 
                 } label: {
                     Image(systemName: "chevron.left")
-                        .foregroundColor(.secondary)
                 }
                 .opacity(showSearchContent ? 1 : 0)
                 .offset(y: showSearchContent ? 0 : -10)
@@ -536,7 +240,6 @@ struct HomeView: View {
                     searchText = ""
                 } label: {
                     Image(systemName: "xmark")
-                        .foregroundColor(.secondary)
                 }
                 .opacity(showSearchContent ? 1 : 0)
                 .offset(y: showSearchContent ? 0 : -10)
@@ -544,10 +247,10 @@ struct HomeView: View {
                 
                 Button {
                     if !searchText.isEmpty {
-                        LocationManager.shared.findLocations(with: searchText) { locations in
-                            print(locations)
-                            DispatchQueue.main.async {
-                                self.searchLocation = locations
+                        DispatchQueue.main.async {
+                            LocationManager.shared.findLocations(with: searchText) { locations in
+                                print(locations)
+                                    self.searchLocation = locations
                             }
                             
                         }
@@ -555,19 +258,17 @@ struct HomeView: View {
                         
                     }
                 } label: {
-//                    Text("Search")
-//                        .matchedGeometryEffect(id: "search", in: namespace)
-                    Image(systemName: "magnifyingglass")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 25, height: 25)
-                        .matchedGeometryEffect(id: "mg", in: namespace)
-                        .foregroundColor(.teal)
+                    Text("SEARCH")
+                        .foregroundColor(Color("Green2"))
+                        .matchedGeometryEffect(id: "search", in: namespace)
+                        .font(.callout)
+                        .foregroundColor(Color("Green2"))
+
                 }
                 
             }
             .padding(.horizontal, 25)
-            .padding(.top, 60)
+            .padding(.top, Constants.isScreenLarge ? 60 : 40)
             .padding(.bottom, 10)
             
             VStack {
@@ -581,9 +282,9 @@ struct HomeView: View {
                             holidayCity = location.city
                             holidayCountry = location.country
                             
-                            withAnimation {
-                                region = MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2))
-                            }
+//                            withAnimation {
+                                region = MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
+//                            }
                             withAnimation {
                                 openSearch.toggle()
                             }
@@ -594,13 +295,15 @@ struct HomeView: View {
                         }
 
                     } label: {
+
                         VStack {
-                            Text(location.city)
-                            
-                            Text(location.country)
-                                .foregroundColor(location.city.isEmpty ? .primary : .secondary)
-                            
-                        }
+                                Text(location.city)
+                                
+                                Text(location.country)
+                                    .foregroundColor(location.city.isEmpty ? .primary : .secondary)
+                                
+                            }
+                        
 
                     }
 
@@ -613,20 +316,25 @@ struct HomeView: View {
             
             Spacer()
         }
+        .foregroundColor(Color("Green2"))
         .frame(maxWidth: .infinity)
-        .frame(height: 160)
-        .background(
-            RoundedRectangle(cornerRadius: 25, style: .continuous)
-                .foregroundColor(.white)
-                .matchedGeometryEffect(id: "bg", in: namespace)
-        )
+        .padding(.bottom)
+        .frame(maxHeight: 160)
         .mask {
             RoundedRectangle(cornerRadius: 25, style: .continuous)
                 .matchedGeometryEffect(id: "mask", in: namespace)
         }
+        .background(
+            RoundedRectangle(cornerRadius: 25, style: .continuous)
+                .foregroundColor(.white)
+                .matchedGeometryEffect(id: "bg", in: namespace)
+                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+
+        )
 
     }
-    var newHolidayView2: some View {
+        
+    var newHolidayView: some View {
         
         VStack(alignment: .leading, spacing: 20) {
             
@@ -651,7 +359,7 @@ struct HomeView: View {
                     
                 } label: {
                     Text("Cancel")
-                        .foregroundColor(.red)
+                        .foregroundColor(Color("Green1"))
                 }
                 .opacity(showAddNewContent ? 1 : 0)
                 .offset(y: showAddNewContent ? 0 : -10)
@@ -683,6 +391,35 @@ struct HomeView: View {
                 .opacity(showAddNewContent ? 1 : 0)
                 .offset(y: showAddNewContent ? 0 : -10)
 
+            HStack {
+                
+                    
+                    Button {
+                        showImagePicker = true
+                    } label: {
+                        
+                        VStack {
+                            Text("Select images")
+                                
+                            Image(systemName: "camera")
+                                .font(.title3)
+                            
+                        }
+                        
+                    }
+
+                Spacer()
+                
+                image?
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                
+                
+            }
+            .opacity(showAddNewContent ? 1 : 0)
+            .offset(y: showAddNewContent ? 0 : -10)
             
             HStack {
                 
@@ -699,15 +436,18 @@ struct HomeView: View {
                                 location: Location(
                                     city: holidayCity,
                                     country: holidayCountry,
-                                    coordinates: CLLocationCoordinate2D(latitude: region.center.latitude, longitude: region.center.longitude))
+                                    coordinates: CLLocationCoordinate2D(latitude: region.center.latitude, longitude: region.center.longitude)),
+                                mainImage: inputImage
                             )
                         )
 
                     }
-                 
+                    
                     
                     withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                         addNew.toggle()
+                        showMarker = false
+                        showCancel = false
                     }
                     withAnimation {
                         showAddNewContent.toggle()
@@ -721,10 +461,10 @@ struct HomeView: View {
                     
                 } label: {
                     
-                    Image(systemName: "plus")
+                    Image(systemName: "checkmark")
                         .resizable()
-                        .matchedGeometryEffect(id: "plus", in: namespace)
-                        .foregroundColor(.teal)
+                        .matchedGeometryEffect(id: "checkmark", in: namespace)
+                        .foregroundColor(Color("Green1"))
                         .frame(width: 30, height: 30)
                 }
                 
@@ -732,9 +472,10 @@ struct HomeView: View {
                 
             }
         }
+        .foregroundColor(Color("Green2"))
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 25)
-        .padding(.top, 60)
+        .padding(.top, Constants.isScreenLarge ? 60 : 40)
         .padding(.bottom, 20)
         .mask {
             RoundedRectangle(cornerRadius: 25, style: .continuous)
@@ -746,58 +487,31 @@ struct HomeView: View {
                 .matchedGeometryEffect(id: "addbg", in: namespace)
         )
     }
-
     
-    var newHolidayButton: some View {
-        HStack {
-            
-            Spacer()
-            
-            Button {
-                DispatchQueue.main.async {
-                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                        addNew.toggle()
-                    }
-                    withAnimation(.default.delay(0.3)) {
-                        showAddNewContent.toggle()
-                    }
-                    
-                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                        openSearch = false
-                    }
-                    withAnimation(.default.delay(0.2)) {
-                        showSearchContent = false
-                    }
-                }
-                
-            } label: {
-                Image(systemName: "plus")
-                    .resizable()
-                    .matchedGeometryEffect(id: "plus", in: namespace)
-                    .foregroundColor(.teal)
-                    .frame(width: 30, height: 30)
-                
-            }
-            .padding(10)
-            .mask {
-                RoundedRectangle(cornerRadius: 25, style: .continuous)
-                    .matchedGeometryEffect(id: "maskAddNew", in: namespace)
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 25, style: .continuous)
-                    .matchedGeometryEffect(id: "addbg", in: namespace)
-                    .foregroundColor(.white)
-            )
-            .padding(.bottom, 70)
-            .padding(.trailing, 50)
-            
+    @ViewBuilder
+    var mapOrList: some View {
+        
+        if showMap {
+            MapView(namespace: namespace, region: $region, showMarker: $showMarker, showCancel: $showCancel, openSearch: $openSearch, showSearchContent: $showSearchContent, addNew: $addNew, showAddNewContent: $showAddNewContent)
+                .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+        } else {
+            ListView(showHoliday: $showHoliday)
+                .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
         }
+        
     }
     
+    func loadImage() {
+        guard let inputImage = inputImage else { return }
+        image = Image(uiImage: inputImage)
+    }
+
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct HomeView2_Previews: PreviewProvider {
     static var previews: some View {
+        let vm = HolidayViewModel()
         HomeView()
+            .environmentObject(vm)
     }
 }

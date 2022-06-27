@@ -13,6 +13,9 @@ struct MapAnnotationView: View {
     @State private var isTapped = false
     let holiday: Holiday
     @Namespace private var namespace
+
+    @Binding var region: MKCoordinateRegion
+
     
     var body: some View {
                     
@@ -36,24 +39,25 @@ struct MapAnnotationView: View {
                             }
                         }
                     } label: {
-                        Image("Panda")
+                        
+                        Image(uiImage: holiday.mainImage ?? UIImage(named: "Panda")!)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 40, height: 40)
+                            .frame(width: 50, height: 50)
                             .clipShape(Circle())
                             .matchedGeometryEffect(id: "pic", in: namespace)
                             .frame(maxWidth: .infinity, alignment: .center)
-
+                        
                     }
                     
                 }
                 .padding()
                 .mask({
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
                         .matchedGeometryEffect(id: "mask", in: namespace)
                 })
                 .background(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
                         .foregroundColor(.white)
                         .matchedGeometryEffect(id: "bg", in: namespace)
                 )
@@ -69,21 +73,28 @@ struct MapAnnotationView: View {
                         }
                     }
                 } label: {
-                    Image("Panda")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-                        .matchedGeometryEffect(id: "pic", in: namespace)
-                        .mask({
-                            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .matchedGeometryEffect(id: "mask", in: namespace)
-                        })
-                        .background(
-                            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .foregroundColor(.white)
-                                .matchedGeometryEffect(id: "bg", in: namespace)
-                        )
+                    ZStack {
+                        Image(uiImage: holiday.mainImage ?? UIImage(named: "Panda")!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .clipShape(Circle())
+                        
+                        Circle()
+                            .stroke(.white, lineWidth: 3)
+                            
+                    }
+                    .frame(width: 50, height: 50)
+                    .matchedGeometryEffect(id: "pic", in: namespace)
+                    .mask({
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .matchedGeometryEffect(id: "mask", in: namespace)
+                    })
+                    .background(
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .foregroundColor(.white)
+                            .matchedGeometryEffect(id: "bg", in: namespace)
+                )
+
                 }
                 .frame(minWidth: 150)
 
