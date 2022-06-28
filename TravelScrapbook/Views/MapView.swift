@@ -31,7 +31,8 @@ struct MapView: View {
                     MapAnnotationView(holiday: holiday, region: $region)
                 }
             }
-            
+                .disabled(addNew)
+                
             Image(systemName: "mappin")
                 .resizable()
                 .matchedGeometryEffect(id: "pin", in: namespace)
@@ -127,20 +128,22 @@ struct MapView: View {
 
                         Image(systemName: "plus")
                             .resizable()
+                            .matchedGeometryEffect(id: "plus", in: namespace)
                             .foregroundColor(Color("Green1"))
                             .scaledToFit()
-                            .frame(width: 30, height: 30)
-                            .offset(y: showMarker ? 80 : 0)
+                            .frame(width: 25, height: 25)
+//                            .offset(y: showMarker ? 80 : 0)
 
 
 
-                        Image(systemName: "checkmark")
-                            .resizable()
-                            .matchedGeometryEffect(id: "checkmark", in: namespace)
-                            .scaledToFit()
-                            .foregroundColor(Color("Green1"))
-                            .frame(width: 30, height: 30)
-                            .offset(y: showMarker ? 0 : -80)
+//                        Image(systemName: "checkmark")
+//                            .resizable()
+//                            .matchedGeometryEffect(id: "checkmark", in: namespace)
+//                            .scaledToFit()
+//                            .foregroundColor(Color("Green1"))
+//                            .frame(width: 30, height: 30)
+//                            .offset(y: showMarker ? 0 : -80)
+//                            .scaleEffect(addNew ? 0.001 : 1)
 
                     }
 

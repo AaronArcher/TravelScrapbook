@@ -11,10 +11,11 @@ import UIKit
 
 struct Holiday: Identifiable {
     let id = UUID()
-    let name: String
-    let date: Date
-    let location: Location
-    let mainImage: UIImage?
+    var name: String
+    var date: Date
+    var location: Location
+    var mainImage: UIImage?
+    var allImages: [UIImage]?
 }
 
 struct Location: Identifiable {
@@ -22,6 +23,5 @@ struct Location: Identifiable {
     let city: String
     let country: String
     let coordinates: CLLocationCoordinate2D?
-//    let latitude: Double
-//    let Longitude: Double
+
 }

@@ -135,7 +135,20 @@ struct HomeView: View {
                 if openSearch {
                     searchView
                 } else if addNew {
-                    newHolidayView
+//                    newHolidayView
+                    
+                    AddNewHoliday(region: $region,
+                                  addNew: $addNew,
+                                  showAddNewContent: $showAddNewContent,
+                                  showMarker: $showMarker,
+                                  showCancel: $showCancel,
+                                  showImagePicker: $showImagePicker,
+                                  holidayName: $holidayName,
+                                  holidayCity: $holidayCity,
+                                  holidayCountry: $holidayCountry,
+                                  holidayDate: $holidayDate,
+                                  namespace: namespace)
+                    
                 } else {
                    
                 }
@@ -156,10 +169,10 @@ struct HomeView: View {
         .fullScreenCover(isPresented: $showHoliday) {
             HolidayView()
         }
-        .sheet(isPresented: $showImagePicker) {
-            ImagePicker(image: $inputImage)
-        }
-        .onChange(of: inputImage) { _ in loadImage() }
+//        .sheet(isPresented: $showImagePicker) {
+//            ImagePicker(image: $inputImage)
+//        }
+//        .onChange(of: inputImage) { _ in loadImage() }
         
     }
     
@@ -334,159 +347,177 @@ struct HomeView: View {
 
     }
         
-    var newHolidayView: some View {
-        
-        VStack(alignment: .leading, spacing: 20) {
-            
-            HStack {
-                
-                TextField("Holiday Name", text: $holidayName)
-                    .opacity(showAddNewContent ? 1 : 0)
-                    .offset(y: showAddNewContent ? 0 : -10)
-
-                
-                Spacer()
-                
-                Button {
-                    DispatchQueue.main.async {
-                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                            addNew.toggle()
-                        }
-                        withAnimation {
-                            showAddNewContent.toggle()
-                        }
-                    }
-                    
-                } label: {
-                    Text("Cancel")
-                        .foregroundColor(Color("Green1"))
-                }
-                .opacity(showAddNewContent ? 1 : 0)
-                .offset(y: showAddNewContent ? 0 : -10)
-                
-            }
-
-
-            VStack(alignment: .leading, spacing: 5) {
-
-                Text("Holiday Location")
-
-                HStack {
-
-                    TextField("City", text: $holidayCity)
-
-                    TextField("Country", text: $holidayCountry)
-
-
-                    Spacer()
-
-                }
-
-            }
-            .opacity(showAddNewContent ? 1 : 0)
-            .offset(y: showAddNewContent ? 0 : -10)
-
-            DatePicker("Holiday Date", selection: $holidayDate, displayedComponents: .date)
-                .datePickerStyle(.automatic)
-                .opacity(showAddNewContent ? 1 : 0)
-                .offset(y: showAddNewContent ? 0 : -10)
-
-            HStack {
-                
-                    
-                    Button {
-                        showImagePicker = true
-                    } label: {
-                        
-                        VStack {
-                            Text("Select images")
-                                
-                            Image(systemName: "camera")
-                                .font(.title3)
-                            
-                        }
-                        
-                    }
-
-                Spacer()
-                
-                image?
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                
-                
-            }
-            .opacity(showAddNewContent ? 1 : 0)
-            .offset(y: showAddNewContent ? 0 : -10)
-            
-            HStack {
-                
-                Spacer()
-
-                
-                Button {
-                    DispatchQueue.main.async {
-                        //
-                        holidayvm.holidays.append(
-                            Holiday(
-                                name: holidayName,
-                                date: holidayDate,
-                                location: Location(
-                                    city: holidayCity,
-                                    country: holidayCountry,
-                                    coordinates: CLLocationCoordinate2D(latitude: region.center.latitude, longitude: region.center.longitude)),
-                                mainImage: inputImage
-                            )
-                        )
-
-                    }
-                    
-                    
-                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                        addNew.toggle()
-                        showMarker = false
-                        showCancel = false
-                    }
-                    withAnimation {
-                        showAddNewContent.toggle()
-                    }
-                    
-                    
-                    //                    holidayName = ""
-                    //                    holidayDate = Date()
-                    //                    holidayCity = ""
-                    //                    holidayCountry = ""
-                    
-                } label: {
-                    
-                    Image(systemName: "checkmark")
-                        .resizable()
-                        .matchedGeometryEffect(id: "checkmark", in: namespace)
-                        .foregroundColor(Color("Green1"))
-                        .frame(width: 30, height: 30)
-                }
-                
-                Spacer()
-                
-            }
-        }
-        .foregroundColor(Color("Green2"))
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 25)
-        .padding(.top, Constants.isScreenLarge ? 60 : 40)
-        .padding(.bottom, 20)
-        .mask {
-            RoundedRectangle(cornerRadius: 25, style: .continuous)
-                .matchedGeometryEffect(id: "maskAddNew", in: namespace)
-        }
-        .background(
-            RoundedRectangle(cornerRadius: 25, style: .continuous)
-                .foregroundColor(.white)
-                .matchedGeometryEffect(id: "addbg", in: namespace)
-        )
-    }
+//    var newHolidayView: some View {
+//
+//        VStack {
+//
+//            VStack(alignment: .leading, spacing: 5) {
+//                HStack {
+//
+//                    Button {
+//                        DispatchQueue.main.async {
+//                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+//                                addNew.toggle()
+//                            }
+//                            withAnimation {
+//                                showAddNewContent.toggle()
+//                            }
+//                        }
+//
+//                    } label: {
+//                        Text("Cancel")
+//                            .foregroundColor(.red)
+//                            .font(.callout)
+//                    }
+//
+//                    Spacer()
+//
+//                }
+//
+//                Text("Holiday Name")
+//                    .foregroundColor(Color("Green1"))
+//                    .font(.callout)
+//
+//                TextField("Holiday Name", text: $holidayName)
+//                    .font(.footnote)
+//                    .padding(.vertical, 5)
+//                    .padding(.horizontal, 10)
+//                    .background(
+//                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+//                            .foregroundColor(Color("Green3").opacity(0.05))
+//                    )
+//
+//
+//
+//                    Text("Holiday Location")
+//
+//                    HStack {
+//
+//                        TextField("City", text: $holidayCity)
+//                            .font(.footnote)
+//                            .padding(.vertical, 5)
+//                            .padding(.horizontal, 10)
+//                            .background(
+//                                RoundedRectangle(cornerRadius: 5, style: .continuous)
+//                                    .foregroundColor(Color("Green3").opacity(0.05))
+//                            )
+//
+//                        TextField("Country", text: $holidayCountry)
+//                            .font(.footnote)
+//                            .padding(.vertical, 5)
+//                            .padding(.horizontal, 10)
+//                            .background(
+//                                RoundedRectangle(cornerRadius: 5, style: .continuous)
+//                                    .foregroundColor(Color("Green3").opacity(0.05))
+//                            )
+//
+//
+//                        Spacer()
+//
+//                    }
+//
+//
+//                DatePicker("Holiday Date", selection: $holidayDate, displayedComponents: .date)
+//                    .datePickerStyle(.automatic)
+//
+//                HStack {
+//
+//
+//                        Button {
+//                            showImagePicker = true
+//                        } label: {
+//
+//                            VStack {
+//                                Text("Create your holiday gallery")
+//
+//                                Image(systemName: "camera")
+//                                    .font(.title3)
+//
+//                            }
+//
+//                        }
+//
+//                    Spacer()
+//
+//                    image?
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(width: 100, height: 100)
+//                        .clipShape(Circle())
+//
+//
+//                }
+//            }
+//            .opacity(showAddNewContent ? 1 : 0)
+//            .offset(y: showAddNewContent ? 0 : -10)
+//
+//
+//            HStack {
+//
+//                Spacer()
+//
+//
+//                Button {
+//                    DispatchQueue.main.async {
+//                        //
+//                        holidayvm.holidays.append(
+//                            Holiday(
+//                                name: holidayName,
+//                                date: holidayDate,
+//                                location: Location(
+//                                    city: holidayCity,
+//                                    country: holidayCountry,
+//                                    coordinates: CLLocationCoordinate2D(latitude: region.center.latitude, longitude: region.center.longitude)),
+//                                mainImage: inputImage
+//                            )
+//                        )
+//
+//                    }
+//
+//
+//                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+//                        addNew.toggle()
+//                        showMarker = false
+//                        showCancel = false
+//                    }
+//                    withAnimation {
+//                        showAddNewContent.toggle()
+//                    }
+//
+//
+//                    //                    holidayName = ""
+//                    //                    holidayDate = Date()
+//                    //                    holidayCity = ""
+//                    //                    holidayCountry = ""
+//
+//                } label: {
+//
+//                    Image(systemName: "checkmark")
+//                        .resizable()
+//                        .matchedGeometryEffect(id: "checkmark", in: namespace)
+//                        .foregroundColor(Color("Green1"))
+//                        .frame(width: 30, height: 30)
+//                }
+//
+//                Spacer()
+//
+//            }
+//        }
+//        .foregroundColor(Color("Green2"))
+//        .frame(maxWidth: .infinity)
+//        .padding(.horizontal, 25)
+//        .padding(.top, Constants.isScreenLarge ? 60 : 40)
+//        .padding(.bottom, 20)
+//        .mask {
+//            RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                .matchedGeometryEffect(id: "maskAddNew", in: namespace)
+//        }
+//        .background(
+//            RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                .foregroundColor(.white)
+//                .matchedGeometryEffect(id: "addbg", in: namespace)
+//        )
+//    }
     
     @ViewBuilder
     var mapOrList: some View {
@@ -501,10 +532,10 @@ struct HomeView: View {
         
     }
     
-    func loadImage() {
-        guard let inputImage = inputImage else { return }
-        image = Image(uiImage: inputImage)
-    }
+//    func loadImage() {
+//        guard let inputImage = inputImage else { return }
+//        image = Image(uiImage: inputImage)
+//    }
 
 }
 
