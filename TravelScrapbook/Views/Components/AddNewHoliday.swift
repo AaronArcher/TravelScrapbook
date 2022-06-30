@@ -27,7 +27,7 @@ struct AddNewHoliday: View {
 
     @State var allImages: [UIImage] = []
     
-    @Binding var holidayName: String
+    @Binding var holidayTitle: String
     @Binding var holidayCity: String
     @Binding var holidayCountry: String
     @Binding var holidayDate: Date
@@ -35,6 +35,11 @@ struct AddNewHoliday: View {
     let namespace: Namespace.ID
     
     @State var selectedTab = "Information"
+
+    @FocusState private var titleFocused: Bool
+    @FocusState private var cityFocused: Bool
+    @FocusState private var countryFocused: Bool
+
     
     let rows = [
         GridItem(.fixed(90)),
@@ -95,7 +100,7 @@ struct AddNewHoliday: View {
                         //
                         holidayvm.holidays.append(
                             Holiday(
-                                name: holidayName,
+                                title: holidayTitle,
                                 date: holidayDate,
                                 location: Location(
                                     city: holidayCity,
@@ -217,53 +222,81 @@ struct AddNewHoliday: View {
     }
     
     var information: some View {
-        
-        VStack(alignment: .leading, spacing: 5) {
+                
+        VStack(alignment: .leading, spacing: 10) {
             
-            Text("Holiday Name")
-                .foregroundColor(Color("Green1"))
-                .font(.callout)
 
-            TextField("Holiday Name", text: $holidayName)
-                .font(.footnote)
-                .padding(.vertical, 5)
-                .padding(.horizontal, 10)
-                .background(
-                    RoundedRectangle(cornerRadius: 5, style: .continuous)
-                        .foregroundColor(Color("Green3").opacity(0.05))
-                )
-
-
-
-                Text("Holiday Location")
-
-                HStack {
-
-                    TextField("City", text: $holidayCity)
-                        .font(.footnote)
-                        .padding(.vertical, 5)
-                        .padding(.horizontal, 10)
-                        .background(
-                            RoundedRectangle(cornerRadius: 5, style: .continuous)
-                                .foregroundColor(Color("Green3").opacity(0.05))
-                        )
-
-                    TextField("Country", text: $holidayCountry)
-                        .font(.footnote)
-                        .padding(.vertical, 5)
-                        .padding(.horizontal, 10)
-                        .background(
-                            RoundedRectangle(cornerRadius: 5, style: .continuous)
-                                .foregroundColor(Color("Green3").opacity(0.05))
-                        )
-
-
-                    Spacer()
+            VStack(spacing: 0) {
+                TextField("Holiday Title", text: $holidayTitle)
+                    .padding(.vertical, 5)
+                    .focused($titleFocused)
+                
+                ZStack(alignment: .leading) {
+                    Rectangle()
+                        .frame(height: 2)
+                        .foregroundColor(.gray.opacity(0.5))
+                        .cornerRadius(5)
+                    
+                    Rectangle()
+                        .frame(height: 2)
+                        .frame(maxWidth: titleFocused || !holidayTitle.isEmpty ? .infinity : 0)
+                        .animation(.easeInOut, value: titleFocused)
+                        .foregroundColor(Color("Green1"))
+                        .cornerRadius(5)
 
                 }
+                .padding(.trailing)
+            }
+                
+
+            VStack(spacing: 0) {
+                TextField("City", text: $holidayCity)
+                    .padding(.vertical, 5)
+                    .focused($cityFocused)
+                
+                ZStack(alignment: .leading) {
+                    Rectangle()
+                        .frame(height: 2)
+                        .foregroundColor(.gray.opacity(0.5))
+                        .cornerRadius(5)
+                    
+                    Rectangle()
+                        .frame(height: 2)
+                        .frame(maxWidth: cityFocused || !holidayCity.isEmpty ? .infinity : 0)
+                        .animation(.easeInOut, value: cityFocused)
+                        .foregroundColor(Color("Green1"))
+                        .cornerRadius(5)
+
+                }
+                .padding(.trailing)
+            }
+
+            VStack(spacing: 0) {
+                TextField("Country", text: $holidayCountry)
+                    .padding(.vertical, 5)
+                    .focused($countryFocused)
+                
+                ZStack(alignment: .leading) {
+                    Rectangle()
+                        .frame(height: 2)
+                        .foregroundColor(.gray.opacity(0.5))
+                        .cornerRadius(5)
+                    
+                    Rectangle()
+                        .frame(height: 2)
+                        .frame(maxWidth: countryFocused || !holidayCountry.isEmpty ? .infinity : 0)
+                        .animation(.easeInOut, value: countryFocused)
+                        .foregroundColor(Color("Green1"))
+                        .cornerRadius(5)
+
+                }
+                .padding(.trailing)
+            }
+
             
                 DatePicker("Holiday Date", selection: $holidayDate, displayedComponents: .date)
                     .datePickerStyle(.automatic)
+                    .accentColor(Color("Green1"))
             
         }
         
@@ -302,6 +335,10 @@ struct AddNewHoliday: View {
                         Circle()
                             .fill(Color("Green1").opacity(0.2))
                             .frame(width: 90, height: 90)
+                        
+                        Image(systemName: "photo.fill")
+                            .font(.title)
+                            .foregroundColor(Color("Green2"))
                         
                         if mainImage != nil {
                             Image(uiImage: mainImage!)

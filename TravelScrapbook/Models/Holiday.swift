@@ -11,11 +11,11 @@ import UIKit
 
 struct Holiday: Identifiable {
     let id = UUID()
-    var name: String
+    var title: String
     var date: Date
     var location: Location
     var mainImage: UIImage?
-    var allImages: [UIImage]?
+    var allImages: [UIImage] = []
 }
 
 struct Location: Identifiable {

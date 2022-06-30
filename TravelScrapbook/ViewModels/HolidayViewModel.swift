@@ -19,12 +19,12 @@ class HolidayViewModel: ObservableObject {
     @Published var holidayDate = Date()
     
     
-    func addHoliday(name: String, city: String, country: String, date: Date, coordinates: CLLocationCoordinate2D, mainImage: UIImage) {
+    func addHoliday(title: String, city: String, country: String, date: Date, coordinates: CLLocationCoordinate2D, mainImage: UIImage) {
         
         DispatchQueue.main.async {
             self.holidays.append(
                 Holiday(
-                    name: name,
+                    title: title,
                     date: date,
                     location: Location(
                         city: city,

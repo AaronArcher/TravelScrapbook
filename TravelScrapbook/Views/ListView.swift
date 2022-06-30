@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ListView: View {
     
-//    @EnvironmentObject var holidayvm: HolidayViewModel
+    @EnvironmentObject var holidayvm: HolidayViewModel
 
     @Binding var showHoliday: Bool
     
@@ -19,16 +19,33 @@ struct ListView: View {
             
             Color(.white)
             
-            List(0..<10) { i in
-                    listItem
-                        .padding(.vertical, 5)
-                        .onTapGesture {
-                            showHoliday = true
-                        }
-                }
-                .listRowSeparatorTint(Color("Green1"))
-                .listStyle(.plain)
-                .padding(.vertical)
+            if holidayvm.holidays.count == 0 {
+                
+                Text("You haven't created any holidays yet!")
+                    .font(.title2)
+                    .foregroundColor(Color("Green1"))
+                    .multilineTextAlignment(.center)
+                    .padding()
+                
+            } else {
+                List(holidayvm.holidays) { holiday in
+                    
+                    Button {
+                        showHoliday = true
+                    } label: {
+                        ListItem(holiday: holiday)
+                                .padding(.vertical, 5)
+                    }
+                    .fullScreenCover(isPresented: $showHoliday) {
+                        HolidayView(holiday: holiday)
+                    }
+                        
+                    }
+                    .listRowSeparatorTint(Color("Green1"))
+                    .listStyle(.plain)
+                    .padding(.vertical)
+                    
+            }
             
         }
         .ignoresSafeArea()
@@ -36,47 +53,11 @@ struct ListView: View {
         
     }
     
-    var listItem: some View {
-        HStack {
-            
-            Image("Panda")
-                .resizable()
-                .scaledToFill()
-                .frame(width: 100, height: 100)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .padding(.trailing)
-            
-            VStack(alignment: .leading) {
-                
-                Text("Holiday title")
-                    .font(.title2)
-                    .foregroundColor(Color("Green1"))
-                    .bold()
-                    .padding(.bottom, 5)
-                
-                Text("13/03/2020")
-                
-                HStack {
-                    Text("City,")
-                    Text("Country")
-                        .font(.callout)
-                        .italic()
-                }
-                
-                Text("With: Fiona")
-                
-                
-            }
-            .foregroundColor(Color("Green2"))
-            
-            Spacer()
-        }
-    }
     
 }
 
-struct ListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListView(showHoliday: .constant(false))
-    }
-}
+//struct ListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ListView(showHoliday: .constant(false))
+//    }
+//}

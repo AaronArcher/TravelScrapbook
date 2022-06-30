@@ -24,7 +24,7 @@ struct HomeView: View {
     @State var addNew = false
     @State var showAddNewContent = false
     
-    @State var holidayName = ""
+    @State var holidayTitle = ""
     @State var holidayCity = ""
     @State var holidayCountry = ""
     @State var holidayDate = Date()
@@ -133,6 +133,7 @@ struct HomeView: View {
             VStack {
                 
                 if openSearch {
+                    
                     searchView
                 } else if addNew {
 //                    newHolidayView
@@ -143,7 +144,7 @@ struct HomeView: View {
                                   showMarker: $showMarker,
                                   showCancel: $showCancel,
                                   showImagePicker: $showImagePicker,
-                                  holidayName: $holidayName,
+                                  holidayTitle: $holidayTitle,
                                   holidayCity: $holidayCity,
                                   holidayCountry: $holidayCountry,
                                   holidayDate: $holidayDate,
@@ -166,9 +167,6 @@ struct HomeView: View {
 //            Color("Green3").opacity(0.1)
             LinearGradient(colors: [Color("Green3").opacity(0.05), Color("Green3").opacity(0.12)], startPoint: .top, endPoint: .bottom)
         )
-        .fullScreenCover(isPresented: $showHoliday) {
-            HolidayView()
-        }
 //        .sheet(isPresented: $showImagePicker) {
 //            ImagePicker(image: $inputImage)
 //        }

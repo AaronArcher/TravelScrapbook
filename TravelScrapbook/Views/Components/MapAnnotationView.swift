@@ -22,7 +22,7 @@ struct MapAnnotationView: View {
             if isTapped {
                 VStack(alignment: .leading) {
                                         
-                    Text(holiday.name)
+                    Text(holiday.title)
                         .bold()
                     
                     Text(holiday.date.formatted(date: .abbreviated, time: .omitted))
