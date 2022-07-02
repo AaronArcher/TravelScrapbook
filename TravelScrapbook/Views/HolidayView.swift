@@ -16,14 +16,16 @@ struct HolidayView: View {
     
     @State private var showImage = false
     
-//    let columns = [
-//        GridItem(.adaptive(minimum: 150))
-//        ]
     let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
+        GridItem(.adaptive(minimum: 110), spacing: 5)
         ]
+//    let columns = [
+//        GridItem(.flexible()),
+//        GridItem(.flexible()),
+//        GridItem(.flexible())
+//        ]
+    
+    @State private var selectedImage: UIImage?
     
     
     var body: some View {
@@ -123,20 +125,20 @@ struct HolidayView: View {
                         ForEach(holiday.allImages, id: \.self) { image in
                     
                             Button {
-                                showImage = true
+                                    selectedImage = image
+                                    showImage = true
+
                             } label: {
                                
                                     Image(uiImage: image)
                                         .resizable()
-                                        .aspectRatio(contentMode: .fill)
+                                        .scaledToFill()
+                                        .frame(width: 110, height: 110)
                                         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                                 
                             }
-                            .fullScreenCover(isPresented: $showImage) {
-                                ImageView(image: image)
-                            }
-                           
-
+                            
+//
                             
                         }
                     }
@@ -154,10 +156,17 @@ struct HolidayView: View {
         }
         .foregroundColor(Color("Green1"))
         .ignoresSafeArea()
+        .fullScreenCover(isPresented: $showImage) { [selectedImage] in
+            ImageView(image: selectedImage ?? UIImage(named: "Panda")!)
+        }
+        
+        
     }
 }
 
 struct HolidayView_Previews: PreviewProvider {
+    
+    
     static var previews: some View {
         HolidayView(holiday: Holiday(title: "Prague with the guys!", date: Date.now, location: Location(city: "Prague", country: "Czech", coordinates: CLLocationCoordinate2D.init(latitude: 0, longitude: 0))))
     }

@@ -12,12 +12,33 @@ struct ImageView: View {
 
     var image: UIImage
     
+    @State private var currentScale: CGFloat = 1
+    @State private var finalScale: CGFloat = 1
+    private let minScale = 1.0
+    private let maxScale = 5.0
+    
     var body: some View {
         
         ZStack {
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+            
+            
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .scaleEffect(currentScale)
+                    .gesture(
+                        MagnificationGesture()
+                            .onChanged({ newScale in
+                                adjustScale(from: newScale)
+                            })
+                            .onEnded({ scale in
+                                withAnimation(.spring()) {
+                                    validateScaleLimits()
+                                }
+                                finalScale = 1
+                            })
+                    )
+
             
             Button {
                 dismiss()
@@ -39,8 +60,30 @@ struct ImageView: View {
             
         }
         .ignoresSafeArea()
+        .clipped()
 
     }
+    
+    func adjustScale(from state: MagnificationGesture.Value) {
+        let delta = state / finalScale
+        currentScale *= delta
+        finalScale = state
+    }
+
+    // Set Scale Limits
+    func getMinimumScaleAllowed() -> CGFloat {
+        return max(currentScale, minScale)
+    }
+
+    func getMaximumScaleAllowed() -> CGFloat {
+        return min(currentScale, maxScale)
+    }
+
+    func validateScaleLimits() {
+        currentScale = getMinimumScaleAllowed()
+        currentScale = getMaximumScaleAllowed()
+    }
+    
 }
 
 //struct SwiftUIView_Previews: PreviewProvider {
