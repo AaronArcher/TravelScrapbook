@@ -121,7 +121,7 @@ struct HolidayView: View {
 
                         LazyVGrid(columns: columns, spacing: 5) {
                         ForEach(holiday.allImages, id: \.self) { image in
-                            
+                    
                             Button {
                                 showImage = true
                             } label: {
