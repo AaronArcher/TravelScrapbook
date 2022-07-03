@@ -17,6 +17,9 @@ struct ImageView: View {
     private let minScale = 1.0
     private let maxScale = 5.0
     
+    @State private var offset: CGSize = .zero
+    @State private var newOffset: CGSize = .zero
+
     var body: some View {
         
         ZStack {
@@ -26,6 +29,7 @@ struct ImageView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .scaleEffect(currentScale)
+                    .offset(offset)
                     .gesture(
                         MagnificationGesture()
                             .onChanged({ newScale in
@@ -34,8 +38,27 @@ struct ImageView: View {
                             .onEnded({ scale in
                                 withAnimation(.spring()) {
                                     validateScaleLimits()
+                                    if currentScale <= 1 {
+                                        newOffset = .zero
+                                        offset = .zero
+                                    }
                                 }
                                 finalScale = 1
+                            })
+                    )
+                    .simultaneousGesture(
+                        DragGesture()
+                            .onChanged({ state in
+                                withAnimation(.spring()) {
+                                    if currentScale > 1 {
+                                        offset = CGSize(width: state.translation.width + newOffset.width, height: state.translation.height + newOffset.height)
+                                     }
+                                }
+                            })
+                            .onEnded({ _ in
+                                    if currentScale > 1 {
+                                        newOffset = offset
+                                    }
                             })
                     )
 
