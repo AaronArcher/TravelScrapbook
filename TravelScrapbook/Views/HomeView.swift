@@ -127,6 +127,12 @@ struct HomeView: View {
             .frame(maxHeight: Constants.screenHeight / 1.18)
             .frame(maxHeight: .infinity, alignment: .bottom)
             .shadow(color: Color("Green2").opacity(0.3), radius: 15, x: 5, y: 5)
+            .overlay {
+                if addNew || openSearch {
+                    Color.gray.opacity(0.5)
+                }
+            }
+
             
             
             
@@ -135,6 +141,8 @@ struct HomeView: View {
                 if openSearch {
                     
                     searchView
+//                        .padding(10)
+//                        .padding(.top, 20)
                 } else if addNew {
 //                    newHolidayView
                     
@@ -149,6 +157,8 @@ struct HomeView: View {
                                   holidayCountry: $holidayCountry,
                                   holidayDate: $holidayDate,
                                   namespace: namespace)
+//                    .padding(10)
+//                    .padding(.top, 20)
                     
                 } else {
                    
@@ -221,15 +231,14 @@ struct HomeView: View {
                 
                 Button {
                     
-                    DispatchQueue.main.async {
-                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                            openSearch.toggle()
-                        }
-                        withAnimation {
-                            showSearchContent.toggle()
-                        }
+                    withAnimation(.easeInOut(duration: 0.1)) {
+                        showSearchContent.toggle()
                     }
-                
+                    
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                            openSearch.toggle()
+                    }
+
                 } label: {
                     Image(systemName: "chevron.left")
                 }
@@ -336,8 +345,9 @@ struct HomeView: View {
                 .matchedGeometryEffect(id: "mask", in: namespace)
         }
         .background(
-            RoundedRectangle(cornerRadius: 25, style: .continuous)
-                .foregroundColor(.white)
+            
+            Color.white
+                .cornerRadius(25, corners: [.bottomLeft, .bottomRight])
                 .matchedGeometryEffect(id: "bg", in: namespace)
                 .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
 
@@ -345,177 +355,7 @@ struct HomeView: View {
 
     }
         
-//    var newHolidayView: some View {
-//
-//        VStack {
-//
-//            VStack(alignment: .leading, spacing: 5) {
-//                HStack {
-//
-//                    Button {
-//                        DispatchQueue.main.async {
-//                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-//                                addNew.toggle()
-//                            }
-//                            withAnimation {
-//                                showAddNewContent.toggle()
-//                            }
-//                        }
-//
-//                    } label: {
-//                        Text("Cancel")
-//                            .foregroundColor(.red)
-//                            .font(.callout)
-//                    }
-//
-//                    Spacer()
-//
-//                }
-//
-//                Text("Holiday Name")
-//                    .foregroundColor(Color("Green1"))
-//                    .font(.callout)
-//
-//                TextField("Holiday Name", text: $holidayName)
-//                    .font(.footnote)
-//                    .padding(.vertical, 5)
-//                    .padding(.horizontal, 10)
-//                    .background(
-//                        RoundedRectangle(cornerRadius: 5, style: .continuous)
-//                            .foregroundColor(Color("Green3").opacity(0.05))
-//                    )
-//
-//
-//
-//                    Text("Holiday Location")
-//
-//                    HStack {
-//
-//                        TextField("City", text: $holidayCity)
-//                            .font(.footnote)
-//                            .padding(.vertical, 5)
-//                            .padding(.horizontal, 10)
-//                            .background(
-//                                RoundedRectangle(cornerRadius: 5, style: .continuous)
-//                                    .foregroundColor(Color("Green3").opacity(0.05))
-//                            )
-//
-//                        TextField("Country", text: $holidayCountry)
-//                            .font(.footnote)
-//                            .padding(.vertical, 5)
-//                            .padding(.horizontal, 10)
-//                            .background(
-//                                RoundedRectangle(cornerRadius: 5, style: .continuous)
-//                                    .foregroundColor(Color("Green3").opacity(0.05))
-//                            )
-//
-//
-//                        Spacer()
-//
-//                    }
-//
-//
-//                DatePicker("Holiday Date", selection: $holidayDate, displayedComponents: .date)
-//                    .datePickerStyle(.automatic)
-//
-//                HStack {
-//
-//
-//                        Button {
-//                            showImagePicker = true
-//                        } label: {
-//
-//                            VStack {
-//                                Text("Create your holiday gallery")
-//
-//                                Image(systemName: "camera")
-//                                    .font(.title3)
-//
-//                            }
-//
-//                        }
-//
-//                    Spacer()
-//
-//                    image?
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(width: 100, height: 100)
-//                        .clipShape(Circle())
-//
-//
-//                }
-//            }
-//            .opacity(showAddNewContent ? 1 : 0)
-//            .offset(y: showAddNewContent ? 0 : -10)
-//
-//
-//            HStack {
-//
-//                Spacer()
-//
-//
-//                Button {
-//                    DispatchQueue.main.async {
-//                        //
-//                        holidayvm.holidays.append(
-//                            Holiday(
-//                                name: holidayName,
-//                                date: holidayDate,
-//                                location: Location(
-//                                    city: holidayCity,
-//                                    country: holidayCountry,
-//                                    coordinates: CLLocationCoordinate2D(latitude: region.center.latitude, longitude: region.center.longitude)),
-//                                mainImage: inputImage
-//                            )
-//                        )
-//
-//                    }
-//
-//
-//                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-//                        addNew.toggle()
-//                        showMarker = false
-//                        showCancel = false
-//                    }
-//                    withAnimation {
-//                        showAddNewContent.toggle()
-//                    }
-//
-//
-//                    //                    holidayName = ""
-//                    //                    holidayDate = Date()
-//                    //                    holidayCity = ""
-//                    //                    holidayCountry = ""
-//
-//                } label: {
-//
-//                    Image(systemName: "checkmark")
-//                        .resizable()
-//                        .matchedGeometryEffect(id: "checkmark", in: namespace)
-//                        .foregroundColor(Color("Green1"))
-//                        .frame(width: 30, height: 30)
-//                }
-//
-//                Spacer()
-//
-//            }
-//        }
-//        .foregroundColor(Color("Green2"))
-//        .frame(maxWidth: .infinity)
-//        .padding(.horizontal, 25)
-//        .padding(.top, Constants.isScreenLarge ? 60 : 40)
-//        .padding(.bottom, 20)
-//        .mask {
-//            RoundedRectangle(cornerRadius: 25, style: .continuous)
-//                .matchedGeometryEffect(id: "maskAddNew", in: namespace)
-//        }
-//        .background(
-//            RoundedRectangle(cornerRadius: 25, style: .continuous)
-//                .foregroundColor(.white)
-//                .matchedGeometryEffect(id: "addbg", in: namespace)
-//        )
-//    }
+
     
     @ViewBuilder
     var mapOrList: some View {

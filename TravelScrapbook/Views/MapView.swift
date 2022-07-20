@@ -68,8 +68,6 @@ struct MapView: View {
         HStack(spacing: 10) {
             
             Spacer()
-            
-      
 
             
             if showCancel {

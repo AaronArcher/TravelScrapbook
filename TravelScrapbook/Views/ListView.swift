@@ -13,6 +13,8 @@ struct ListView: View {
 
     @Binding var showHoliday: Bool
     
+    @Namespace var namespace
+    
     var body: some View {
             
         ZStack {

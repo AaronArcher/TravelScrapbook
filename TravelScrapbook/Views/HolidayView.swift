@@ -19,11 +19,7 @@ struct HolidayView: View {
     let columns = [
         GridItem(.adaptive(minimum: 110), spacing: 5)
         ]
-//    let columns = [
-//        GridItem(.flexible()),
-//        GridItem(.flexible()),
-//        GridItem(.flexible())
-//        ]
+
     
     @State private var selectedImage: UIImage?
     
@@ -51,7 +47,8 @@ struct HolidayView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 300)
-//
+                            .clipped()
+
                     }
                 }
                 
@@ -78,21 +75,21 @@ struct HolidayView: View {
                         Text(holiday.title)
                             .font(.title2)
                             .foregroundColor(Color("Green2"))
-                        
+
                         Spacer()
-                        
+
                         Text(holiday.date.formatted(date: .numeric, time: .omitted))
                             .italic()
                     }
-                    
+
                     HStack {
                         Text(holiday.location.city)
-                        
+
                         Text(holiday.location.country)
                             .italic()
                         Spacer()
                     }
-                    
+
                 }
                 .padding()
                 .background(
@@ -116,34 +113,34 @@ struct HolidayView: View {
                         .font(.title3)
                         .foregroundColor(Color("Green2"))
                         .multilineTextAlignment(.center)
-               
+
                 } else {
 
                     ScrollView {
 
                         LazyVGrid(columns: columns, spacing: 5) {
                         ForEach(holiday.allImages, id: \.self) { image in
-                    
+
                             Button {
                                     selectedImage = image
                                     showImage = true
 
                             } label: {
-                               
+
                                     Image(uiImage: image)
                                         .resizable()
                                         .scaledToFill()
                                         .frame(width: 110, height: 110)
                                         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                
+
                             }
-                            
+
 //
-                            
+
                         }
                     }
                         .padding(.bottom, 30)
-                        
+
                 }
                 .padding(.horizontal)
                 }
@@ -157,7 +154,7 @@ struct HolidayView: View {
         .foregroundColor(Color("Green1"))
         .ignoresSafeArea()
         .fullScreenCover(isPresented: $showImage) { [selectedImage] in
-            ImageView(image: selectedImage ?? UIImage(named: "Panda")!)
+            ImageView(image: selectedImage ?? UIImage(systemName: "photo.fill")!)
         }
         
         

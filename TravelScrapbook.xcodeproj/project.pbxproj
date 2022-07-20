@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EE0F1803285E286A0046BB7C /* HolidayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0F1802285E286A0046BB7C /* HolidayViewModel.swift */; };
 		EE0F1805285E34E20046BB7C /* MapAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0F1804285E34E20046BB7C /* MapAnnotationView.swift */; };
+		EE1066C52888859500F36351 /* RoundedCornerShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1066C42888859500F36351 /* RoundedCornerShape.swift */; };
 		EE245EA2285DF1F2009B63D0 /* Holiday.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE245EA1285DF1F2009B63D0 /* Holiday.swift */; };
 		EE5052202857BD0300C3DF50 /* TravelScrapbookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE50521F2857BD0300C3DF50 /* TravelScrapbookApp.swift */; };
 		EE5052242857BD0900C3DF50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE5052232857BD0900C3DF50 /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 /* Begin PBXFileReference section */
 		EE0F1802285E286A0046BB7C /* HolidayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidayViewModel.swift; sourceTree = "<group>"; };
 		EE0F1804285E34E20046BB7C /* MapAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotationView.swift; sourceTree = "<group>"; };
+		EE1066C42888859500F36351 /* RoundedCornerShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCornerShape.swift; sourceTree = "<group>"; };
 		EE245EA1285DF1F2009B63D0 /* Holiday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Holiday.swift; sourceTree = "<group>"; };
 		EE50521C2857BD0300C3DF50 /* TravelScrapbook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelScrapbook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE50521F2857BD0300C3DF50 /* TravelScrapbookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelScrapbookApp.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 			children = (
 				EEC032EF2864FC4E00CE6682 /* Constants.swift */,
 				EEC032F12864FCC600CE6682 /* Extensions.swift */,
+				EE1066C42888859500F36351 /* RoundedCornerShape.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 				EE81F70C2868B92600350CD8 /* HolidayView.swift in Sources */,
 				EEC032F22864FCC600CE6682 /* Extensions.swift in Sources */,
 				EE5052202857BD0300C3DF50 /* TravelScrapbookApp.swift in Sources */,
+				EE1066C52888859500F36351 /* RoundedCornerShape.swift in Sources */,
 				EE82E45E286E4B6C00AFC543 /* ImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

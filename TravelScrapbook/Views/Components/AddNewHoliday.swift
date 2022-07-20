@@ -56,14 +56,15 @@ struct AddNewHoliday: View {
                 HStack {
 
                     Button {
-                        DispatchQueue.main.async {
-                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+
+                        withAnimation(.easeInOut(duration: 0.1)) {
+                            showAddNewContent.toggle()
+                        }
+                        
+                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                                 addNew.toggle()
                             }
-                            withAnimation {
-                                showAddNewContent.toggle()
-                            }
-                        }
+                        
 
                     } label: {
                         Text("Cancel")
@@ -162,9 +163,12 @@ struct AddNewHoliday: View {
                 .matchedGeometryEffect(id: "maskAddNew", in: namespace)
         }
         .background(
-            RoundedRectangle(cornerRadius: 25, style: .continuous)
-                .foregroundColor(.white)
+            
+            Color.white
+                .cornerRadius(25, corners: [.bottomLeft, .bottomRight])
                 .matchedGeometryEffect(id: "addbg", in: namespace)
+                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+            
         )
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(images: $allImages)

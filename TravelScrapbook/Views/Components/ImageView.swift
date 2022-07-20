@@ -19,6 +19,7 @@ struct ImageView: View {
     
     @State private var offset: CGSize = .zero
     @State private var newOffset: CGSize = .zero
+    
 
     var body: some View {
         
