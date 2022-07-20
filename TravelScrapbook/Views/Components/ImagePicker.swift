@@ -58,7 +58,7 @@ struct ImagePicker: UIViewControllerRepresentable {
         var config = PHPickerConfiguration()
         config.filter = .images
         config.selectionLimit = 20
-//        config.selection = .ordered
+        config.selection = .ordered
 //        config.preselectedAssetIdentifiers = assetIdentifiers
         
         

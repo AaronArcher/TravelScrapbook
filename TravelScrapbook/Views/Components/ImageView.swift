@@ -50,10 +50,9 @@ struct ImageView: View {
                     .simultaneousGesture(
                         DragGesture()
                             .onChanged({ state in
-                                withAnimation(.spring()) {
                                     if currentScale > 1 {
                                         offset = CGSize(width: state.translation.width + newOffset.width, height: state.translation.height + newOffset.height)
-                                     }
+                                     
                                 }
                             })
                             .onEnded({ _ in

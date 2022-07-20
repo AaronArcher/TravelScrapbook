@@ -32,7 +32,7 @@ struct HolidayView: View {
                 
                 if holiday.mainImage == nil {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        RoundedCorner(radius: 20, corners: [.bottomLeft, .bottomRight])
                             .fill(Color("Green1").opacity(0.2))
                         
                         Image(systemName: "photo.fill")
@@ -46,7 +46,6 @@ struct HolidayView: View {
                         Image(uiImage: holiday.mainImage!)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(height: 300)
                             .clipped()
 
                     }
@@ -69,7 +68,7 @@ struct HolidayView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .padding()
                 .padding(.top, 15)
-                
+                                
                 VStack {
                     HStack {
                         Text(holiday.title)
@@ -97,9 +96,10 @@ struct HolidayView: View {
                 )
                 .frame(maxHeight: .infinity, alignment: .bottom)
             }
-            .frame(height: 300)
+            .frame(height: 280)
             .clipShape(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
+//                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                RoundedCorner(radius: 20, corners: [.bottomLeft, .bottomRight])
             )
             
             Text("All Photos")

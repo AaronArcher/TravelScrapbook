@@ -295,6 +295,14 @@ struct HomeView: View {
                 ForEach(searchLocation) { location  in
                     
                     Button {
+                        
+                        withAnimation {
+                            openSearch.toggle()
+                        }
+                        withAnimation {
+                            showSearchContent.toggle()
+                        }
+                        
                         DispatchQueue.main.async {
                             
                             guard let coordinates = location.coordinates else { return }
@@ -305,12 +313,7 @@ struct HomeView: View {
 //                            withAnimation {
                                 region = MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
 //                            }
-                            withAnimation {
-                                openSearch.toggle()
-                            }
-                            withAnimation {
-                                showSearchContent.toggle()
-                            }
+                           
 
                         }
 
