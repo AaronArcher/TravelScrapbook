@@ -44,7 +44,7 @@ struct MapAnnotationView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 50, height: 50)
-                            .clipShape(Circle())
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                             .matchedGeometryEffect(id: "pic", in: namespace)
                             .frame(maxWidth: .infinity, alignment: .center)
                         
@@ -53,11 +53,11 @@ struct MapAnnotationView: View {
                 }
                 .padding()
                 .mask({
-                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .matchedGeometryEffect(id: "mask", in: namespace)
                 })
                 .background(
-                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .foregroundColor(.white)
                         .matchedGeometryEffect(id: "bg", in: namespace)
                 )
@@ -73,24 +73,22 @@ struct MapAnnotationView: View {
                         }
                     }
                 } label: {
-                    ZStack {
+//                    ZStack {
                         Image(uiImage: holiday.mainImage ?? UIImage(named: "Panda")!)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .clipShape(Circle())
-                        
-                        Circle()
-                            .stroke(.white, lineWidth: 3)
+                            .frame(width: 50, height: 50)
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            .matchedGeometryEffect(id: "pic", in: namespace)
                             
-                    }
-                    .frame(width: 50, height: 50)
-                    .matchedGeometryEffect(id: "pic", in: namespace)
+//                    }
+                    .padding(2)
                     .mask({
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
                             .matchedGeometryEffect(id: "mask", in: namespace)
                     })
                     .background(
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
                             .foregroundColor(.white)
                             .matchedGeometryEffect(id: "bg", in: namespace)
                 )

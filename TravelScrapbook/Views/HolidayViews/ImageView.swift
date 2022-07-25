@@ -82,7 +82,6 @@ struct ImageView: View {
             .padding(.top, 15)
             
         }
-        .ignoresSafeArea()
         .clipped()
 
     }

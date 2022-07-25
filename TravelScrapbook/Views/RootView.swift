@@ -77,11 +77,9 @@ struct RootView: View {
                 Spacer()
                 
                 Button {
-                    DispatchQueue.main.async {
                         withAnimation {
                             showMap.toggle()
                         }
-                    }
                     
                 } label: {
                     
@@ -300,9 +298,7 @@ struct RootView: View {
                             holidayCity = location.city
                             holidayCountry = location.country
                             
-//                            withAnimation {
                             mapvm.region = MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
-//                            }
                            
 
                         }

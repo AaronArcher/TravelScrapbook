@@ -336,7 +336,7 @@ struct AddNewHoliday: View {
                     
                     ZStack {
                         
-                        Circle()
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
                             .fill(Color("Green1").opacity(0.2))
                             .frame(width: 90, height: 90)
                         
@@ -350,10 +350,9 @@ struct AddNewHoliday: View {
                                 .scaledToFill()
                                 .frame(width: 90, height: 90)
                                 .overlay(
-                                    Circle()
-                                        .stroke(Color("Green1"), lineWidth: 2)
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)                                        .stroke(Color("Green1"), lineWidth: 2)
                                 )
-                                .clipShape(Circle())
+                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                         }
                                 
                     }

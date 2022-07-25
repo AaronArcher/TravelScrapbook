@@ -28,79 +28,84 @@ struct HolidayView: View {
         VStack(alignment: .leading) {
             
             //MARK: Header Image
-            ZStack {
-                
-                if holiday.mainImage == nil {
-                    ZStack {
-                        RoundedCorner(radius: 20, corners: [.bottomLeft, .bottomRight])
-                            .fill(Color("Green1").opacity(0.2))
-                        
-                        Image(systemName: "photo.fill")
-                            .font(.title)
-                            .foregroundColor(Color("Green2"))
-                    }
+          
+            GeometryReader { geo in
+                ZStack {
                     
-                } else {
-                    ZStack {
+                    if holiday.mainImage == nil {
+                        ZStack {
+                            
+                            Color("Green1").opacity(0.2)
+                            
+                            Image(systemName: "photo.fill")
+                                .font(.title)
+                                .foregroundColor(Color("Green2"))
+                        }
+                        
+                    } else {
                         
                         Image(uiImage: holiday.mainImage!)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .clipped()
+                            .frame(maxWidth: geo.size.width)
+                            .frame(height: 280)
+
 
                     }
-                }
-                
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.title2)
-                        .foregroundColor(Color("Green1"))
-                        .padding(8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                        )
                     
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .padding()
-                .padding(.top, 15)
-                                
-                VStack {
-                    HStack {
-                        Text(holiday.title)
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
                             .font(.title2)
-                            .foregroundColor(Color("Green2"))
-
-                        Spacer()
-
-                        Text(holiday.date.formatted(date: .numeric, time: .omitted))
-                            .italic()
+                            .foregroundColor(Color("Green1"))
+                            .padding(8)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(.white)
+                                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                            )
+                        
                     }
-
-                    HStack {
-                        Text(holiday.location.city)
-
-                        Text(holiday.location.country)
-                            .italic()
-                        Spacer()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .padding()
+                    .padding(.top, 15)
+                                    
+                    VStack {
+                        HStack {
+                            Text(holiday.title)
+                                .font(.title2)
+                                .foregroundColor(Color("Green2"))
+    
+                            Spacer()
+    
+                            Text(holiday.date.formatted(date: .numeric, time: .omitted))
+                                .italic()
+                        }
+    
+                        HStack {
+                            Text(holiday.location.city)
+    
+                            Text(holiday.location.country)
+                                .italic()
+                            Spacer()
+                        }
+    
                     }
-
+                    .padding()
+                    .background(
+                        .ultraThinMaterial
+                    )
+                    .frame(maxHeight: .infinity, alignment: .bottom)
                 }
-                .padding()
-                .background(
-                    .ultraThinMaterial
+                .clipShape(
+                    RoundedCorner(radius: 20, corners: [.bottomLeft, .bottomRight])
                 )
-                .frame(maxHeight: .infinity, alignment: .bottom)
             }
             .frame(height: 280)
-            .clipShape(
-//                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                RoundedCorner(radius: 20, corners: [.bottomLeft, .bottomRight])
-            )
+
+            
             
             Text("All Photos")
                 .font(.title)
@@ -113,6 +118,7 @@ struct HolidayView: View {
                         .font(.title3)
                         .foregroundColor(Color("Green2"))
                         .multilineTextAlignment(.center)
+                        .padding(.horizontal)
 
                 } else {
 

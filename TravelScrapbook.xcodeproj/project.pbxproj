@@ -72,6 +72,7 @@
 				EEC032E92864F71000CE6682 /* RootView.swift */,
 				EE957371288EDC74006F42FF /* ListViews */,
 				EE957370288EDC66006F42FF /* MapViews */,
+				EE957374288EEF2E006F42FF /* HolidayViews */,
 				EE81F70F286A3E0500350CD8 /* Components */,
 			);
 			path = Views;
@@ -138,7 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				EE81F70D286A392F00350CD8 /* ImagePicker.swift */,
-				EE82E45D286E4B6C00AFC543 /* ImageView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -166,10 +166,18 @@
 			isa = PBXGroup;
 			children = (
 				EEC032E72864F52300CE6682 /* ListView.swift */,
-				EE81F70B2868B92600350CD8 /* HolidayView.swift */,
 				EE82E45B286E2E1F00AFC543 /* ListItem.swift */,
 			);
 			path = ListViews;
+			sourceTree = "<group>";
+		};
+		EE957374288EEF2E006F42FF /* HolidayViews */ = {
+			isa = PBXGroup;
+			children = (
+				EE81F70B2868B92600350CD8 /* HolidayView.swift */,
+				EE82E45D286E4B6C00AFC543 /* ImageView.swift */,
+			);
+			path = HolidayViews;
 			sourceTree = "<group>";
 		};
 		EEC032EE2864FC3600CE6682 /* Helpers */ = {
