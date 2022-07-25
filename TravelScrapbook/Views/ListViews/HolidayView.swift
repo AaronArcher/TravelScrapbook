@@ -152,7 +152,7 @@ struct HolidayView: View {
             
         }
         .foregroundColor(Color("Green1"))
-        .ignoresSafeArea()
+        .ignoresSafeArea(edges: .top)
         .fullScreenCover(isPresented: $showImage) { [selectedImage] in
             ImageView(image: selectedImage ?? UIImage(systemName: "photo.fill")!)
         }

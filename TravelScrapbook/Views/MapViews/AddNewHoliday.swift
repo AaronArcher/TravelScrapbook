@@ -11,11 +11,11 @@ import MapKit
 struct AddNewHoliday: View {
     
     @EnvironmentObject var holidayvm: HolidayViewModel
+    @EnvironmentObject var mapvm: MapViewModel
     
-    @Binding var region: MKCoordinateRegion
 
-    @Binding var addNew: Bool
-    @Binding var showAddNewContent: Bool
+    @Binding var addNewHoliday: Bool
+    @Binding var showAddNewHolidayContent: Bool
     @Binding var showMarker: Bool
     @Binding var showCancel: Bool
     @Binding var showImagePicker: Bool
@@ -58,11 +58,11 @@ struct AddNewHoliday: View {
                     Button {
 
                         withAnimation(.easeInOut(duration: 0.1)) {
-                            showAddNewContent.toggle()
+                            showAddNewHolidayContent.toggle()
                         }
                         
                         withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                addNew.toggle()
+                                addNewHoliday.toggle()
                             }
                         
 
@@ -87,8 +87,8 @@ struct AddNewHoliday: View {
         
                 
             }
-            .opacity(showAddNewContent ? 1 : 0)
-            .offset(y: showAddNewContent ? 0 : -10)
+            .opacity(showAddNewHolidayContent ? 1 : 0)
+            .offset(y: showAddNewHolidayContent ? 0 : -10)
 
 
             HStack {
@@ -106,7 +106,7 @@ struct AddNewHoliday: View {
                                 location: Location(
                                     city: holidayCity,
                                     country: holidayCountry,
-                                    coordinates: CLLocationCoordinate2D(latitude: region.center.latitude, longitude: region.center.longitude)),
+                                    coordinates: CLLocationCoordinate2D(latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude)),
                                 mainImage: mainImage,
                                 allImages: allImages
                             )
@@ -116,12 +116,12 @@ struct AddNewHoliday: View {
 
 
                     withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                        addNew.toggle()
+                        addNewHoliday.toggle()
                         showMarker = false
                         showCancel = false
                     }
                     withAnimation {
-                        showAddNewContent.toggle()
+                        showAddNewHolidayContent.toggle()
                     }
 
 
@@ -136,8 +136,8 @@ struct AddNewHoliday: View {
                         
                         Text("Create")
                             .font(.title2)
-                            .opacity(showAddNewContent ? 1 : 0)
-                            .offset(y: showAddNewContent ? 0 : -10)
+                            .opacity(showAddNewHolidayContent ? 1 : 0)
+                            .offset(y: showAddNewHolidayContent ? 0 : -10)
                         
                         Image(systemName: "plus")
                             .resizable()

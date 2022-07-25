@@ -11,27 +11,28 @@ import MapKit
 struct MapView: View {
     
     @EnvironmentObject var holidayvm: HolidayViewModel
+    @EnvironmentObject var mapvm: MapViewModel
+    
     let namespace: Namespace.ID
     
-    @Binding var region: MKCoordinateRegion
     @Binding var showMarker: Bool
     @Binding var showCancel: Bool
     
     @Binding var openSearch: Bool
     @Binding var showSearchContent: Bool
     
-    @Binding var addNew: Bool
-    @Binding var showAddNewContent: Bool
+    @Binding var addNewHoliday: Bool
+    @Binding var showAddNewHolidayContent: Bool
     
     var body: some View {
         
         ZStack {
-            Map(coordinateRegion: $region, annotationItems: holidayvm.holidays) { holiday in
+            Map(coordinateRegion: $mapvm.region, annotationItems: holidayvm.holidays) { holiday in
                 MapAnnotation(coordinate: holiday.location.coordinates ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)) {
-                    MapAnnotationView(holiday: holiday, region: $region)
+                    MapAnnotationView(holiday: holiday, region: $mapvm.region)
                 }
             }
-                .disabled(addNew)
+                .disabled(addNewHoliday)
                 
             Image(systemName: "mappin")
                 .resizable()
@@ -66,10 +67,10 @@ struct MapView: View {
     
     var newHolidayButton: some View {
         HStack(spacing: 10) {
-            
+
             Spacer()
 
-            
+
             if showCancel {
             Button {
                 DispatchQueue.main.async {
@@ -93,31 +94,29 @@ struct MapView: View {
 
             )
             .transition(.scale)
-            .scaleEffect(addNew ? 0.001 : 1)
+            .scaleEffect(addNewHoliday ? 0.001 : 1)
             }
 
 
-            if !addNew {
+            if !addNewHoliday {
                 Button {
                     if showMarker == false {
-                        DispatchQueue.main.async {
+
+                        // Open marker on the map
                             withAnimation(.easeInOut) {
                                 showMarker = true
                                 showCancel = true
                             }
-                        }
+
                     } else {
-                        DispatchQueue.main.async {
+
+                        // Show Add New Holiday View
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                addNew.toggle()
-                                openSearch = false
+                                addNewHoliday = true
                             }
                             withAnimation(.default.delay(0.2)) {
-                                showAddNewContent.toggle()
-                                showSearchContent = false
-
+                                showAddNewHolidayContent = true
                             }
-                        }
                     }
 
                 } label: {
@@ -130,18 +129,6 @@ struct MapView: View {
                             .foregroundColor(Color("Green1"))
                             .scaledToFit()
                             .frame(width: 25, height: 25)
-//                            .offset(y: showMarker ? 80 : 0)
-
-
-
-//                        Image(systemName: "checkmark")
-//                            .resizable()
-//                            .matchedGeometryEffect(id: "checkmark", in: namespace)
-//                            .scaledToFit()
-//                            .foregroundColor(Color("Green1"))
-//                            .frame(width: 30, height: 30)
-//                            .offset(y: showMarker ? 0 : -80)
-//                            .scaleEffect(addNew ? 0.001 : 1)
 
                     }
 
@@ -162,11 +149,11 @@ struct MapView: View {
                 .padding(.trailing, showMarker ? 20 : 40)
 
             }
-            
-            
+
+
         }
         .padding(.bottom, 40)
-        
+
     }
     
 }

@@ -10,12 +10,13 @@ import SwiftUI
 @main
 struct TravelScrapbookApp: App {
     
-    @StateObject var vm = HolidayViewModel()
+//    @StateObject var vm = HolidayViewModel()
     
     var body: some Scene {
         WindowGroup {
-            HomeView()
-                .environmentObject(vm)
+            RootView()
+                .environmentObject(HolidayViewModel())
+                .environmentObject(MapViewModel())
         }
     }
 }

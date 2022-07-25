@@ -8,11 +8,11 @@
 import SwiftUI
 import MapKit
 
-struct HomeView: View {
+struct RootView: View {
     
     @EnvironmentObject var holidayvm: HolidayViewModel
+    @EnvironmentObject var mapvm: MapViewModel
     
-    @State var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 45, longitude: 15), span: MKCoordinateSpan(latitudeDelta: 70, longitudeDelta: 70))
     
     @State var searchText = ""
     @State var locations = [Location]()
@@ -21,8 +21,8 @@ struct HomeView: View {
     @State var openSearch = false
     @State var showSearchContent = false
     
-    @State var addNew = false
-    @State var showAddNewContent = false
+    @State var addNewHoliday = false
+    @State var showAddNewHolidayContent = false
     
     @State var holidayTitle = ""
     @State var holidayCity = ""
@@ -62,13 +62,13 @@ struct HomeView: View {
 
                         )
                 }
-                .offset(x: (openSearch || addNew) ? -80 : 0)
+                .offset(x: (openSearch || addNewHoliday) ? -80 : 0)
                 
                 Spacer()
                 
                 if !openSearch {
                     searchButton
-                        .offset(y: addNew ? -80 : 0)
+                        .offset(y: addNewHoliday ? -80 : 0)
                         .disabled(!showMap)
                         .opacity(showMap ? 1 : 0.5)
                 }
@@ -111,7 +111,7 @@ struct HomeView: View {
                     )
                     
                 }
-                .offset(x: (openSearch || addNew) ? 80 : 0)
+                .offset(x: (openSearch || addNewHoliday) ? 80 : 0)
             }
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(15)
@@ -128,7 +128,7 @@ struct HomeView: View {
             .frame(maxHeight: .infinity, alignment: .bottom)
             .shadow(color: Color("Green2").opacity(0.3), radius: 15, x: 5, y: 5)
             .overlay {
-                if addNew || openSearch {
+                if addNewHoliday || openSearch {
                     Color.gray.opacity(0.5)
                 }
             }
@@ -140,15 +140,14 @@ struct HomeView: View {
                 
                 if openSearch {
                     
+                    // Show search pop up
                     searchView
-//                        .padding(10)
-//                        .padding(.top, 20)
-                } else if addNew {
-//                    newHolidayView
                     
-                    AddNewHoliday(region: $region,
-                                  addNew: $addNew,
-                                  showAddNewContent: $showAddNewContent,
+                } else if addNewHoliday {
+
+                    // Show add new holiday pop up
+                    AddNewHoliday(addNewHoliday: $addNewHoliday,
+                                  showAddNewHolidayContent: $showAddNewHolidayContent,
                                   showMarker: $showMarker,
                                   showCancel: $showCancel,
                                   showImagePicker: $showImagePicker,
@@ -157,8 +156,7 @@ struct HomeView: View {
                                   holidayCountry: $holidayCountry,
                                   holidayDate: $holidayDate,
                                   namespace: namespace)
-//                    .padding(10)
-//                    .padding(.top, 20)
+
                     
                 } else {
                    
@@ -186,21 +184,13 @@ struct HomeView: View {
     
     var searchButton: some View {
         Button {
-            DispatchQueue.main.async {
                 withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                    openSearch.toggle()
+                    openSearch = true
+
                 }
                 withAnimation(.default.delay(0.2)) {
-                    showSearchContent.toggle()
+                    showSearchContent = true
                 }
-                
-                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                    addNew = false
-                }
-                withAnimation(.default.delay(0.3)) {
-                    showAddNewContent = false
-                }
-            }
             
         } label: {
             Text("SEARCH")
@@ -311,7 +301,7 @@ struct HomeView: View {
                             holidayCountry = location.country
                             
 //                            withAnimation {
-                                region = MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
+                            mapvm.region = MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
 //                            }
                            
 
@@ -364,7 +354,13 @@ struct HomeView: View {
     var mapOrList: some View {
         
         if showMap {
-            MapView(namespace: namespace, region: $region, showMarker: $showMarker, showCancel: $showCancel, openSearch: $openSearch, showSearchContent: $showSearchContent, addNew: $addNew, showAddNewContent: $showAddNewContent)
+            MapView(namespace: namespace,
+                    showMarker: $showMarker,
+                    showCancel: $showCancel,
+                    openSearch: $openSearch,
+                    showSearchContent: $showSearchContent,
+                    addNewHoliday: $addNewHoliday,
+                    showAddNewHolidayContent: $showAddNewHolidayContent)
                 .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
         } else {
             ListView(showHoliday: $showHoliday)
@@ -383,7 +379,7 @@ struct HomeView: View {
 struct HomeView2_Previews: PreviewProvider {
     static var previews: some View {
         let vm = HolidayViewModel()
-        HomeView()
+        RootView()
             .environmentObject(vm)
     }
 }
