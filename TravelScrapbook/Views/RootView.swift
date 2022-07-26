@@ -13,8 +13,8 @@ struct RootView: View {
     @EnvironmentObject var holidayvm: HolidayViewModel
     @EnvironmentObject var mapvm: MapViewModel
     
-    @State private var showOnboarding = !AuthViewModel.isUserLoggedIn()
-    
+//    @State private var showOnboarding = !AuthViewModel.isUserLoggedIn()
+    @State private var showLogin = !AuthViewModel.isUserLoggedIn()
     
     @State var searchText = ""
     @State var locations = [Location]()
@@ -45,14 +45,15 @@ struct RootView: View {
     @State var showCancel = false
     
     var body: some View {
-        ZStack {
+                    
+            ZStack {
             
             HStack {
                 
                 Button {
                     
                     AuthViewModel.logOut()
-                    showOnboarding = !AuthViewModel.isUserLoggedIn()
+                    showLogin = !AuthViewModel.isUserLoggedIn()
                     
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease")
@@ -135,9 +136,6 @@ struct RootView: View {
                     Color.gray.opacity(0.5)
                 }
             }
-
-            
-            
             
             VStack {
                 
@@ -169,17 +167,16 @@ struct RootView: View {
                 
             }
             .frame(maxHeight: .infinity)
-
-        
+            
         }
-        .foregroundColor(Color("Green1"))
-        .ignoresSafeArea()
-        .background(
-            LinearGradient(colors: [Color("Green3").opacity(0.05), Color("Green3").opacity(0.12)], startPoint: .top, endPoint: .bottom)
-        )
-        .fullScreenCover(isPresented: $showOnboarding, onDismiss: nil) {
-            LoginView(showOnboarding: $showOnboarding)
-        }
+            .foregroundColor(Color("Green1"))
+            .ignoresSafeArea()
+            .background(
+                LinearGradient(colors: [Color("Green3").opacity(0.05), Color("Green3").opacity(0.12)], startPoint: .top, endPoint: .bottom)
+            )
+            .fullScreenCover(isPresented: $showLogin) {
+                LoginView(showLogin: $showLogin)
+            }
 
         
     }

@@ -9,51 +9,166 @@ import SwiftUI
 import FirebaseAuth
 
 struct LoginView: View {
-        
+    
+    @Binding var showLogin: Bool
+    
     @State private var email = ""
     @State private var password = ""
     @State private var confirmPassword = ""
     @State private var errorMessage: String?
     
-    @Binding var showOnboarding: Bool
+    @FocusState private var emailFocused: Bool
+    @FocusState private var passwordFocused: Bool
+    
+    @State private var showCreateAccount = false
+    
     
     var body: some View {
         
-        Form {
-            Section {
+        if !showCreateAccount {
+            
+            VStack(alignment: .leading) {
                 
-                TextField("Email", text: $email)
+                Text("Welcome Back!")
+                    .font(.largeTitle)
+                    .padding(.top, 40)
                 
-                SecureField("Password", text: $password)
-//                SecureField("Confirm Password", text: $confirmPassword)
+                Text("Login Below")
+                    .font(.title)
+                    .padding(.bottom, 40)
                 
-            }
-            if errorMessage != nil {
-                
-                Section {
+                if errorMessage != nil {
                     Text(errorMessage!)
+                        .foregroundColor(.red)
+                        .font(.footnote)
                 }
-            }
-            
-            Button {
                 
-                signIn()
+                // Email
+                VStack(spacing: 0) {
+                    TextField("Email", text: $email)
+                        .padding(.vertical, 5)
+                        .focused($emailFocused)
+                    
+                    ZStack(alignment: .leading) {
+                        Rectangle()
+                            .frame(height: 2)
+                            .foregroundColor(.clear)
+                            .cornerRadius(5)
+                        
+                        Rectangle()
+                            .frame(height: 2)
+                            .frame(maxWidth: emailFocused || !email.isEmpty ? .infinity : 0)
+                            .animation(.easeInOut, value: emailFocused)
+                            .foregroundColor(Color("Green1"))
+                            .cornerRadius(5)
+                        
+                    }
+                    .padding(.trailing)
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .foregroundColor(.white)
+                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                        .frame(height: 50)
+                )
                 
-            } label: {
-                Text("Sign up")
+                // Password
+                VStack(spacing: 0) {
+                    SecureField("Password", text: $password)
+                        .padding(.vertical, 5)
+                        .focused($passwordFocused)
+                    
+                    ZStack(alignment: .leading) {
+                        Rectangle()
+                            .frame(height: 2)
+                            .foregroundColor(.clear)
+                            .cornerRadius(5)
+                        
+                        Rectangle()
+                            .frame(height: 2)
+                            .frame(maxWidth: passwordFocused || !password.isEmpty ? .infinity : 0)
+                            .animation(.easeInOut, value: passwordFocused)
+                            .foregroundColor(Color("Green1"))
+                            .cornerRadius(5)
+                        
+                    }
+                    .padding(.trailing)
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .foregroundColor(.white)
+                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                        .frame(height: 50)
+                )
+                
+                
+                Button {
+                    
+                    login()
+                
+                } label: {
+                    
+                        Text("Login")
+                        .font(.title3)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .foregroundColor(Color("Green1"))
+                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                .frame(height: 50)
+                        )
+                }
+                .padding(.top)
+                
+                HStack {
+                    
+                    Spacer()
+                    
+                    Text("Already have an account?")
+                        .font(.caption)
+                    
+                    Button {
+                        
+                        showCreateAccount = true
+                        
+                    } label: {
+                        Text("Sign up here!")
+                            .foregroundColor(Color("Green3"))
+                            .font(.caption)
+                    }
+
+                    
+                    Spacer()
+                    
+                }
+                
+                
+                
+                Spacer()
+                
             }
+            .foregroundColor(Color("Green1"))
+            .padding(.horizontal)
+           
             
+        } else {
+         
+            CreateAccountView(showLogin: $showLogin, showCreateAccount: $showCreateAccount)
             
         }
         
     }
     
-    func signIn() {
+    func login() {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             
             if error == nil {
                 // Dismiss
-                showOnboarding = !AuthViewModel.isUserLoggedIn()
+                showLogin = !AuthViewModel.isUserLoggedIn()
                 
             } else {
                 // show error message
