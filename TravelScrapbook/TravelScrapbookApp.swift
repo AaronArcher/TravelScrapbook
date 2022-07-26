@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct TravelScrapbookApp: App {
@@ -19,4 +20,9 @@ struct TravelScrapbookApp: App {
                 .environmentObject(MapViewModel())
         }
     }
+    
+    init() {
+        FirebaseApp.configure()
+    }
+    
 }

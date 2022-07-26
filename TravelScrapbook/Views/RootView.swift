@@ -13,6 +13,8 @@ struct RootView: View {
     @EnvironmentObject var holidayvm: HolidayViewModel
     @EnvironmentObject var mapvm: MapViewModel
     
+    @State private var showOnboarding = !AuthViewModel.isUserLoggedIn()
+    
     
     @State var searchText = ""
     @State var locations = [Location]()
@@ -48,6 +50,9 @@ struct RootView: View {
             HStack {
                 
                 Button {
+                    
+                    AuthViewModel.logOut()
+                    showOnboarding = !AuthViewModel.isUserLoggedIn()
                     
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease")
@@ -170,13 +175,12 @@ struct RootView: View {
         .foregroundColor(Color("Green1"))
         .ignoresSafeArea()
         .background(
-//            Color("Green3").opacity(0.1)
             LinearGradient(colors: [Color("Green3").opacity(0.05), Color("Green3").opacity(0.12)], startPoint: .top, endPoint: .bottom)
         )
-//        .sheet(isPresented: $showImagePicker) {
-//            ImagePicker(image: $inputImage)
-//        }
-//        .onChange(of: inputImage) { _ in loadImage() }
+        .fullScreenCover(isPresented: $showOnboarding, onDismiss: nil) {
+            LoginView(showOnboarding: $showOnboarding)
+        }
+
         
     }
     
