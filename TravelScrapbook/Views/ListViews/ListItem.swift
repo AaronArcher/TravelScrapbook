@@ -72,8 +72,8 @@ struct ListItem: View {
     }
 }
 
-struct ListItem_Previews: PreviewProvider {
-    static var previews: some View {
-        ListItem(holiday: Holiday(title: "Prague with the guys!", date: Date.now, location: Location(city: "Prague", country: "Czech", coordinates: CLLocationCoordinate2D.init(latitude: 0, longitude: 0))))
-    }
-}
+//struct ListItem_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ListItem(holiday: Holiday(createdBy: "", title: "Prague with the guys!", date: Date.now, location: Location(city: "Prague", country: "Czech", coordinates: CLLocationCoordinate2D.init(latitude: 0, longitude: 0))))
+//    }
+//}

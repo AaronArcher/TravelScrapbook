@@ -35,7 +35,8 @@ struct LoginView: View {
                 
                 Text("Login Below")
                     .font(.title)
-                    .padding(.bottom, 40)
+                    .foregroundColor(Color("Green3"))
+                    .padding(.bottom, 30)
                 
                 if errorMessage != nil {
                     Text(errorMessage!)
@@ -43,107 +44,115 @@ struct LoginView: View {
                         .font(.footnote)
                 }
                 
-                // Email
-                VStack(spacing: 0) {
-                    TextField("Email", text: $email)
-                        .padding(.vertical, 5)
-                        .focused($emailFocused)
-                    
-                    ZStack(alignment: .leading) {
-                        Rectangle()
-                            .frame(height: 2)
-                            .foregroundColor(.clear)
-                            .cornerRadius(5)
-                        
-                        Rectangle()
-                            .frame(height: 2)
-                            .frame(maxWidth: emailFocused || !email.isEmpty ? .infinity : 0)
-                            .animation(.easeInOut, value: emailFocused)
-                            .foregroundColor(Color("Green1"))
-                            .cornerRadius(5)
-                        
-                    }
-                    .padding(.trailing)
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .foregroundColor(.white)
-                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                        .frame(height: 50)
-                )
+                ScrollView {
                 
-                // Password
-                VStack(spacing: 0) {
-                    SecureField("Password", text: $password)
-                        .padding(.vertical, 5)
-                        .focused($passwordFocused)
-                    
-                    ZStack(alignment: .leading) {
-                        Rectangle()
-                            .frame(height: 2)
-                            .foregroundColor(.clear)
-                            .cornerRadius(5)
+                    VStack(spacing: 0) {
+                   
+                    // Email
+                    VStack(spacing: 0) {
+                        TextField("Email", text: $email)
+                            .padding(.vertical, 5)
+                            .focused($emailFocused)
                         
-                        Rectangle()
-                            .frame(height: 2)
-                            .frame(maxWidth: passwordFocused || !password.isEmpty ? .infinity : 0)
-                            .animation(.easeInOut, value: passwordFocused)
-                            .foregroundColor(Color("Green1"))
-                            .cornerRadius(5)
-                        
-                    }
-                    .padding(.trailing)
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .foregroundColor(.white)
-                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                        .frame(height: 50)
-                )
-                
-                
-                Button {
-                    
-                    login()
-                
-                } label: {
-                    
-                        Text("Login")
-                        .font(.title3)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        ZStack(alignment: .leading) {
+                            Rectangle()
+                                .frame(height: 2)
+                                .foregroundColor(.clear)
+                                .cornerRadius(5)
+                            
+                            Rectangle()
+                                .frame(height: 2)
+                                .frame(maxWidth: emailFocused || !email.isEmpty ? .infinity : 0)
+                                .animation(.easeInOut, value: emailFocused)
                                 .foregroundColor(Color("Green1"))
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
-                        )
-                }
-                .padding(.top)
-                
-                HStack {
+                                .cornerRadius(5)
+                            
+                        }
+                        .padding(.trailing)
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .foregroundColor(.white)
+                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                            .frame(height: 50)
+                    )
                     
-                    Spacer()
+                    // Password
+                    VStack(spacing: 0) {
+                        SecureField("Password", text: $password)
+                            .padding(.vertical, 5)
+                            .focused($passwordFocused)
+                        
+                        ZStack(alignment: .leading) {
+                            Rectangle()
+                                .frame(height: 2)
+                                .foregroundColor(.clear)
+                                .cornerRadius(5)
+                            
+                            Rectangle()
+                                .frame(height: 2)
+                                .frame(maxWidth: passwordFocused || !password.isEmpty ? .infinity : 0)
+                                .animation(.easeInOut, value: passwordFocused)
+                                .foregroundColor(Color("Green1"))
+                                .cornerRadius(5)
+                            
+                        }
+                        .padding(.trailing)
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .foregroundColor(.white)
+                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                            .frame(height: 50)
+                    )
                     
-                    Text("Already have an account?")
-                        .font(.caption)
                     
                     Button {
                         
-                        showCreateAccount = true
-                        
+                        login()
+                    
                     } label: {
-                        Text("Sign up here!")
-                            .foregroundColor(Color("Green3"))
-                            .font(.caption)
+                        
+                            Text("Login")
+                            .font(.title3)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                    .foregroundColor(Color("Green1"))
+                                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                    .frame(height: 50)
+                            )
                     }
+                    .padding(.vertical)
+                    
+                    HStack {
+                        
+                        Spacer()
+                        
+                        Text("Don't have an account?")
+                            .font(.caption)
+                        
+                        Button {
+                            
+                            showCreateAccount = true
+                            
+                        } label: {
+                            Text("Sign up here!")
+                                .foregroundColor(Color("Green3"))
+                                .font(.caption)
+                        }
 
+                        
+                        Spacer()
+                        
+                    }
                     
-                    Spacer()
-                    
+                }
+                
                 }
                 
                 

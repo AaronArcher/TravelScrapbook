@@ -8,9 +8,12 @@
 import Foundation
 import CoreLocation
 import UIKit
+import FirebaseFirestoreSwift
+
 
 struct Holiday: Identifiable {
-    let id = UUID()
+    var id = UUID()
+    var createdBy: String
     var title: String
     var date: Date
     var location: Location
@@ -19,9 +22,11 @@ struct Holiday: Identifiable {
 }
 
 struct Location: Identifiable {
-    let id = UUID()
+    var id = UUID()
     let city: String
     let country: String
-    let coordinates: CLLocationCoordinate2D?
+//    let coordinates: CLLocationCoordinate2D
+    let latitude: Double?
+    let longitude: Double?
 
 }

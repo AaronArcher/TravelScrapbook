@@ -28,8 +28,8 @@ struct MapView: View {
         
         ZStack {
             Map(coordinateRegion: $mapvm.region, annotationItems: holidayvm.holidays) { holiday in
-                MapAnnotation(coordinate: holiday.location.coordinates ?? CLLocationCoordinate2D(latitude: 0, longitude: 0)) {
-                    MapAnnotationView(holiday: holiday, region: $mapvm.region)
+                MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: holiday.location.latitude ?? 0, longitude: holiday.location.longitude ?? 0)) {
+                    MapAnnotationView(holiday: holiday)
                 }
             }
                 .disabled(addNewHoliday)

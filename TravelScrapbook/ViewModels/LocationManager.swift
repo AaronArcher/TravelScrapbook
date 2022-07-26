@@ -50,8 +50,8 @@ class LocationManager {
 //                    longitude = locationLong
 //                }
                 
-                let result = Location(city: city, country: country, coordinates: place.location?.coordinate)
-//                let result = Location(city: city, country: country, latitude: latitude, Longitude: longitude)
+//                let result = Location(city: city, country: country, coordinates: place.location?.coordinate)
+                let result = Location(city: city, country: country, latitude: place.location?.coordinate.latitude ?? 0, longitude: place.location?.coordinate.longitude ?? 0)
 
                 return result
             }

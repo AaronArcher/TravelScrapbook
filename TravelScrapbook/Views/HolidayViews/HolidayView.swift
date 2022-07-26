@@ -167,10 +167,10 @@ struct HolidayView: View {
     }
 }
 
-struct HolidayView_Previews: PreviewProvider {
-    
-    
-    static var previews: some View {
-        HolidayView(holiday: Holiday(title: "Prague with the guys!", date: Date.now, location: Location(city: "Prague", country: "Czech", coordinates: CLLocationCoordinate2D.init(latitude: 0, longitude: 0))))
-    }
-}
+//struct HolidayView_Previews: PreviewProvider {
+//    
+//    
+//    static var previews: some View {
+//        HolidayView(holiday: Holiday(createdBy: "", title: "Prague with the guys!", date: Date.now, location: Location(city: "Prague", country: "Czech", coordinates: CLLocationCoordinate2D.init(latitude: 0, longitude: 0))))
+//    }
+//}

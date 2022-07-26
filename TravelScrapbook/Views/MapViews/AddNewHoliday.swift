@@ -101,12 +101,15 @@ struct AddNewHoliday: View {
                         //
                         holidayvm.holidays.append(
                             Holiday(
+                                createdBy: AuthViewModel.getLoggedInUserID(),
                                 title: holidayTitle,
                                 date: holidayDate,
                                 location: Location(
                                     city: holidayCity,
                                     country: holidayCountry,
-                                    coordinates: CLLocationCoordinate2D(latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude)),
+//                                    coordinates: CLLocationCoordinate2D(latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude)),
+                                    latitude: mapvm.region.center.latitude,
+                                    longitude: mapvm.region.center.longitude),
                                 mainImage: mainImage,
                                 allImages: allImages
                             )

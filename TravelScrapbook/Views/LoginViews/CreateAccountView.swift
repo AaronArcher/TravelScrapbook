@@ -17,12 +17,15 @@ struct CreateAccountView: View {
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var email = ""
+    @State private var shareKey = ""
     @State private var password = ""
     @State private var confirmPassword = ""
+    
     
     @FocusState private var firstNameFocused: Bool
     @FocusState private var lastNameFocused: Bool
     @FocusState private var emailFocused: Bool
+    @FocusState private var shareKeyFocused: Bool
     @FocusState private var passwordFocused: Bool
     @FocusState private var confirmPasswordFocused: Bool
 
@@ -41,7 +44,9 @@ struct CreateAccountView: View {
                 
                 Text("Create an account below")
                     .font(.title)
-                    .padding(.bottom, 30)
+                    .foregroundColor(Color("Green3"))
+                    .padding(.bottom, 20)
+                    
             }
             .padding(.horizontal)
             
@@ -55,7 +60,7 @@ struct CreateAccountView: View {
             
             ScrollView {
                 
-                VStack {
+                VStack(alignment: .leading, spacing: 0) {
                     
                     // First Name
                     VStack(spacing: 0) {
@@ -148,9 +153,44 @@ struct CreateAccountView: View {
                             .frame(height: 50)
                     )
                     
+                    // Share Key
+                    VStack(spacing: 0) {
+                        TextField("Create a share key*", text: $shareKey)
+                            .padding(.vertical, 5)
+                            .focused($shareKeyFocused)
+                        
+                        ZStack(alignment: .leading) {
+                            Rectangle()
+                                .frame(height: 2)
+                                .foregroundColor(.clear)
+                                .cornerRadius(5)
+                            
+                            Rectangle()
+                                .frame(height: 2)
+                                .frame(maxWidth: shareKeyFocused || !shareKey.isEmpty ? .infinity : 0)
+                                .animation(.easeInOut, value: shareKeyFocused)
+                                .foregroundColor(Color("Green1"))
+                                .cornerRadius(5)
+                            
+                        }
+                        .padding(.trailing)
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .foregroundColor(.white)
+                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                            .frame(height: 50)
+                    )
+                    
+                    Text("* This will be used to share your holiday with friends!")
+                        .font(.caption)
+                        .padding(.leading)
+                        .padding(.bottom, 10)
+                    
                     // Password
                     VStack(spacing: 0) {
-                        TextField("Password", text: $password)
+                        SecureField("Password", text: $password)
                             .padding(.vertical, 5)
                             .focused($passwordFocused)
                         
@@ -180,7 +220,7 @@ struct CreateAccountView: View {
                     
                     // Confirm Password
                     VStack(spacing: 0) {
-                        TextField("Confirm Password", text: $confirmPassword)
+                        SecureField("Confirm Password", text: $confirmPassword)
                             .padding(.vertical, 5)
                             .focused($confirmPasswordFocused)
                         
@@ -227,7 +267,7 @@ struct CreateAccountView: View {
                                     .frame(height: 50)
                             )
                     }
-                    .padding(.top)
+                    .padding(.vertical)
                     
                     HStack {
                         
@@ -269,8 +309,16 @@ struct CreateAccountView: View {
             DispatchQueue.main.async {
             
                 if error == nil {
-                        // dismiss
-                        showLogin = !AuthViewModel.isUserLoggedIn()
+                        
+                    DatabaseService().setUserProfile(firstname: firstName, lastname: lastName, email: email, shareKey: shareKey) { isSuccess in
+                        if isSuccess == true {
+                            // dismiss
+                            showLogin = !AuthViewModel.isUserLoggedIn()
+                        } else {
+                            // Failed to save data to database
+                            errorMessage = "Failed to save user, check internet connection"
+                        }
+                    }
                 
                 } else {
                     errorMessage = error?.localizedDescription

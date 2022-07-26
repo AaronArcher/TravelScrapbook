@@ -177,6 +177,9 @@ struct RootView: View {
             .fullScreenCover(isPresented: $showLogin) {
                 LoginView(showLogin: $showLogin)
             }
+//            .onAppear {
+//                holidayvm.getholidays()
+//            }
 
         
     }
@@ -294,12 +297,14 @@ struct RootView: View {
                         
                         DispatchQueue.main.async {
                             
-                            guard let coordinates = location.coordinates else { return }
+//                            guard let coordinates = location.coordinates else { return }
+                            guard let latitude = location.latitude else { return }
+                            guard let longitude = location.longitude else { return }
                             
                             holidayCity = location.city
                             holidayCountry = location.country
                             
-                            mapvm.region = MKCoordinateRegion(center: coordinates, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
+                            mapvm.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
                            
 
                         }
