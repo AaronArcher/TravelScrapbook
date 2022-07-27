@@ -32,27 +32,8 @@ struct HolidayView: View {
             GeometryReader { geo in
                 ZStack {
                     
-                    if holiday.mainImage == nil {
-                        ZStack {
-                            
-                            Color("Green1").opacity(0.2)
-                            
-                            Image(systemName: "photo.fill")
-                                .font(.title)
-                                .foregroundColor(Color("Green2"))
-                        }
-                        
-                    } else {
-                        
-//                        Image(uiImage: holiday.mainImage!)
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fill)
-//                            .clipped()
-//                            .frame(maxWidth: geo.size.width)
-//                            .frame(height: 280)
+                    MainHolidayImage(holiday: holiday, iconSize: 100)
 
-
-                    }
                     
                     Button {
                         dismiss()
@@ -99,12 +80,12 @@ struct HolidayView: View {
                     )
                     .frame(maxHeight: .infinity, alignment: .bottom)
                 }
-                .clipShape(
-                    RoundedCorner(radius: 20, corners: [.bottomLeft, .bottomRight])
-                )
+                
             }
             .frame(height: 280)
-
+            .clipShape(
+                RoundedCorner(radius: 20, corners: [.bottomLeft, .bottomRight])
+            )
             
             
             Text("All Photos")

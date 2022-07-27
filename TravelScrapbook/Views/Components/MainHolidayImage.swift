@@ -10,7 +10,7 @@ import SwiftUI
 struct MainHolidayImage: View {
     
     let holiday: Holiday
-    let size: CGFloat
+    let iconSize: CGFloat
     
     var body: some View {
 
@@ -25,11 +25,9 @@ struct MainHolidayImage: View {
                     Image(systemName: "photo.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 35, height: 35)
+                        .frame(width: iconSize, height: iconSize)
                         .foregroundColor(Color("Green2"))
                 }
-                .frame(width: size, height: size)
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 
             } else {
                 
@@ -39,8 +37,6 @@ struct MainHolidayImage: View {
                     cachedImage
                         .resizable()
                         .scaledToFill()
-                        .frame(width: size, height: size)
-                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     
                 } else {
                     
@@ -62,8 +58,6 @@ struct MainHolidayImage: View {
                             image
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: size, height: size)
-                                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                                 .onAppear {
                                     // Save this image into cache
                                     CacheService.setImage(image: image,
@@ -79,11 +73,9 @@ struct MainHolidayImage: View {
                                 Image(systemName: "photo.fill")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 35, height: 35)
+                                    .frame(width: iconSize, height: iconSize)
                                     .foregroundColor(Color("Green2"))
                             }
-                            .frame(width: size, height: size)
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                             
                         }
 

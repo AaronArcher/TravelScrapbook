@@ -23,12 +23,10 @@ struct MapAnnotationView: View {
                 showHoliday = true
                 
             } label: {
-//                Image(uiImage: holiday.mainImage ?? UIImage(named: "Panda")!)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//                    .frame(width: 50, height: 50)
-//                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                MainHolidayImage(holiday: holiday, size: 50)
+
+                MainHolidayImage(holiday: holiday, iconSize: 35)
+                    .frame(width: 50, height: 50)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     .padding(2)
                     .mask({
                         RoundedRectangle(cornerRadius: 10, style: .continuous)

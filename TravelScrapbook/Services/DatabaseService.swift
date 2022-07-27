@@ -54,6 +54,7 @@ class DatabaseService {
         // Perform a query against the holiday collection for any holidays where the createdBy field is the logged in user ID
         let holidaysQuery = db.collection("holidays")
             .whereField("createdBy", isEqualTo: AuthViewModel.getLoggedInUserID())
+//            .order(by: "date") // This is creating issues with the listener and not pushing the same data between devices
         
         let listener = holidaysQuery.addSnapshotListener { snapshot, error in
             
@@ -76,6 +77,7 @@ class DatabaseService {
                     let mainImage = data["mainImage"] as? String ?? ""
 
                     print(mainImage)
+                    
                     holidays.append(Holiday(id: id,
 //                                            createdBy: createdBy,
                                             title: title,
@@ -126,7 +128,7 @@ class DatabaseService {
             let storageRef = Storage.storage().reference()
             
             // Turn image into data
-            let imageData = mainImage.jpegData(compressionQuality: 0.5)
+            let imageData = mainImage.jpegData(compressionQuality: 0.05)
             
             // Check we were able to convert it into data
             guard imageData != nil else { return }
