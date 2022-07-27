@@ -36,6 +36,8 @@ struct CreateAccountView: View {
         
         VStack(alignment: .leading) {
             
+            ScrollView {
+
             // Header
             Group {
                 Text("Lets get started!")
@@ -58,7 +60,6 @@ struct CreateAccountView: View {
 
             }
             
-            ScrollView {
                 
                 VStack(alignment: .leading, spacing: 0) {
                     
@@ -289,9 +290,15 @@ struct CreateAccountView: View {
                     Spacer()
                     
                 }
+                    // gone over 20 child views so used a group
+                    Group {
                     
-                    Spacer()
+                        Color.clear
+                        .frame(height: 60)
                     
+                        Spacer()
+                    
+                    }
                 }
                 .padding(.horizontal)
                 

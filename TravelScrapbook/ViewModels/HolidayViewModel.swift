@@ -12,6 +12,8 @@ import UIKit
 class HolidayViewModel: ObservableObject {
     
     @Published var holidays: [Holiday] = []
+        
+    @Published var allHolidayImage: [String] = []
     
     var databaseService = DatabaseService()
     
@@ -20,33 +22,43 @@ class HolidayViewModel: ObservableObject {
 //    @Published var country = ""
 //    @Published var date = Date()
     
-//    func getholidays() {
-//        
-//        databaseService.getAllHolidays { holidays in
-//            self.holidays = holidays
-//        }
-//        
+//    init() {
+//        // get all holidays when instance is created
+//        getholidays()
 //    }
     
-    func addHoliday(title: String, city: String, country: String, date: Date, latitude: Double, longitude: Double, mainImage: UIImage) {
+    func getholidays() {
         
-        DispatchQueue.main.async {
-            self.holidays.append(
-                Holiday(
-                    createdBy: AuthViewModel.getLoggedInUserID(),
-                    title: title,
-                    date: date,
-                    location: Location(
-                        city: city,
-                        country: country,
-                        latitude: latitude,
-                        longitude: longitude),
-                    mainImage: mainImage
-                )
-            )
+        databaseService.getAllHolidays { holidays in
+            self.holidays = holidays
+//            dump(holidays)
         }
-
+        
     }
+    
+    func holidayCleanup() {
+        databaseService.detachHolidayListner()
+    }
+    
+//    func addHoliday(title: String, city: String, country: String, date: Date, latitude: Double, longitude: Double, mainImage: UIImage) {
+//        
+//        DispatchQueue.main.async {
+//            self.holidays.append(
+//                Holiday(
+//                    createdBy: AuthViewModel.getLoggedInUserID(),
+//                    title: title,
+//                    date: date,
+//                    location: Location(
+//                        city: city,
+//                        country: country,
+//                        latitude: latitude,
+//                        longitude: longitude),
+//                        mainImage: mainImage
+//                )
+//            )
+//        }
+//
+//    }
     
 //    func newHoliday(holiday: Holiday) {
 //        

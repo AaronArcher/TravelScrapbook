@@ -28,7 +28,7 @@ struct MapView: View {
         
         ZStack {
             Map(coordinateRegion: $mapvm.region, annotationItems: holidayvm.holidays) { holiday in
-                MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: holiday.location.latitude ?? 0, longitude: holiday.location.longitude ?? 0)) {
+                MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: holiday.location.latitude, longitude: holiday.location.longitude)) {
                     MapAnnotationView(holiday: holiday)
                 }
             }
@@ -41,7 +41,7 @@ struct MapView: View {
                 .scaledToFit()
                 .frame(width: 24, height: 24)
                 .offset(y: -12)
-                .scaleEffect(showMarker ? 1 : 0.001) // The "0.001 removed 'ignoring singular matric error in console
+                .scaleEffect(showMarker ? 1 : 0.001) // The "0.001 removed 'ignoring singular matrix' error in console
             
                 Text("Confirm your holiday location")
                     .font(.footnote)

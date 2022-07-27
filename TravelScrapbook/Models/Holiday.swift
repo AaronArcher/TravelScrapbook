@@ -6,27 +6,27 @@
 //
 
 import Foundation
-import CoreLocation
-import UIKit
 import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 
-struct Holiday: Identifiable {
-    var id = UUID()
-    var createdBy: String
+struct Holiday: Identifiable, Codable {
+    @DocumentID var id: String?
+    var createdBy: String?
     var title: String
-    var date: Date
+    @ServerTimestamp var date: Date?
     var location: Location
-    var mainImage: UIImage?
-    var allImages: [UIImage] = []
+    var mainImage: String?
+    var allImages: [String] = []
 }
 
-struct Location: Identifiable {
-    var id = UUID()
+struct Location: Identifiable, Codable {
+    var id = UUID().uuidString
     let city: String
     let country: String
 //    let coordinates: CLLocationCoordinate2D
-    let latitude: Double?
-    let longitude: Double?
+    let latitude: Double
+    let longitude: Double
 
 }
+

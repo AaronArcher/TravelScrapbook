@@ -17,25 +17,27 @@ struct ListItem: View {
 
         HStack {
             
-            ZStack {
-
-                if holiday.mainImage != nil {
-                    Image(uiImage: holiday.mainImage!)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 90, height: 90)
-                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                } else {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .foregroundColor(Color("Green1").opacity(0.2))
-                        .frame(width: 90, height: 90)
-                    
-                    Image(systemName: "photo.fill")
-                        .font(.title)
-                        .foregroundColor(Color("Green2"))
-                }
-                                
-            }
+//            ZStack {
+//
+//                if holiday.mainImage != nil {
+//                    Image(uiImage: holiday.mainImage!)
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(width: 90, height: 90)
+//                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+//                } else {
+//                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+//                        .foregroundColor(Color("Green1").opacity(0.2))
+//                        .frame(width: 90, height: 90)
+//
+//                    Image(systemName: "photo.fill")
+//                        .font(.title)
+//                        .foregroundColor(Color("Green2"))
+//                }
+//
+//            }
+            
+            MainHolidayImage(holiday: holiday, size: 90)
             .padding(.trailing)
             
             
@@ -48,7 +50,7 @@ struct ListItem: View {
                 
                 Spacer()
                 
-                Text(holiday.date.formatted(date: .numeric, time: .omitted))
+//                Text(holiday.date.formatted(date: .numeric, time: .omitted))
                 
                 HStack {
                     Text(holiday.location.city)

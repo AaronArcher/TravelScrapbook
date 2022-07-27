@@ -97,35 +97,56 @@ struct AddNewHoliday: View {
 
 
                 Button {
+//                    DispatchQueue.main.async {
+//                        //
+//                        holidayvm.holidays.append(
+//                            Holiday(
+//                                createdBy: AuthViewModel.getLoggedInUserID(),
+//                                title: holidayTitle,
+//                                date: holidayDate,
+//                                location: Location(
+//                                    city: holidayCity,
+//                                    country: holidayCountry,
+////                                    coordinates: CLLocationCoordinate2D(latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude)),
+//                                    latitude: mapvm.region.center.latitude,
+//                                    longitude: mapvm.region.center.longitude),
+//                                mainImage: mainImage,
+//                                allImages: allImages
+//                            )
+//                        )
+//
+//                    }
+                    
                     DispatchQueue.main.async {
-                        //
-                        holidayvm.holidays.append(
-                            Holiday(
-                                createdBy: AuthViewModel.getLoggedInUserID(),
-                                title: holidayTitle,
-                                date: holidayDate,
-                                location: Location(
-                                    city: holidayCity,
-                                    country: holidayCountry,
-//                                    coordinates: CLLocationCoordinate2D(latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude)),
-                                    latitude: mapvm.region.center.latitude,
-                                    longitude: mapvm.region.center.longitude),
-                                mainImage: mainImage,
-                                allImages: allImages
-                            )
-                        )
-
+                        
+                        DatabaseService().createHoliday(title: holidayTitle, date: holidayDate, locationID: UUID().uuidString, city: holidayCity, country: holidayCountry, latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude, mainImage: mainImage, allImages: allImages) { success in
+                            
+                            if success {
+                                
+                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                    addNewHoliday.toggle()
+                                    showMarker = false
+                                    showCancel = false
+                                }
+                                withAnimation {
+                                    showAddNewHolidayContent.toggle()
+                                }
+                                
+                            }
+                            
+                        }
+                        
                     }
 
 
-                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                        addNewHoliday.toggle()
-                        showMarker = false
-                        showCancel = false
-                    }
-                    withAnimation {
-                        showAddNewHolidayContent.toggle()
-                    }
+//                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+//                        addNewHoliday.toggle()
+//                        showMarker = false
+//                        showCancel = false
+//                    }
+//                    withAnimation {
+//                        showAddNewHolidayContent.toggle()
+//                    }
 
 
                     //                    holidayName = ""

@@ -44,12 +44,12 @@ struct HolidayView: View {
                         
                     } else {
                         
-                        Image(uiImage: holiday.mainImage!)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .clipped()
-                            .frame(maxWidth: geo.size.width)
-                            .frame(height: 280)
+//                        Image(uiImage: holiday.mainImage!)
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fill)
+//                            .clipped()
+//                            .frame(maxWidth: geo.size.width)
+//                            .frame(height: 280)
 
 
                     }
@@ -80,8 +80,8 @@ struct HolidayView: View {
     
                             Spacer()
     
-                            Text(holiday.date.formatted(date: .numeric, time: .omitted))
-                                .italic()
+//                            Text(holiday.date.formatted(date: .numeric, time: .omitted))
+//                                .italic()
                         }
     
                         HStack {
@@ -122,33 +122,33 @@ struct HolidayView: View {
 
                 } else {
 
-                    ScrollView {
-
-                        LazyVGrid(columns: columns, spacing: 5) {
-                        ForEach(holiday.allImages, id: \.self) { image in
-
-                            Button {
-                                    selectedImage = image
-                                    showImage = true
-
-                            } label: {
-
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 110, height: 110)
-                                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-
-                            }
-
+//                    ScrollView {
 //
-
-                        }
-                    }
-                        .padding(.bottom, 30)
-
-                }
-                .padding(.horizontal)
+//                        LazyVGrid(columns: columns, spacing: 5) {
+//                        ForEach(holiday.allImages, id: \.self) { image in
+//
+//                            Button {
+//                                    selectedImage = image
+//                                    showImage = true
+//
+//                            } label: {
+//
+//                                    Image(uiImage: image)
+//                                        .resizable()
+//                                        .scaledToFill()
+//                                        .frame(width: 110, height: 110)
+//                                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+//
+//                            }
+//
+////
+//
+//                        }
+//                    }
+//                        .padding(.bottom, 30)
+//
+//                }
+//                .padding(.horizontal)
                 }
     
             

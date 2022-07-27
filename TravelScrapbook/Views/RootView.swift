@@ -10,6 +10,9 @@ import MapKit
 
 struct RootView: View {
     
+    // For detecting with the app state changes
+    @Environment(\.scenePhase) var scenePhase
+    
     @EnvironmentObject var holidayvm: HolidayViewModel
     @EnvironmentObject var mapvm: MapViewModel
     
@@ -174,12 +177,26 @@ struct RootView: View {
             .background(
                 LinearGradient(colors: [Color("Green3").opacity(0.05), Color("Green3").opacity(0.12)], startPoint: .top, endPoint: .bottom)
             )
-            .fullScreenCover(isPresented: $showLogin) {
+            .fullScreenCover(isPresented: $showLogin, onDismiss: {
+                holidayvm.getholidays()
+            }) {
                 LoginView(showLogin: $showLogin)
             }
-//            .onAppear {
-//                holidayvm.getholidays()
-//            }
+            .onAppear {
+                holidayvm.getholidays()
+            }
+            .onChange(of: scenePhase) { newPhase in
+                
+                if newPhase == .active {
+                    print("Active")
+                } else if newPhase == .inactive {
+                    print("Inactive")
+                } else if newPhase == .background {
+                    print("Background")
+                    holidayvm.holidayCleanup()
+                }
+                
+            }
 
         
     }
@@ -298,13 +315,13 @@ struct RootView: View {
                         DispatchQueue.main.async {
                             
 //                            guard let coordinates = location.coordinates else { return }
-                            guard let latitude = location.latitude else { return }
-                            guard let longitude = location.longitude else { return }
+//                            guard let latitude = location.latitude else { return }
+//                            guard let longitude = location.longitude else { return }
                             
                             holidayCity = location.city
                             holidayCountry = location.country
                             
-                            mapvm.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
+                            mapvm.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude), span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1))
                            
 
                         }
