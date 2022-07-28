@@ -127,8 +127,10 @@ class DatabaseService {
             // Create storage reference
             let storageRef = Storage.storage().reference()
             
-            // Turn image into data
-            let imageData = mainImage.jpegData(compressionQuality: 0.05)
+            // Turn image into data and reduce size
+//            let imageData = mainImage.jpegData(compressionQuality: 0.0)
+              let smallerImage = ImageHelper.compressImage(image: mainImage)
+              let imageData = smallerImage.jpegData(compressionQuality: 0.3)
             
             // Check we were able to convert it into data
             guard imageData != nil else { return }

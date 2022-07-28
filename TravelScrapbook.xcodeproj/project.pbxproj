@@ -34,6 +34,7 @@
 		EE95738F288FEDE3006F42FF /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE95738E288FEDE3006F42FF /* CreateAccountView.swift */; };
 		EE95739128901EF1006F42FF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE95739028901EF1006F42FF /* User.swift */; };
 		EE95739328905114006F42FF /* MainHolidayImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE95739228905114006F42FF /* MainHolidayImage.swift */; };
+		EE9C0BAD289281F000F353B2 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9C0BAC289281F000F353B2 /* ImageHelper.swift */; };
 		EEC032E62864F51C00CE6682 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032E52864F51C00CE6682 /* MapView.swift */; };
 		EEC032E82864F52300CE6682 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032E72864F52300CE6682 /* ListView.swift */; };
 		EEC032EA2864F71000CE6682 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032E92864F71000CE6682 /* RootView.swift */; };
@@ -66,6 +67,7 @@
 		EE95738E288FEDE3006F42FF /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 		EE95739028901EF1006F42FF /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EE95739228905114006F42FF /* MainHolidayImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHolidayImage.swift; sourceTree = "<group>"; };
+		EE9C0BAC289281F000F353B2 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		EEC032E52864F51C00CE6682 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		EEC032E72864F52300CE6682 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		EEC032E92864F71000CE6682 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				EEC032F12864FCC600CE6682 /* Extensions.swift */,
 				EE1066C42888859500F36351 /* RoundedCornerShape.swift */,
 				EE95737B288F08A4006F42FF /* DateHelper.swift */,
+				EE9C0BAC289281F000F353B2 /* ImageHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				EE5052202857BD0300C3DF50 /* TravelScrapbookApp.swift in Sources */,
 				EE95738D288FE35F006F42FF /* AuthViewModel.swift in Sources */,
 				EE95739128901EF1006F42FF /* User.swift in Sources */,
+				EE9C0BAD289281F000F353B2 /* ImageHelper.swift in Sources */,
 				EE1066C52888859500F36351 /* RoundedCornerShape.swift in Sources */,
 				EE95739328905114006F42FF /* MainHolidayImage.swift in Sources */,
 				EE82E45E286E4B6C00AFC543 /* ImageView.swift in Sources */,
