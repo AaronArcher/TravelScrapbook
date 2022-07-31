@@ -33,6 +33,7 @@ struct MapView: View {
                 }
             }
                 .disabled(addNewHoliday)
+               
                 
             Image(systemName: "mappin")
                 .resizable()
@@ -49,7 +50,7 @@ struct MapView: View {
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
                     .background(
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        RoundedCorner(radius: 10, corners: [.bottomLeft, .bottomRight])
                             .foregroundColor(.white)
                             .shadow(color: Color("Green2").opacity(0.15), radius: 10, x: 4, y: 4)
 
@@ -109,14 +110,17 @@ struct MapView: View {
                             }
 
                     } else {
-
-                        // Show Add New Holiday View
-                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                addNewHoliday = true
-                            }
-                            withAnimation(.default.delay(0.2)) {
-                                showAddNewHolidayContent = true
-                            }
+                        
+                        DispatchQueue.main.async {
+                            // Show Add New Holiday View
+                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                    addNewHoliday = true
+                                }
+                                withAnimation(.default.delay(0.2)) {
+                                    showAddNewHolidayContent = true
+                                }
+                        }
+                        
                     }
 
                 } label: {
@@ -152,7 +156,7 @@ struct MapView: View {
 
 
         }
-        .padding(.bottom, 40)
+        .padding(.bottom, 55)
 
     }
     

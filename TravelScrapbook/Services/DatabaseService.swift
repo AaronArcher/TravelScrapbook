@@ -74,9 +74,9 @@ class DatabaseService {
                     let locationID = data["locationID"] as? String ?? ""
                     let latitude = data["latitude"] as? Double ?? 0
                     let longitude = data["longitude"] as? Double ?? 0
-                    let mainImage = data["mainImage"] as? String ?? ""
+                    let thumbnailImage = data["thumbnailImage"] as? String ?? ""
 
-                    print(mainImage)
+//                    print(mainImage)
                     
                     holidays.append(Holiday(id: id,
 //                                            createdBy: createdBy,
@@ -87,7 +87,7 @@ class DatabaseService {
                                                                country: country,
                                                                latitude: latitude,
                                                                longitude: longitude),
-                                            mainImage: mainImage))
+                                            thumbnailImage: thumbnailImage))
                     
                 
                 }
@@ -104,7 +104,7 @@ class DatabaseService {
        
     }
     
-    func createHoliday(title: String, date: Date, locationID: String, city : String, country: String, latitude: Double, longitude: Double, mainImage: UIImage?, allImages: [UIImage]?, completion: @escaping (Bool) -> Void) {
+    func createHoliday(title: String, date: Date, locationID: String, city : String, country: String, latitude: Double, longitude: Double, thumbnailImage: UIImage?, completion: @escaping (Bool) -> Void) {
      
         // Get reference to database
         let db = Firestore.firestore()
@@ -118,19 +118,19 @@ class DatabaseService {
                      "city" : city,
                      "country" : country,
                      "latitude" : latitude,
-                     "longitude" : longitude,
+                     "longitude" : longitude
                     ])
-        
+                
         // Check if a main image is passed through
-        if let mainImage = mainImage {
+        if let thumbnailImage = thumbnailImage {
             
             // Create storage reference
             let storageRef = Storage.storage().reference()
             
             // Turn image into data and reduce size
 //            let imageData = mainImage.jpegData(compressionQuality: 0.0)
-              let smallerImage = ImageHelper.compressImage(image: mainImage)
-              let imageData = smallerImage.jpegData(compressionQuality: 0.3)
+              let smallerImage = ImageHelper.compressImage(image: thumbnailImage)
+              let imageData = smallerImage.jpegData(compressionQuality: 0.2)
             
             // Check we were able to convert it into data
             guard imageData != nil else { return }
@@ -147,22 +147,24 @@ class DatabaseService {
                         
                         if url != nil && error == nil {
                             
-                            doc.setData(["mainImage" : url!.absoluteString], merge: true) { error in
+                            doc.setData(["thumbnailImage" : url!.absoluteString], merge: true) { error in
                                 if error == nil {
-                                    // Success, notify caller
+                                    // Main image Success, notify caller
                                     completion(true)
+                                    
+                                    
                                 }
                             }
                             
                         } else {
-                            // Wasn't successful grabbing the url
+                            // Wasn't successful grabbing the url for the main image
                             completion(false)
                         }
                         
                     }
                     
                 } else {
-                    // Upload wasn't successful, notify caller
+                    // Main Image upload wasn't successful, notify caller
                     completion(false)
                 }
                 
@@ -171,8 +173,12 @@ class DatabaseService {
         } else {
             // No image set
             completion(true)
+            
+            
+            
         }
     }
+    
     
     
     /// Closes the listeners when the app goes into the background

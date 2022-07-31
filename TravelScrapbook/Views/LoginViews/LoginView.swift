@@ -61,28 +61,38 @@ struct LoginView: View {
                                 .padding(.vertical, 5)
                                 .focused($emailFocused)
                             
-                            ZStack(alignment: .leading) {
-                                Rectangle()
-                                    .frame(height: 2)
-                                    .foregroundColor(.clear)
-                                    .cornerRadius(5)
-                                
-                                Rectangle()
-                                    .frame(height: 2)
-                                    .frame(maxWidth: emailFocused || !email.isEmpty ? .infinity : 0)
-                                    .animation(.easeInOut, value: emailFocused)
-                                    .foregroundColor(Color("Green1"))
-                                    .cornerRadius(5)
-                                
-                            }
-                            .padding(.trailing)
+//                            ZStack(alignment: .leading) {
+//                                Rectangle()
+//                                    .frame(height: 2)
+//                                    .foregroundColor(.clear)
+//                                    .cornerRadius(5)
+//
+//                                Rectangle()
+//                                    .frame(height: 2)
+//                                    .frame(maxWidth: emailFocused || !email.isEmpty ? .infinity : 0)
+//                                    .animation(.easeInOut, value: emailFocused)
+//                                    .foregroundColor(Color("Green1"))
+//                                    .cornerRadius(5)
+//
+//                            }
+//                            .padding(.trailing)
                         }
                         .padding()
                         .background(
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                    .foregroundColor(.white)
+                                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                    .frame(height: 50)
+                                
+                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                    .trim(from: 0, to: emailFocused ? 1 : 0)
+                                    .stroke(Color("Green2"), lineWidth: 1)
+                                    .frame(height: 50)
+                                    .animation(.easeInOut(duration: 0.8), value: emailFocused)
+
+                                    
+                            }
                         )
                         
                         // Password
@@ -91,28 +101,24 @@ struct LoginView: View {
                                 .padding(.vertical, 5)
                                 .focused($passwordFocused)
                             
-                            ZStack(alignment: .leading) {
-                                Rectangle()
-                                    .frame(height: 2)
-                                    .foregroundColor(.clear)
-                                    .cornerRadius(5)
-                                
-                                Rectangle()
-                                    .frame(height: 2)
-                                    .frame(maxWidth: passwordFocused || !password.isEmpty ? .infinity : 0)
-                                    .animation(.easeInOut, value: passwordFocused)
-                                    .foregroundColor(Color("Green1"))
-                                    .cornerRadius(5)
-                                
-                            }
-                            .padding(.trailing)
                         }
                         .padding()
                         .background(
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                    .foregroundColor(.white)
+                                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                    .frame(height: 50)
+                                
+                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                    .trim(from: 0, to: passwordFocused ? 1 : 0)
+                                    .stroke(Color("Green2"), lineWidth: 1)
+                                    .frame(height: 50)
+                                    .animation(.easeInOut(duration: 0.8), value: passwordFocused)
+
+                                    
+                            }
+
                         )
                         
                         
@@ -170,7 +176,6 @@ struct LoginView: View {
                 
             }
             .foregroundColor(Color("Green1"))
-            
             
         } else {
             

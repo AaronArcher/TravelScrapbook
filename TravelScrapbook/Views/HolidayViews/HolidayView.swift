@@ -88,52 +88,6 @@ struct HolidayView: View {
             )
             
             
-            Text("All Photos")
-                .font(.title)
-                .padding(.horizontal)
-                .padding(.top, 10)
-            
-                
-                if holiday.allImages.count == 0 {
-                    Text("You haven't added any photos yet!")
-                        .font(.title3)
-                        .foregroundColor(Color("Green2"))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-
-                } else {
-
-//                    ScrollView {
-//
-//                        LazyVGrid(columns: columns, spacing: 5) {
-//                        ForEach(holiday.allImages, id: \.self) { image in
-//
-//                            Button {
-//                                    selectedImage = image
-//                                    showImage = true
-//
-//                            } label: {
-//
-//                                    Image(uiImage: image)
-//                                        .resizable()
-//                                        .scaledToFill()
-//                                        .frame(width: 110, height: 110)
-//                                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-//
-//                            }
-//
-////
-//
-//                        }
-//                    }
-//                        .padding(.bottom, 30)
-//
-//                }
-//                .padding(.horizontal)
-                }
-    
-            
-            
             Spacer()
 
             

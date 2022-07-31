@@ -34,10 +34,10 @@ struct CreateAccountView: View {
 
     var body: some View {
         
-        VStack(alignment: .leading) {
-            
-            ScrollView {
+        ScrollView {
 
+            VStack(alignment: .leading) {
+            
             // Header
             Group {
                 Text("Lets get started!")
@@ -69,28 +69,22 @@ struct CreateAccountView: View {
                             .padding(.vertical, 5)
                             .focused($firstNameFocused)
                         
-                        ZStack(alignment: .leading) {
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundColor(.clear)
-                                .cornerRadius(5)
-                            
-                            Rectangle()
-                                .frame(height: 2)
-                                .frame(maxWidth: firstNameFocused || !firstName.isEmpty ? .infinity : 0)
-                                .animation(.easeInOut, value: firstNameFocused)
-                                .foregroundColor(Color("Green1"))
-                                .cornerRadius(5)
-                            
-                        }
-                        .padding(.trailing)
                     }
                     .padding()
                     .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
-                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            .frame(height: 50)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .foregroundColor(.white)
+                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                .frame(height: 50)
+                            
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .trim(from: 0, to: firstNameFocused ? 1 : 0)
+                                .stroke(Color("Green2"), lineWidth: 1)
+                                .frame(height: 50)
+                                .animation(.easeInOut(duration: 0.8), value: firstNameFocused)
+                        }
+
                     )
                     .padding(.top, 10)
                     
@@ -100,28 +94,22 @@ struct CreateAccountView: View {
                             .padding(.vertical, 5)
                             .focused($lastNameFocused)
                         
-                        ZStack(alignment: .leading) {
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundColor(.clear)
-                                .cornerRadius(5)
-                            
-                            Rectangle()
-                                .frame(height: 2)
-                                .frame(maxWidth: lastNameFocused || !lastName.isEmpty ? .infinity : 0)
-                                .animation(.easeInOut, value: lastNameFocused)
-                                .foregroundColor(Color("Green1"))
-                                .cornerRadius(5)
-                            
-                        }
-                        .padding(.trailing)
                     }
                     .padding()
                     .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
-                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            .frame(height: 50)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .foregroundColor(.white)
+                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                .frame(height: 50)
+                            
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .trim(from: 0, to: lastNameFocused ? 1 : 0)
+                                .stroke(Color("Green2"), lineWidth: 1)
+                                .frame(height: 50)
+                                .animation(.easeInOut(duration: 0.8), value: lastNameFocused)
+                        }
+
                     )
                     
                     // Email
@@ -130,64 +118,24 @@ struct CreateAccountView: View {
                             .padding(.vertical, 5)
                             .focused($emailFocused)
                         
-                        ZStack(alignment: .leading) {
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundColor(.clear)
-                                .cornerRadius(5)
-                            
-                            Rectangle()
-                                .frame(height: 2)
-                                .frame(maxWidth: emailFocused || !email.isEmpty ? .infinity : 0)
-                                .animation(.easeInOut, value: emailFocused)
-                                .foregroundColor(Color("Green1"))
-                                .cornerRadius(5)
-                            
-                        }
-                        .padding(.trailing)
                     }
                     .padding()
                     .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
-                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            .frame(height: 50)
-                    )
-                    
-                    // Share Key
-                    VStack(spacing: 0) {
-                        TextField("Create a share key*", text: $shareKey)
-                            .padding(.vertical, 5)
-                            .focused($shareKeyFocused)
-                        
-                        ZStack(alignment: .leading) {
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundColor(.clear)
-                                .cornerRadius(5)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .foregroundColor(.white)
+                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                .frame(height: 50)
                             
-                            Rectangle()
-                                .frame(height: 2)
-                                .frame(maxWidth: shareKeyFocused || !shareKey.isEmpty ? .infinity : 0)
-                                .animation(.easeInOut, value: shareKeyFocused)
-                                .foregroundColor(Color("Green1"))
-                                .cornerRadius(5)
-                            
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .trim(from: 0, to: emailFocused ? 1 : 0)
+                                .stroke(Color("Green2"), lineWidth: 1)
+                                .frame(height: 50)
+                                .animation(.easeInOut(duration: 0.8), value: emailFocused)
                         }
-                        .padding(.trailing)
-                    }
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
-                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            .frame(height: 50)
+
                     )
                     
-                    Text("* This will be used to share your holiday with friends!")
-                        .font(.caption)
-                        .padding(.leading)
-                        .padding(.bottom, 10)
                     
                     // Password
                     VStack(spacing: 0) {
@@ -195,28 +143,22 @@ struct CreateAccountView: View {
                             .padding(.vertical, 5)
                             .focused($passwordFocused)
                         
-                        ZStack(alignment: .leading) {
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundColor(.clear)
-                                .cornerRadius(5)
-                            
-                            Rectangle()
-                                .frame(height: 2)
-                                .frame(maxWidth: passwordFocused || !password.isEmpty ? .infinity : 0)
-                                .animation(.easeInOut, value: passwordFocused)
-                                .foregroundColor(Color("Green1"))
-                                .cornerRadius(5)
-                            
-                        }
-                        .padding(.trailing)
                     }
                     .padding()
                     .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
-                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            .frame(height: 50)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .foregroundColor(.white)
+                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                .frame(height: 50)
+                            
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .trim(from: 0, to: passwordFocused ? 1 : 0)
+                                .stroke(Color("Green2"), lineWidth: 1)
+                                .frame(height: 50)
+                                .animation(.easeInOut(duration: 0.8), value: passwordFocused)
+                        }
+
                     )
                     
                     // Confirm Password
@@ -225,28 +167,24 @@ struct CreateAccountView: View {
                             .padding(.vertical, 5)
                             .focused($confirmPasswordFocused)
                         
-                        ZStack(alignment: .leading) {
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundColor(.clear)
-                                .cornerRadius(5)
-                            
-                            Rectangle()
-                                .frame(height: 2)
-                                .frame(maxWidth: confirmPasswordFocused || !confirmPassword.isEmpty ? .infinity : 0)
-                                .animation(.easeInOut, value: confirmPasswordFocused)
-                                .foregroundColor(Color("Green1"))
-                                .cornerRadius(5)
-                            
-                        }
-                        .padding(.trailing)
                     }
                     .padding()
                     .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
-                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            .frame(height: 50)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .foregroundColor(.white)
+                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                .frame(height: 50)
+                            
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .trim(from: 0, to: confirmPasswordFocused ? 1 : 0)
+                                .stroke(Color("Green2"), lineWidth: 1)
+                                .frame(height: 50)
+                                .animation(.easeInOut(duration: 0.8), value: confirmPasswordFocused)
+
+                                
+                        }
+
                     )
                     
                     // Create Account

@@ -12,7 +12,7 @@ import SwiftUI
 
 struct ImagePicker: UIViewControllerRepresentable {
     
-    @Binding var images: [UIImage]
+    @Binding var selectedImage: UIImage?
     
     class Coordinator: NSObject, PHPickerViewControllerDelegate {
         var parent: ImagePicker
@@ -40,7 +40,7 @@ struct ImagePicker: UIViewControllerRepresentable {
                         if let error = error {
                             print("Can't load images \(error.localizedDescription)")
                         } else if let image = newImage as? UIImage {
-                            self.parent.images.append(image)
+                            self.parent.selectedImage = image
                         }
                         
                     }
@@ -57,8 +57,8 @@ struct ImagePicker: UIViewControllerRepresentable {
         
         var config = PHPickerConfiguration()
         config.filter = .images
-        config.selectionLimit = 20
-        config.selection = .ordered
+//        config.selectionLimit = 1
+//        config.selection = .ordered
 //        config.preselectedAssetIdentifiers = assetIdentifiers
         
         

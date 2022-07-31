@@ -16,15 +16,13 @@ struct Holiday: Identifiable, Codable {
     var title: String
     @ServerTimestamp var date: Date?
     var location: Location
-    var mainImage: String?
-    var allImages: [String] = []
+    var thumbnailImage: String?
 }
 
 struct Location: Identifiable, Codable {
     var id = UUID().uuidString
     let city: String
     let country: String
-//    let coordinates: CLLocationCoordinate2D
     let latitude: Double
     let longitude: Double
 

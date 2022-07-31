@@ -128,9 +128,10 @@ struct RootView: View {
             ZStack {
                 mapOrList
             }
-            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-            .padding(.horizontal, 15)
-            .padding(.bottom, Constants.isScreenLarge ? 30 : 15)
+//            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+            .clipShape(RoundedCorner(radius: 25, corners: [.topLeft, .topRight]))
+//            .padding(.horizontal, 15)
+//            .padding(.bottom, Constants.isScreenLarge ? 30 : 15)
             .frame(maxHeight: Constants.screenHeight / 1.18)
             .frame(maxHeight: .infinity, alignment: .bottom)
             .shadow(color: Color("Green2").opacity(0.3), radius: 15, x: 5, y: 5)

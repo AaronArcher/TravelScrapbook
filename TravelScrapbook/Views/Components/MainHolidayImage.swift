@@ -17,7 +17,7 @@ struct MainHolidayImage: View {
         ZStack {
             
             // Check if there is an image set
-            if holiday.mainImage == "" {
+            if holiday.thumbnailImage == "" {
                 ZStack {
                     
                     Color("Green1").opacity(0.2)
@@ -32,7 +32,7 @@ struct MainHolidayImage: View {
             } else {
                 
                 // Check if image is cached
-                if let cachedImage = CacheService.getImage(forKey: holiday.mainImage!) {
+                if let cachedImage = CacheService.getImage(forKey: holiday.thumbnailImage!) {
                     
                     cachedImage
                         .resizable()
@@ -43,7 +43,7 @@ struct MainHolidayImage: View {
                     // If not in the cached images, download it
 
                     // Create URL
-                    let photoURL = URL(string: holiday.mainImage ?? "")
+                    let photoURL = URL(string: holiday.thumbnailImage ?? "")
                     
                     AsyncImage(url: photoURL) { phase in
                         
@@ -61,7 +61,7 @@ struct MainHolidayImage: View {
                                 .onAppear {
                                     // Save this image into cache
                                     CacheService.setImage(image: image,
-                                                          forKey: holiday.mainImage!)
+                                                          forKey: holiday.thumbnailImage!)
                                 }
                             
                         case .failure:

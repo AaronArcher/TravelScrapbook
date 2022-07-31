@@ -12,7 +12,7 @@ class ImageHelper {
     
     static func compressImage(image: UIImage) -> UIImage {
         
-        let resizedImage = image.aspectFittedToHeight(200)
+        let resizedImage = image.aspectFittedToHeight(400)
 //        resizedImage.jpegData(compressionQuality: 0.2)
         
         return resizedImage
