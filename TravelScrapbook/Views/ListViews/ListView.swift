@@ -21,7 +21,7 @@ struct ListView: View {
             
             Color(.white)
             
-            if holidayvm.holidays.count == 0 {
+            if holidayvm.allHolidays.count == 0 {
                 
                 Text("You haven't created any holidays yet!")
                     .font(.title2)
@@ -30,7 +30,7 @@ struct ListView: View {
                     .padding()
                 
             } else {
-                List(holidayvm.holidays) { holiday in
+                List(holidayvm.allHolidays) { holiday in
                     
                     Button {
                         showHoliday = true

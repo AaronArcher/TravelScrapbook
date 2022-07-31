@@ -12,8 +12,8 @@ import FirebaseFirestore
 
 struct Holiday: Identifiable, Codable {
     @DocumentID var id: String?
-    var createdBy: String?
     var title: String
+    var isWishlist: Bool
     @ServerTimestamp var date: Date?
     var location: Location
     var thumbnailImage: String?

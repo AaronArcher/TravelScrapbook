@@ -90,7 +90,7 @@ struct AddNewHoliday: View {
                                 cityFocused = false
                                 countryFocused = false
                                 isSaving = true
-                                
+                                                                
                                 if category == "Visited" {
                                     // Save Visited item
                                     DispatchQueue.main.async {

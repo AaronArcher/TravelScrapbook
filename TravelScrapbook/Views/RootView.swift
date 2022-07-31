@@ -47,43 +47,13 @@ struct RootView: View {
     @State var showMarker = false
     @State var showCancel = false
     
+    @State private var showSetting = false
+    
     var body: some View {
                     
             ZStack {
             
             HStack {
-                
-                Button {
-                    
-                    AuthViewModel.logOut()
-                    showLogin = !AuthViewModel.isUserLoggedIn()
-                    
-                } label: {
-                    Image(systemName: "line.3.horizontal.decrease")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 25, height: 25)
-                        .padding(11)
-                        .background(
-                            Circle()
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-
-                        )
-                }
-                .offset(x: (openSearch || addNewHoliday) ? -80 : 0)
-                
-                Spacer()
-                
-                if !openSearch {
-                    searchButton
-                        .offset(y: addNewHoliday ? -80 : 0)
-                        .disabled(!showMap)
-                        .opacity(showMap ? 1 : 0.5)
-                }
-               
-                
-                Spacer()
                 
                 Button {
                         withAnimation {
@@ -118,7 +88,40 @@ struct RootView: View {
                     )
                     
                 }
+                .offset(x: (openSearch || addNewHoliday) ? -80 : 0)
+                
+                Spacer()
+                
+                if !openSearch {
+                    searchButton
+                        .offset(y: addNewHoliday ? -80 : 0)
+                        .disabled(!showMap)
+                        .opacity(showMap ? 1 : 0.5)
+                }
+               
+                
+                Spacer()
+                
+                
+                Button {
+                    
+                    showSetting = true
+                    
+                } label: {
+                    Image(systemName: "line.3.horizontal.decrease")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .padding(11)
+                        .background(
+                            Circle()
+                                .foregroundColor(.white)
+                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+
+                        )
+                }
                 .offset(x: (openSearch || addNewHoliday) ? 80 : 0)
+                
             }
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(15)
@@ -197,6 +200,9 @@ struct RootView: View {
                     holidayvm.holidayCleanup()
                 }
                 
+            }
+            .fullScreenCover(isPresented: $showSetting) {
+                SettingsView(showLogin: $showLogin)
             }
 
         

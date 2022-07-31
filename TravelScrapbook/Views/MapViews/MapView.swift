@@ -8,11 +8,12 @@
 import SwiftUI
 import MapKit
 
+
 struct MapView: View {
     
     @EnvironmentObject var holidayvm: HolidayViewModel
     @EnvironmentObject var mapvm: MapViewModel
-    
+        
     let namespace: Namespace.ID
     
     @Binding var showMarker: Bool
@@ -27,13 +28,34 @@ struct MapView: View {
     var body: some View {
         
         ZStack {
-            Map(coordinateRegion: $mapvm.region, annotationItems: holidayvm.holidays) { holiday in
-                MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: holiday.location.latitude, longitude: holiday.location.longitude)) {
-                    MapAnnotationView(holiday: holiday)
+            
+            switch holidayvm.selectedCategory {
+            case .all:
+                Map(coordinateRegion: $mapvm.region, annotationItems: (holidayvm.wishlist + holidayvm.visited)) { holiday in
+                    MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: holiday.location.latitude, longitude: holiday.location.longitude)) {
+                        MapAnnotationView(holiday: holiday)
+                    }
                 }
+                    .disabled(addNewHoliday)
+                
+            case .visited:
+                Map(coordinateRegion: $mapvm.region, annotationItems: holidayvm.visited) { holiday in
+                    MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: holiday.location.latitude, longitude: holiday.location.longitude)) {
+                        MapAnnotationView(holiday: holiday)
+                    }
+                }
+                    .disabled(addNewHoliday)
+                
+            case .wishlist:
+                Map(coordinateRegion: $mapvm.region, annotationItems: holidayvm.wishlist) { holiday in
+                    MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: holiday.location.latitude, longitude: holiday.location.longitude)) {
+                        MapAnnotationView(holiday: holiday)
+                    }
+                }
+                    .disabled(addNewHoliday)
+                
             }
-                .disabled(addNewHoliday)
-               
+            
                 
             Image(systemName: "mappin")
                 .resizable()

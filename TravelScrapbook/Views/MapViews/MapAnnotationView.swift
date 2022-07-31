@@ -16,9 +16,35 @@ struct MapAnnotationView: View {
     
     
     var body: some View {
-                    
+        
+        if holiday.isWishlist {
+            
             Button {
+
                 
+            } label: {
+
+                ZStack {
+                
+                    Image(systemName: "heart")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.white)
+                    
+                    Image(systemName: "heart.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .foregroundColor(Color("Green1"))
+                    
+                }
+
+            }
+            
+        } else {
+            
+            Button {
 
                 showHoliday = true
                 
@@ -41,6 +67,9 @@ struct MapAnnotationView: View {
                     }
 
             }
+        }
+        
+            
     }
 }
 

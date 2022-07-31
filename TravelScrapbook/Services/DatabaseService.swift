@@ -12,7 +12,8 @@ import UIKit
 
 class DatabaseService {
     
-    var holidayListener = [ListenerRegistration]()
+    var visitedListener = [ListenerRegistration]()
+    var wishlistListener = [ListenerRegistration]()
 
     
     func setUserProfile(firstname: String, lastname: String, email: String, completion: @escaping (Bool) -> Void) {
@@ -44,15 +45,17 @@ class DatabaseService {
         
     }
     
-    /// This method gets all holidays from the database created by the signed in user
-    func getAllHolidays(completion: @escaping ([Holiday]) -> Void ) {
+    /// This method gets all visited items from the database created by the signed in user
+    func getVisited(completion: @escaping ([Holiday]) -> Void ) {
      
         // Get a reference to the database
         let db = Firestore.firestore()
         
         // Perform a query against the holiday collection for any holidays where the createdBy field is the logged in user ID
-        let holidaysQuery = db.collection("holidays")
-            .whereField("createdBy", isEqualTo: AuthViewModel.getLoggedInUserID())
+//        let holidaysQuery = db.collection("holidays")
+//            .whereField("createdBy", isEqualTo: AuthViewModel.getLoggedInUserID())
+        
+        let holidaysQuery = db.collection("users").document(AuthViewModel.getLoggedInUserID()).collection("visited")
 //            .order(by: "date") // This is creating issues with the listener and not pushing the same data between devices
         
         let listener = holidaysQuery.addSnapshotListener { snapshot, error in
@@ -66,6 +69,7 @@ class DatabaseService {
                     let data = doc.data()
                     let id = doc.documentID
                     let title = data["title"] as? String ?? ""
+                    let isWishlist = data["isWishlist"] as? Bool ?? false
 //                    let createdBy = data["createdBy"] as? String ?? ""
                     let date = data["date"] as? Date ?? Date()
                     let city = data["city"] as? String ?? ""
@@ -80,6 +84,7 @@ class DatabaseService {
                     holidays.append(Holiday(id: id,
 //                                            createdBy: createdBy,
                                             title: title,
+                                            isWishlist: isWishlist,
                                             date: date,
                                             location: Location(id: locationID,
                                                                city: city,
@@ -99,7 +104,66 @@ class DatabaseService {
             }
         }
         // Keep track of the listener so we can close it later
-        holidayListener.append(listener)
+        visitedListener.append(listener)
+       
+    }
+    
+    /// This method gets all wishlist items from the database created by the signed in user
+    func getWishlist(completion: @escaping ([Holiday]) -> Void ) {
+     
+        // Get a reference to the database
+        let db = Firestore.firestore()
+        
+        // Perform a query against the holiday collection for any holidays where the createdBy field is the logged in user ID
+//        let holidaysQuery = db.collection("holidays")
+//            .whereField("createdBy", isEqualTo: AuthViewModel.getLoggedInUserID())
+        
+        let holidaysQuery = db.collection("users").document(AuthViewModel.getLoggedInUserID()).collection("wishlist")
+//            .order(by: "date") // This is creating issues with the listener and not pushing the same data between devices
+        
+        let listener = holidaysQuery.addSnapshotListener { snapshot, error in
+            
+            if snapshot != nil && error == nil {
+                
+                var holidays = [Holiday]()
+                
+                for doc in snapshot!.documents {
+                    
+                    let data = doc.data()
+                    let id = doc.documentID
+                    let title = data["title"] as? String ?? ""
+                    let isWishlist = data["isWishlist"] as? Bool ?? false
+//                    let createdBy = data["createdBy"] as? String ?? ""
+                    let city = data["city"] as? String ?? ""
+                    let country = data["country"] as? String ?? ""
+                    let locationID = data["locationID"] as? String ?? ""
+                    let latitude = data["latitude"] as? Double ?? 0
+                    let longitude = data["longitude"] as? Double ?? 0
+
+//                    print(mainImage)
+                    
+                    holidays.append(Holiday(id: id,
+//                                            createdBy: createdBy,
+                                            title: title,
+                                            isWishlist: isWishlist,
+                                            location: Location(id: locationID,
+                                                               city: city,
+                                                               country: country,
+                                                               latitude: latitude,
+                                                               longitude: longitude)))
+                    
+                
+                }
+                
+                completion(holidays)
+                
+            } else {
+                // there was an error
+                print("error retrieving holidays")
+            }
+        }
+        // Keep track of the listener so we can close it later
+        wishlistListener.append(listener)
        
     }
     
@@ -108,86 +172,89 @@ class DatabaseService {
         // Get reference to database
         let db = Firestore.firestore()
         
-//         Create a document
-        let doc = db.collection("users")
-            .document(AuthViewModel.getLoggedInUserID())
-            .collection("visited")
-            .addDocument(data: ["title" : title,
-                               "date" : date,
-                               "locationID" : locationID,
-                               "city" : city,
-                               "country" : country,
-                               "latitude" : latitude,
-                               "longitude" : longitude])
+            //         Create a document
+                    let doc = db.collection("users")
+                        .document(AuthViewModel.getLoggedInUserID())
+                        .collection("visited")
+                        .addDocument(data: ["title" : title,
+                                            "isWishlist" : false,
+                                            "date" : date,
+                                           "locationID" : locationID,
+                                           "city" : city,
+                                           "country" : country,
+                                           "latitude" : latitude,
+                                           "longitude" : longitude])
 
-        if let thumbnailImage = thumbnailImage {
+                    if let thumbnailImage = thumbnailImage {
 
-            // Create storage reference
-            let storageRef = Storage.storage().reference()
+                        // Create storage reference
+                        let storageRef = Storage.storage().reference()
 
-            // Turn image into data and reduce size
-//            let imageData = mainImage.jpegData(compressionQuality: 0.0)
-              let smallerImage = ImageHelper.compressImage(image: thumbnailImage)
-              let imageData = smallerImage.jpegData(compressionQuality: 0.2)
+                        // Turn image into data and reduce size
+            //            let imageData = mainImage.jpegData(compressionQuality: 0.0)
+                          let smallerImage = ImageHelper.compressImage(image: thumbnailImage)
+                          let imageData = smallerImage.jpegData(compressionQuality: 0.2)
 
-            // Check we were able to convert it into data
-            guard imageData != nil else { return }
+                        // Check we were able to convert it into data
+                        guard imageData != nil else { return }
 
-            // specify the filePath and name
-            let path = "images/\(UUID().uuidString).jpg"
-            let fileRef = storageRef.child(path)
+                        // specify the filePath and name
+                        let path = "images/\(UUID().uuidString).jpg"
+                        let fileRef = storageRef.child(path)
 
-            let uploadTask = fileRef.putData(imageData!, metadata: nil) { meta, error in
+                        let uploadTask = fileRef.putData(imageData!, metadata: nil) { meta, error in
 
-                if error == nil && meta != nil {
-                    // Get full URL to image
-                    fileRef.downloadURL { url, error in
+                            if error == nil && meta != nil {
+                                // Get full URL to image
+                                fileRef.downloadURL { url, error in
 
-                        if url != nil && error == nil {
+                                    if url != nil && error == nil {
 
-                            doc.setData(["thumbnailImage" : url!.absoluteString], merge: true) { error in
-                                if error == nil {
-                                    // Main image Success, notify caller
-                                    completion(true, "")
+                                        doc.setData(["thumbnailImage" : url!.absoluteString], merge: true) { error in
+                                            if error == nil {
+                                                // Main image Success, notify caller
+                                                completion(true, "")
 
+
+                                            }
+                                        }
+
+                                    } else {
+                                        // Wasn't successful grabbing the url for the main image
+                                        completion(false, error?.localizedDescription)
+                                    }
 
                                 }
+
+                            } else {
+                                // Main Image upload wasn't successful, notify caller
+                                completion(false, error?.localizedDescription)
                             }
 
-                        } else {
-                            // Wasn't successful grabbing the url for the main image
-                            completion(false, error?.localizedDescription)
                         }
 
+                    } else {
+                        // No image set
+                        completion(true, "")
+
                     }
-
-                } else {
-                    // Main Image upload wasn't successful, notify caller
-                    completion(false, error?.localizedDescription)
-                }
-
-            }
-
-        } else {
-            // No image set
-            completion(true, "")
-
-        }
+        
     
     }
     
     
     func createWishlistHoliday(title: String, date: Date, locationID: String, city : String, country: String, latitude: Double, longitude: Double, completion: @escaping (Bool, String?) -> Void) {
-     
+
         // Get reference to database
         let db = Firestore.firestore()
-        
+
         // Create a document
         let doc = db.collection("users")
             .document(AuthViewModel.getLoggedInUserID())
-            .collection("wishList")
-            
+            .collection("wishlist")
+
         doc.addDocument(data: ["title" : title,
+                               "isWishlist" : true,
                                "date" : date,
                                "locationID" : locationID,
                                "city" : city,
@@ -200,13 +267,16 @@ class DatabaseService {
                 completion(false, error?.localizedDescription)
             }
         }
-    
+
     }
     
     
     /// Closes the listeners when the app goes into the background
     func detachHolidayListner() {
-        for listener in holidayListener {
+        for listener in visitedListener {
+            listener.remove()
+        }
+        for listener in wishlistListener {
             listener.remove()
         }
     }
