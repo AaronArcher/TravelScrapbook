@@ -14,15 +14,6 @@ struct HolidayView: View {
     
     var holiday: Holiday
     
-    @State private var showImage = false
-    
-    let columns = [
-        GridItem(.adaptive(minimum: 110), spacing: 5)
-        ]
-
-    
-    @State private var selectedImage: UIImage?
-    
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -33,6 +24,7 @@ struct HolidayView: View {
                 ZStack {
                     
                     MainHolidayImage(holiday: holiday, iconSize: 100)
+                        .frame(width: geo.size.width, height: 300)
 
                     
                     Button {
@@ -56,56 +48,147 @@ struct HolidayView: View {
                     VStack {
                         HStack {
                             Text(holiday.title)
-                                .font(.title2)
-                                .foregroundColor(Color("Green2"))
-    
-                            Spacer()
-    
-//                            Text(holiday.date.formatted(date: .numeric, time: .omitted))
-//                                .italic()
-                        }
-    
-                        HStack {
-                            Text(holiday.location.city)
-    
-                            Text(holiday.location.country)
-                                .italic()
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                            
                             Spacer()
                         }
-    
+
                     }
                     .padding()
                     .background(
-                        .ultraThinMaterial
+                        Color("Green1").opacity(0.5)
+                            .background(.ultraThinMaterial)
                     )
                     .frame(maxHeight: .infinity, alignment: .bottom)
                 }
                 
             }
-            .frame(height: 280)
+            .frame(height: 300)
             .clipShape(
                 RoundedCorner(radius: 20, corners: [.bottomLeft, .bottomRight])
             )
             
             
+            VStack(alignment: .leading, spacing: 12) {
+                
+                HStack {
+                    
+                    Text("City:")
+                        .bold()
+                    
+                    Text(holiday.location.city)
+                    
+                    Spacer()
+                    
+                }
+                .padding(.horizontal)
+                .background(
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .foregroundColor(.white)
+                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                        .frame(height: 50)
+                )
+                .padding(.vertical)
+                
+                
+                HStack {
+                    
+                    Text("Country:")
+                        .bold()
+                    
+                    Text(holiday.location.country)
+                    
+                    Spacer()
+                    
+                }
+                .padding(.horizontal)
+                .background(
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .foregroundColor(.white)
+                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                        .frame(height: 50)
+                )
+                .padding(.vertical)
+                
+                HStack {
+                    
+                    Text("Date Visited:")
+                        .bold()
+                    
+                    Text(DateHelper.formatDate(date: holiday.date))
+                    
+                    Spacer()
+                    
+                }
+                .padding(.horizontal)
+                .background(
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .foregroundColor(.white)
+                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                        .frame(height: 50)
+                )
+                .padding(.vertical)
+                
+                HStack {
+                    
+                    Text("Visited with:")
+                        .bold()
+                    
+                    Text("Fiona")
+                    
+                    Spacer()
+                    
+                }
+                .padding(.horizontal)
+                .background(
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .foregroundColor(.white)
+                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                        .frame(height: 50)
+                )
+                .padding(.vertical)
+
+                
+            }
+            .padding(.horizontal)
+            .padding(.top, 20)
+          
+        
             Spacer()
+
+            Button {
+                // TODO: Delete holiday
+                
+            } label: {
+                
+                    Text("Delete")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 30)
+                        .background(
+                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                .foregroundColor(.red)
+                        )
+                
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.bottom, 20)
 
             
         }
         .foregroundColor(Color("Green1"))
         .ignoresSafeArea(edges: .top)
-        .fullScreenCover(isPresented: $showImage) { [selectedImage] in
-            ImageView(image: selectedImage ?? UIImage(systemName: "photo.fill")!)
-        }
         
         
     }
 }
 
 //struct HolidayView_Previews: PreviewProvider {
-//    
-//    
+//
+//
 //    static var previews: some View {
-//        HolidayView(holiday: Holiday(createdBy: "", title: "Prague with the guys!", date: Date.now, location: Location(city: "Prague", country: "Czech", coordinates: CLLocationCoordinate2D.init(latitude: 0, longitude: 0))))
+//        HolidayView(holiday: Holiday()
 //    }
 //}

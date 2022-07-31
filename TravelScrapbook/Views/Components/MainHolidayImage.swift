@@ -32,7 +32,7 @@ struct MainHolidayImage: View {
             } else {
                 
                 // Check if image is cached
-                if let cachedImage = CacheService.getImage(forKey: holiday.thumbnailImage!) {
+                if let cachedImage = CacheService.getImage(forKey: holiday.thumbnailImage ?? "") {
                     
                     cachedImage
                         .resizable()

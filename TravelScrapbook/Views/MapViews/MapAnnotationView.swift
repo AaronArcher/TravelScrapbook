@@ -35,7 +35,7 @@ struct MapAnnotationView: View {
                     Image(systemName: "heart.fill")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 25, height: 25)
+                        .frame(width: 27, height: 27)
                         .foregroundColor(Color("Green1"))
                     
                 }
@@ -53,7 +53,7 @@ struct MapAnnotationView: View {
                 MainHolidayImage(holiday: holiday, iconSize: 35)
                     .frame(width: 50, height: 50)
                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .padding(2)
+                    .padding(1)
                     .mask({
                         RoundedRectangle(cornerRadius: 10, style: .continuous)
                     })

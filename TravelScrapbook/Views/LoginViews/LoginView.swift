@@ -34,21 +34,21 @@ struct LoginView: View {
                     
                     Group {
                         
-                    Text("Welcome Back!")
-                        .font(.largeTitle)
-                        .padding(.top, 40)
-                    
-                    Text("Login Below")
-                        .font(.title)
-                        .foregroundColor(Color("Green3"))
-                        .padding(.bottom, 30)
-                    
-                    if errorMessage != nil {
-                        Text(errorMessage!)
-                            .foregroundColor(.red)
-                            .font(.footnote)
-                    }
-                    
+                        Text("Welcome Back!")
+                            .font(.largeTitle)
+                            .padding(.top, 40)
+                        
+                        Text("Login Below")
+                            .font(.title)
+                            .foregroundColor(Color("Green3"))
+                            .padding(.bottom, 30)
+                        
+                        if errorMessage != nil {
+                            Text(errorMessage!)
+                                .foregroundColor(.red)
+                                .font(.footnote)
+                        }
+                        
                     }
                     .padding(.horizontal)
                     
@@ -56,70 +56,51 @@ struct LoginView: View {
                     VStack(spacing: 0) {
                         
                         // Email
-                        VStack(spacing: 0) {
-                            TextField("Email", text: $email)
-                                .padding(.vertical, 5)
-                                .focused($emailFocused)
-                            
-//                            ZStack(alignment: .leading) {
-//                                Rectangle()
-//                                    .frame(height: 2)
-//                                    .foregroundColor(.clear)
-//                                    .cornerRadius(5)
-//
-//                                Rectangle()
-//                                    .frame(height: 2)
-//                                    .frame(maxWidth: emailFocused || !email.isEmpty ? .infinity : 0)
-//                                    .animation(.easeInOut, value: emailFocused)
-//                                    .foregroundColor(Color("Green1"))
-//                                    .cornerRadius(5)
-//
-//                            }
-//                            .padding(.trailing)
-                        }
-                        .padding()
-                        .background(
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                    .foregroundColor(.white)
-                                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                    .frame(height: 50)
-                                
-                                RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                    .trim(from: 0, to: emailFocused ? 1 : 0)
-                                    .stroke(Color("Green2"), lineWidth: 1)
-                                    .frame(height: 50)
-                                    .animation(.easeInOut(duration: 0.8), value: emailFocused)
-
+                        
+                        TextField("Email", text: $email)
+                            .padding(.vertical, 5)
+                            .focused($emailFocused)
+                        
+                            .padding()
+                            .background(
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                        .foregroundColor(.white)
+                                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                        .frame(height: 50)
                                     
-                            }
-                        )
+                                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                        .trim(from: 0, to: emailFocused ? 1 : 0)
+                                        .stroke(Color("Green2"), lineWidth: 1)
+                                        .frame(height: 50)
+                                        .animation(.easeInOut(duration: 0.8), value: emailFocused)
+                                    
+                                    
+                                }
+                            )
                         
                         // Password
-                        VStack(spacing: 0) {
-                            SecureField("Password", text: $password)
-                                .padding(.vertical, 5)
-                                .focused($passwordFocused)
-                            
-                        }
-                        .padding()
-                        .background(
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                    .foregroundColor(.white)
-                                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                    .frame(height: 50)
-                                
-                                RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                    .trim(from: 0, to: passwordFocused ? 1 : 0)
-                                    .stroke(Color("Green2"), lineWidth: 1)
-                                    .frame(height: 50)
-                                    .animation(.easeInOut(duration: 0.8), value: passwordFocused)
-
+                        SecureField("Password", text: $password)
+                            .padding(.vertical, 5)
+                            .focused($passwordFocused)
+                            .padding()
+                            .background(
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                        .foregroundColor(.white)
+                                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                        .frame(height: 50)
                                     
-                            }
-
-                        )
+                                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                        .trim(from: 0, to: passwordFocused ? 1 : 0)
+                                        .stroke(Color("Green2"), lineWidth: 1)
+                                        .frame(height: 50)
+                                        .animation(.easeInOut(duration: 0.8), value: passwordFocused)
+                                    
+                                    
+                                }
+                                
+                            )
                         
                         
                         Button {
@@ -166,7 +147,7 @@ struct LoginView: View {
                         
                     }
                     .padding(.horizontal)
-
+                    
                     
                 }
                 

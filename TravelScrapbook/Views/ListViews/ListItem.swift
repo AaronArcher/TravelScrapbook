@@ -17,10 +17,19 @@ struct ListItem: View {
 
         HStack {
             
-            MainHolidayImage(holiday: holiday, iconSize: 50)
-                .frame(width: 90, height: 90)
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .padding(.trailing)
+            if holiday.isWishlist {
+                Image(systemName: "heart.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 50, height: 50)
+                    .frame(width: 90, height: 90)
+                
+            } else {
+                MainHolidayImage(holiday: holiday, iconSize: 50)
+                    .frame(width: 90, height: 90)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .padding(.trailing)
+            }
             
             
             VStack(alignment: .leading) {
