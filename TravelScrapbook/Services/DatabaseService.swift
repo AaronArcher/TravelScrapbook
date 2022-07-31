@@ -15,7 +15,7 @@ class DatabaseService {
     var holidayListener = [ListenerRegistration]()
 
     
-    func setUserProfile(firstname: String, lastname: String, email: String, shareKey: String, completion: @escaping (Bool) -> Void) {
+    func setUserProfile(firstname: String, lastname: String, email: String, completion: @escaping (Bool) -> Void) {
      
 //        // Ensure user is logged in
 //        guard AuthViewModel.isUserLoggedIn() != false else {
@@ -30,8 +30,7 @@ class DatabaseService {
         let doc = db.collection("users").document(AuthViewModel.getLoggedInUserID())
         doc.setData(["firstname": firstname,
                      "lastname": lastname,
-                     "email": email,
-                     "shareKey": shareKey]) { error in
+                     "email": email]) { error in
             
             if error == nil {
                 // Save successful
@@ -104,81 +103,105 @@ class DatabaseService {
        
     }
     
-    func createHoliday(title: String, date: Date, locationID: String, city : String, country: String, latitude: Double, longitude: Double, thumbnailImage: UIImage?, completion: @escaping (Bool) -> Void) {
+    func createHoliday(title: String, date: Date, locationID: String, city : String, country: String, latitude: Double, longitude: Double, thumbnailImage: UIImage?, completion: @escaping (Bool, String?) -> Void) {
+     
+        // Get reference to database
+        let db = Firestore.firestore()
+        
+//         Create a document
+        let doc = db.collection("users")
+            .document(AuthViewModel.getLoggedInUserID())
+            .collection("visited")
+            .addDocument(data: ["title" : title,
+                               "date" : date,
+                               "locationID" : locationID,
+                               "city" : city,
+                               "country" : country,
+                               "latitude" : latitude,
+                               "longitude" : longitude])
+
+        if let thumbnailImage = thumbnailImage {
+
+            // Create storage reference
+            let storageRef = Storage.storage().reference()
+
+            // Turn image into data and reduce size
+//            let imageData = mainImage.jpegData(compressionQuality: 0.0)
+              let smallerImage = ImageHelper.compressImage(image: thumbnailImage)
+              let imageData = smallerImage.jpegData(compressionQuality: 0.2)
+
+            // Check we were able to convert it into data
+            guard imageData != nil else { return }
+
+            // specify the filePath and name
+            let path = "images/\(UUID().uuidString).jpg"
+            let fileRef = storageRef.child(path)
+
+            let uploadTask = fileRef.putData(imageData!, metadata: nil) { meta, error in
+
+                if error == nil && meta != nil {
+                    // Get full URL to image
+                    fileRef.downloadURL { url, error in
+
+                        if url != nil && error == nil {
+
+                            doc.setData(["thumbnailImage" : url!.absoluteString], merge: true) { error in
+                                if error == nil {
+                                    // Main image Success, notify caller
+                                    completion(true, "")
+
+
+                                }
+                            }
+
+                        } else {
+                            // Wasn't successful grabbing the url for the main image
+                            completion(false, error?.localizedDescription)
+                        }
+
+                    }
+
+                } else {
+                    // Main Image upload wasn't successful, notify caller
+                    completion(false, error?.localizedDescription)
+                }
+
+            }
+
+        } else {
+            // No image set
+            completion(true, "")
+
+        }
+    
+    }
+    
+    
+    func createWishlistHoliday(title: String, date: Date, locationID: String, city : String, country: String, latitude: Double, longitude: Double, completion: @escaping (Bool, String?) -> Void) {
      
         // Get reference to database
         let db = Firestore.firestore()
         
         // Create a document
-        let doc = db.collection("holidays").document()
-        doc.setData(["createdBy" : AuthViewModel.getLoggedInUserID(),
-                     "title" : title,
-                     "date" : date,
-                     "locationID" : locationID,
-                     "city" : city,
-                     "country" : country,
-                     "latitude" : latitude,
-                     "longitude" : longitude
-                    ])
-                
-        // Check if a main image is passed through
-        if let thumbnailImage = thumbnailImage {
+        let doc = db.collection("users")
+            .document(AuthViewModel.getLoggedInUserID())
+            .collection("wishList")
             
-            // Create storage reference
-            let storageRef = Storage.storage().reference()
-            
-            // Turn image into data and reduce size
-//            let imageData = mainImage.jpegData(compressionQuality: 0.0)
-              let smallerImage = ImageHelper.compressImage(image: thumbnailImage)
-              let imageData = smallerImage.jpegData(compressionQuality: 0.2)
-            
-            // Check we were able to convert it into data
-            guard imageData != nil else { return }
-            
-            // specify the filePath and name
-            let path = "images/\(UUID().uuidString).jpg"
-            let fileRef = storageRef.child(path)
-            
-            let uploadTask = fileRef.putData(imageData!, metadata: nil) { meta, error in
-                
-                if error == nil && meta != nil {
-                    // Get full URL to image
-                    fileRef.downloadURL { url, error in
-                        
-                        if url != nil && error == nil {
-                            
-                            doc.setData(["thumbnailImage" : url!.absoluteString], merge: true) { error in
-                                if error == nil {
-                                    // Main image Success, notify caller
-                                    completion(true)
-                                    
-                                    
-                                }
-                            }
-                            
-                        } else {
-                            // Wasn't successful grabbing the url for the main image
-                            completion(false)
-                        }
-                        
-                    }
-                    
-                } else {
-                    // Main Image upload wasn't successful, notify caller
-                    completion(false)
-                }
-                
+        doc.addDocument(data: ["title" : title,
+                               "date" : date,
+                               "locationID" : locationID,
+                               "city" : city,
+                               "country" : country,
+                               "latitude" : latitude,
+                               "longitude" : longitude]) { error in
+            if error == nil {
+                completion(true, "")
+            } else {
+                completion(false, error?.localizedDescription)
             }
-            
-        } else {
-            // No image set
-            completion(true)
-            
-            
-            
         }
-    }
     
+    }
     
     
     /// Closes the listeners when the app goes into the background

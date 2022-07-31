@@ -14,6 +14,5 @@ struct User: Codable, Identifiable {
     var firstname: String
     var lastname: String
     var email: String
-    var shareKey: String
     
 }

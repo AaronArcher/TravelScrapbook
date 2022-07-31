@@ -43,6 +43,9 @@ struct AddNewHoliday: View {
     
     @State private var infoContentSize: CGFloat = .zero
     
+    @State private var showalert = false
+    @State private var errorMessage: String?
+    
     
     var body: some View {
 
@@ -81,54 +84,96 @@ struct AddNewHoliday: View {
 
                         Spacer()
                         
-                        Button {
-                            isSaving = true
-                            
-                            DispatchQueue.main.async {
+                            // Add button
+                            Button {
+                                titleFocused = false
+                                cityFocused = false
+                                countryFocused = false
+                                isSaving = true
                                 
-                                DatabaseService().createHoliday(title: holidayTitle, date: holidayDate, locationID: UUID().uuidString, city: holidayCity, country: holidayCountry, latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude, thumbnailImage: thumbnailImage) { success in
-                                    
-                                    if success {
-                                        
-                                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                            addNewHoliday.toggle()
-                                            showMarker = false
-                                            showCancel = false
+                                if category == "Visited" {
+                                    // Save Visited item
+                                    DispatchQueue.main.async {
+                                        DatabaseService().createHoliday(title: holidayTitle, date: holidayDate, locationID: UUID().uuidString, city: holidayCity, country: holidayCountry, latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude, thumbnailImage: thumbnailImage) { success, error in
+                                            
+                                            if success {
+                                                
+                                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                                    addNewHoliday.toggle()
+                                                    showMarker = false
+                                                    showCancel = false
+                                                }
+                                                withAnimation {
+                                                    showAddNewHolidayContent.toggle()
+                                                }
+                                                
+                                                holidayTitle = ""
+                                                holidayDate = Date()
+                                                holidayCity = ""
+                                                holidayCountry = ""
+                                                
+                                                
+                                            }
+                                            else {
+                                                //  Show error
+                                                isSaving = false
+                                                showalert = true
+                                                errorMessage = error
+                                            }
                                         }
-                                        withAnimation {
-                                            showAddNewHolidayContent.toggle()
-                                        }
-                                        
-                                        holidayTitle = ""
-                                        holidayDate = Date()
-                                        holidayCity = ""
-                                        holidayCountry = ""
-                                        
-                                        
                                     }
-                                    
+
+                                } else {
+                                    // Save wish list item
+                                    DispatchQueue.main.async {
+                                        DatabaseService().createWishlistHoliday(title: holidayTitle, date: holidayDate, locationID: UUID().uuidString, city: holidayCity, country: holidayCountry, latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude) { success, error in
+
+                                            if success {
+
+                                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                                    addNewHoliday.toggle()
+                                                    showMarker = false
+                                                    showCancel = false
+                                                }
+                                                withAnimation {
+                                                    showAddNewHolidayContent.toggle()
+                                                }
+
+                                                holidayTitle = ""
+                                                holidayDate = Date()
+                                                holidayCity = ""
+                                                holidayCountry = ""
+
+
+                                            }
+                                            else {
+                                                // Show error
+                                                isSaving = false
+                                                showalert = true
+                                                errorMessage = error
+                                            }
+                                        }
+                                    }
+
                                 }
                                 
-                            }
-                        } label: {
-                            
-                            Image(systemName: "plus")
-                                .resizable()
-                                .matchedGeometryEffect(id: "plus", in: namespace)
-                                .frame(width: 20, height: 20)
-                        }
-                        .foregroundColor(Color("Green1"))
-                        .disabled(isSaving)
 
+                            } label: {
+                                
+                                Image(systemName: "plus")
+                                    .resizable()
+                                    .matchedGeometryEffect(id: "plus", in: namespace)
+                                    .frame(width: 20, height: 20)
+                            }
+                            .foregroundColor(Color("Green1"))
+                            .disabled(isSaving)
+                            
 
                     }
                     .padding(.bottom, 10)
 
                     
-    //                ScrollView {
                         information
-    //                }
-    //                .frame(height: infoContentSize)
             
                     
                 }
@@ -137,13 +182,13 @@ struct AddNewHoliday: View {
             
                 if isSaving {
                     VStack {
-                    
+
                         ProgressView()
                             .tint(Color("Green2"))
 
                         Text("Saving...")
                             .font(.title)
-                        
+
                     }
                     .padding(.vertical, 5)
                     .padding(.horizontal, 10)
@@ -179,6 +224,9 @@ struct AddNewHoliday: View {
         )
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(selectedImage: $thumbnailImage)
+        }
+        .alert(errorMessage ?? "", isPresented: $showalert) {
+            Button("OK", role: .cancel) { }
         }
 
 
@@ -318,22 +366,6 @@ struct AddNewHoliday: View {
                 
             
         }
-            .overlay(
-                GeometryReader { geo in
-
-                    Color.clear.onAppear {
-                        infoContentSize = geo.size.height
-                    }
-                        .onChange(of: geo.size.height, perform: { newValue in
-                            DispatchQueue.main.async {
-                                withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                                    infoContentSize = newValue
-                                }
-                            }
-                        })
-
-                    }
-                )
         
     }
     

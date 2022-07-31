@@ -17,7 +17,6 @@ struct CreateAccountView: View {
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var email = ""
-    @State private var shareKey = ""
     @State private var password = ""
     @State private var confirmPassword = ""
     
@@ -25,7 +24,6 @@ struct CreateAccountView: View {
     @FocusState private var firstNameFocused: Bool
     @FocusState private var lastNameFocused: Bool
     @FocusState private var emailFocused: Bool
-    @FocusState private var shareKeyFocused: Bool
     @FocusState private var passwordFocused: Bool
     @FocusState private var confirmPasswordFocused: Bool
 
@@ -255,7 +253,7 @@ struct CreateAccountView: View {
             
                 if error == nil {
                         
-                    DatabaseService().setUserProfile(firstname: firstName, lastname: lastName, email: email, shareKey: shareKey) { isSuccess in
+                    DatabaseService().setUserProfile(firstname: firstName, lastname: lastName, email: email) { isSuccess in
                         if isSuccess == true {
                             // dismiss
                             showLogin = !AuthViewModel.isUserLoggedIn()
