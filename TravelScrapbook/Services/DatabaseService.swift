@@ -71,12 +71,13 @@ class DatabaseService {
                     let title = data["title"] as? String ?? ""
                     let isWishlist = data["isWishlist"] as? Bool ?? false
 //                    let createdBy = data["createdBy"] as? String ?? ""
-                    let date = data["date"] as? Date ?? Date()
+                    let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
                     let city = data["city"] as? String ?? ""
                     let country = data["country"] as? String ?? ""
                     let locationID = data["locationID"] as? String ?? ""
                     let latitude = data["latitude"] as? Double ?? 0
                     let longitude = data["longitude"] as? Double ?? 0
+                    let visitedWith = data["visitedWith"] as? String ?? ""
                     let thumbnailImage = data["thumbnailImage"] as? String ?? ""
 
 //                    print(mainImage)
@@ -85,6 +86,7 @@ class DatabaseService {
 //                                            createdBy: createdBy,
                                             title: title,
                                             isWishlist: isWishlist,
+                                            visitedWith: visitedWith,
                                             date: date,
                                             location: Location(id: locationID,
                                                                city: city,
@@ -167,7 +169,8 @@ class DatabaseService {
        
     }
     
-    func createHoliday(title: String, date: Date, locationID: String, city : String, country: String, latitude: Double, longitude: Double, thumbnailImage: UIImage?, completion: @escaping (Bool, String?) -> Void) {
+    /// Creates a new holiday in the visited category/collection
+    func createHoliday(title: String, date: Date, locationID: String, city : String, country: String, latitude: Double, longitude: Double, visitedWith: String, thumbnailImage: UIImage?, completion: @escaping (Bool, String?) -> Void) {
      
         // Get reference to database
         let db = Firestore.firestore()
@@ -183,7 +186,8 @@ class DatabaseService {
                                            "city" : city,
                                            "country" : country,
                                            "latitude" : latitude,
-                                           "longitude" : longitude])
+                                           "longitude" : longitude,
+                                            "visitedWith" : visitedWith])
 
                     if let thumbnailImage = thumbnailImage {
 
@@ -199,7 +203,7 @@ class DatabaseService {
                         guard imageData != nil else { return }
 
                         // specify the filePath and name
-                        let path = "images/\(UUID().uuidString).jpg"
+                        let path = "images/\(doc.documentID).jpg"
                         let fileRef = storageRef.child(path)
 
                         let uploadTask = fileRef.putData(imageData!, metadata: nil) { meta, error in
@@ -242,7 +246,7 @@ class DatabaseService {
     
     }
     
-    
+    /// creates a new holiday in the wishlist category/collection
     func createWishlistHoliday(title: String, date: Date, locationID: String, city : String, country: String, latitude: Double, longitude: Double, completion: @escaping (Bool, String?) -> Void) {
 
         // Get reference to database
@@ -270,6 +274,155 @@ class DatabaseService {
 
     }
     
+    /// Edits a visited holiday
+    func editVisitedHoliday(holiday: Holiday, title: String, visitedWith: String, city: String, country: String, date: Date, newImage: UIImage?, completion: @escaping (Bool, String?) -> Void) {
+        
+        var newTitle = title
+        var newVisitedWith = visitedWith
+        var newCity = city
+        var newCountry = country
+        if newTitle == "" { newTitle = holiday.title }
+        if newVisitedWith == "" { newVisitedWith = holiday.visitedWith ?? "" }
+        if newCity == "" { newCity = holiday.location.city }
+        if newCountry == "" { newCountry = holiday.location.country }
+        
+        // Get reference to database
+        let db = Firestore.firestore()
+        
+        // Get specific document
+        let doc = db.collection("users")
+            .document(AuthViewModel.getLoggedInUserID())
+            .collection("visited")
+            .document(holiday.id ?? "")
+        
+        doc.setData(["title" : newTitle,
+                     "visitedWith" : newVisitedWith,
+                     "date" : date,
+                     "city" : newCity,
+                     "country" : newCountry], merge: true) { error in
+            
+            if error == nil {
+                
+                completion(true, "")
+                // No error, continue and check if there is a new image
+                if let newImage = newImage {
+
+                    // Create storage reference
+                    let storageRef = Storage.storage().reference()
+
+                    // Turn image into data and reduce size
+        //            let imageData = mainImage.jpegData(compressionQuality: 0.0)
+                      let smallerImage = ImageHelper.compressImage(image: newImage)
+                      let imageData = smallerImage.jpegData(compressionQuality: 0.2)
+
+                    // Check we were able to convert it into data
+                    guard imageData != nil else { return }
+
+                    // specify the filePath and name
+                    let path = "images/\(doc.documentID).jpg"
+                    let fileRef = storageRef.child(path)
+
+                    let uploadTask = fileRef.putData(imageData!, metadata: nil) { meta, error in
+
+                        if error == nil && meta != nil {
+                            // Get full URL to image
+                            fileRef.downloadURL { url, error in
+
+                                if url != nil && error == nil {
+
+                                    doc.setData(["thumbnailImage" : url!.absoluteString], merge: true) { error in
+                                        if error == nil {
+                                            // Main image Success, notify caller
+                                            completion(true, "")
+
+
+                                        }
+                                    }
+
+                                } else {
+                                    // Wasn't successful grabbing the url for the main image
+                                    completion(false, error?.localizedDescription)
+                                }
+
+                            }
+
+                        } else {
+                            // Main Image upload wasn't successful, notify caller
+                            completion(false, error?.localizedDescription)
+                        }
+
+                    }
+
+                } else {
+                    // No image set
+                    completion(true, "")
+
+                }
+                
+            } else {
+                // Error occured
+                completion(false, error?.localizedDescription)
+            }
+            
+        }
+        
+        
+    }
+    
+    /// Deletes the holiday and any thumbnail image passed through
+    func deleteHoliday(holiday: Holiday, completion: @escaping (Bool, String?) -> Void) {
+        
+        var selectedCategory = ""
+        
+        if holiday.isWishlist {
+            selectedCategory = "wishlist"
+        } else {
+            selectedCategory = "visited"
+        }
+        
+        let db = Firestore.firestore()
+        
+        let doc = db.collection("users")
+            .document(AuthViewModel.getLoggedInUserID())
+            .collection(selectedCategory)
+            .document(holiday.id ?? "")
+        
+        doc.delete() { error in
+            
+            if error == nil {
+                
+                if holiday.thumbnailImage != nil {
+                    // need to delete this image from Storage
+                    
+                    let storageRef = Storage.storage().reference()
+                    let path = "images/\(holiday.id ?? "").jpg"
+                    let fileRef = storageRef.child(path)
+
+                    fileRef.delete { error in
+                        
+                        if error == nil {
+                            // deletion successful
+                            completion(true, "")
+                        } else {
+                            // error occured
+                            completion(false, error?.localizedDescription)
+                        }
+                        
+                    }
+                    
+                } else {
+                    // no image, deletion successful
+                    completion(true, "")
+                }
+                
+            } else {
+                completion(false, error?.localizedDescription)
+            }
+            
+        }
+        
+        
+    }
     
     /// Closes the listeners when the app goes into the background
     func detachHolidayListner() {

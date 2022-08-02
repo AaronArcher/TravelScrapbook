@@ -29,6 +29,7 @@ struct AddNewHoliday: View {
     @Binding var holidayTitle: String
     @Binding var holidayCity: String
     @Binding var holidayCountry: String
+    @Binding var visitedWith: String
     @Binding var holidayDate: Date
     
     let namespace: Namespace.ID
@@ -38,7 +39,8 @@ struct AddNewHoliday: View {
     @FocusState private var titleFocused: Bool
     @FocusState private var cityFocused: Bool
     @FocusState private var countryFocused: Bool
-    
+    @FocusState private var visitedWithFocused: Bool
+
     @State private var isSaving = false
     
     @State private var infoContentSize: CGFloat = .zero
@@ -89,12 +91,14 @@ struct AddNewHoliday: View {
                                 titleFocused = false
                                 cityFocused = false
                                 countryFocused = false
+                                visitedWithFocused = false
                                 isSaving = true
+                            
                                                                 
                                 if category == "Visited" {
                                     // Save Visited item
                                     DispatchQueue.main.async {
-                                        DatabaseService().createHoliday(title: holidayTitle, date: holidayDate, locationID: UUID().uuidString, city: holidayCity, country: holidayCountry, latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude, thumbnailImage: thumbnailImage) { success, error in
+                                        DatabaseService().createHoliday(title: holidayTitle, date: holidayDate, locationID: UUID().uuidString, city: holidayCity, country: holidayCountry, latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude, visitedWith: visitedWith, thumbnailImage: thumbnailImage) { success, error in
                                             
                                             if success {
                                                 
@@ -140,9 +144,9 @@ struct AddNewHoliday: View {
                                                 }
 
                                                 holidayTitle = ""
-                                                holidayDate = Date()
                                                 holidayCity = ""
                                                 holidayCountry = ""
+                                                holidayDate = Date()
 
 
                                             }
@@ -283,7 +287,7 @@ struct AddNewHoliday: View {
                 
             VStack(alignment: .leading, spacing: 10) {
             
-            
+            // Title
             VStack(spacing: 0) {
                 TextField("Holiday Title", text: $holidayTitle)
                     .padding(.vertical, 5)
@@ -304,54 +308,85 @@ struct AddNewHoliday: View {
 
                 }
                 .padding(.trailing)
-        }
-                
-
-            VStack(spacing: 0) {
-                TextField("City", text: $holidayCity)
-                    .padding(.vertical, 5)
-                    .focused($cityFocused)
-                
-                ZStack(alignment: .leading) {
-                    Rectangle()
-                        .frame(height: 2)
-                        .foregroundColor(.gray.opacity(0.5))
-                        .cornerRadius(5)
-                    
-                    Rectangle()
-                        .frame(height: 2)
-                        .frame(maxWidth: cityFocused || !holidayCity.isEmpty ? .infinity : 0)
-                        .animation(.easeInOut, value: cityFocused)
-                        .foregroundColor(Color("Green1"))
-                        .cornerRadius(5)
-
-                }
-                .padding(.trailing)
             }
-
-            VStack(spacing: 0) {
-                TextField("Country", text: $holidayCountry)
-                    .padding(.vertical, 5)
-                    .focused($countryFocused)
                 
-                ZStack(alignment: .leading) {
-                    Rectangle()
-                        .frame(height: 2)
-                        .foregroundColor(.gray.opacity(0.5))
-                        .cornerRadius(5)
+                // City and Country
+                HStack {
                     
-                    Rectangle()
-                        .frame(height: 2)
-                        .frame(maxWidth: countryFocused || !holidayCountry.isEmpty ? .infinity : 0)
-                        .animation(.easeInOut, value: countryFocused)
-                        .foregroundColor(Color("Green1"))
-                        .cornerRadius(5)
+                    VStack(spacing: 0) {
+                        TextField("City", text: $holidayCity)
+                            .padding(.vertical, 5)
+                            .focused($cityFocused)
+                        
+                        ZStack(alignment: .leading) {
+                            Rectangle()
+                                .frame(height: 2)
+                                .foregroundColor(.gray.opacity(0.5))
+                                .cornerRadius(5)
+                            
+                            Rectangle()
+                                .frame(height: 2)
+                                .frame(maxWidth: cityFocused || !holidayCity.isEmpty ? .infinity : 0)
+                                .animation(.easeInOut, value: cityFocused)
+                                .foregroundColor(Color("Green1"))
+                                .cornerRadius(5)
 
+                        }
+                        .padding(.trailing)
+                    }
+                    
+                    Spacer()
+
+                    VStack(spacing: 0) {
+                        TextField("Country", text: $holidayCountry)
+                            .padding(.vertical, 5)
+                            .focused($countryFocused)
+                        
+                        ZStack(alignment: .leading) {
+                            Rectangle()
+                                .frame(height: 2)
+                                .foregroundColor(.gray.opacity(0.5))
+                                .cornerRadius(5)
+                            
+                            Rectangle()
+                                .frame(height: 2)
+                                .frame(maxWidth: countryFocused || !holidayCountry.isEmpty ? .infinity : 0)
+                                .animation(.easeInOut, value: countryFocused)
+                                .foregroundColor(Color("Green1"))
+                                .cornerRadius(5)
+
+                        }
+                        .padding(.trailing)
+                    
                 }
-                .padding(.trailing)
+                
+            
             }
 
             if category == "Visited" {
+                
+                // Title
+                VStack(spacing: 0) {
+                    TextField("Visited With:", text: $visitedWith)
+                        .padding(.vertical, 5)
+                        .focused($visitedWithFocused)
+                    
+                    ZStack(alignment: .leading) {
+                        Rectangle()
+                            .frame(height: 2)
+                            .foregroundColor(.gray.opacity(0.5))
+                            .cornerRadius(5)
+                        
+                        Rectangle()
+                            .frame(height: 2)
+                            .frame(maxWidth: visitedWithFocused || !visitedWith.isEmpty ? .infinity : 0)
+                            .animation(.easeInOut, value: visitedWithFocused)
+                            .foregroundColor(Color("Green1"))
+                            .cornerRadius(5)
+
+                    }
+                    .padding(.trailing)
+                }
                 
                 thumbnailImageSection
                     .padding(.vertical, 5)

@@ -13,13 +13,15 @@ struct HolidayView: View {
     @Environment(\.dismiss) private var dismiss
     
     var holiday: Holiday
-    
+
     
     var body: some View {
+        
+        NavigationView {
+        
         VStack(alignment: .leading) {
             
             //MARK: Header Image
-          
             GeometryReader { geo in
                 ZStack {
                     
@@ -27,22 +29,51 @@ struct HolidayView: View {
                         .frame(width: geo.size.width, height: 300)
 
                     
+                    HStack {
+                    
                     Button {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
-                            .font(.title2)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 18, height: 18)
                             .foregroundColor(Color("Green1"))
-                            .padding(8)
                             .background(
                                 RoundedRectangle(cornerRadius: 10, style: .continuous)
                                     .fill(.white)
+                                    .frame(width: 37, height: 37)
                                     .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                             )
                         
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                    .padding()
+                        
+                        Spacer()
+
+                        NavigationLink {
+                            
+                            EditHolidayView(holiday: holiday, newDate: holiday.date ?? Date())
+                        
+                        } label: {
+                            
+                            Image(systemName: "square.and.pencil")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 23, height: 23)
+                                .foregroundColor(Color("Green1"))
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .fill(.white)
+                                        .frame(width: 37, height: 37)
+                                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                )
+                            
+                        }
+                                            
+                    
+                }
+                    .frame(maxHeight: .infinity, alignment: .top)
+                    .padding(25)
                     .padding(.top, 15)
                                     
                     VStack {
@@ -70,117 +101,142 @@ struct HolidayView: View {
             )
             
             
-            VStack(alignment: .leading, spacing: 12) {
-                
-                HStack {
+                VStack(alignment: .leading, spacing: 12) {
                     
-                    Text("City:")
-                        .bold()
+                    HStack {
+                        
+                        Text("City:")
+                            .bold()
+                        
+                        Text(holiday.location.city)
+                        
+                        Spacer()
+                        
+                    }
+                    .padding(.horizontal)
+                    .background(
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .foregroundColor(.white)
+                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                            .frame(height: 50)
+                    )
+                    .padding(.vertical)
                     
-                    Text(holiday.location.city)
                     
-                    Spacer()
+                    HStack {
+                        
+                        Text("Country:")
+                            .bold()
+                        
+                        Text(holiday.location.country)
+                        
+                        Spacer()
+                        
+                    }
+                    .padding(.horizontal)
+                    .background(
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .foregroundColor(.white)
+                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                            .frame(height: 50)
+                    )
+                    .padding(.vertical)
                     
-                }
-                .padding(.horizontal)
-                .background(
-                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .foregroundColor(.white)
-                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                        .frame(height: 50)
-                )
-                .padding(.vertical)
-                
-                
-                HStack {
+                    HStack {
+                        
+                        Text("Date Visited:")
+                            .bold()
+                        
+                        Text(DateHelper.formatDate(date: holiday.date))
+                        
+                        Spacer()
+                        
+                    }
+                    .padding(.horizontal)
+                    .background(
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .foregroundColor(.white)
+                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                            .frame(height: 50)
+                    )
+                    .padding(.vertical)
                     
-                    Text("Country:")
-                        .bold()
-                    
-                    Text(holiday.location.country)
-                    
-                    Spacer()
-                    
-                }
-                .padding(.horizontal)
-                .background(
-                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .foregroundColor(.white)
-                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                        .frame(height: 50)
-                )
-                .padding(.vertical)
-                
-                HStack {
-                    
-                    Text("Date Visited:")
-                        .bold()
-                    
-                    Text(DateHelper.formatDate(date: holiday.date))
-                    
-                    Spacer()
-                    
-                }
-                .padding(.horizontal)
-                .background(
-                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .foregroundColor(.white)
-                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                        .frame(height: 50)
-                )
-                .padding(.vertical)
-                
-                HStack {
-                    
-                    Text("Visited with:")
-                        .bold()
-                    
-                    Text("Fiona")
-                    
-                    Spacer()
-                    
-                }
-                .padding(.horizontal)
-                .background(
-                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .foregroundColor(.white)
-                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                        .frame(height: 50)
-                )
-                .padding(.vertical)
+                    HStack {
+                        
+                        Text("Visited with:")
+                            .bold()
+                        
+                            
+                        Text(holiday.visitedWith ?? "")
+                        
+                        
+                        
+                        Spacer()
+                        
+                        
+                    }
+                    .padding(.horizontal)
+                    .background(
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .foregroundColor(.white)
+                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                            .frame(height: 50)
+                    )
+                    .padding(.vertical, 20)
 
-                
-            }
-            .padding(.horizontal)
-            .padding(.top, 20)
-          
+                    
+                }
+                .padding(.horizontal)
+                .padding(.top, 20)
+                .padding(.bottom, 10)
+            
         
-            Spacer()
 
-            Button {
-                // TODO: Delete holiday
-                
-            } label: {
-                
+                                    
+                    // Delete Button
+                    Button {
+                       
+                        // Delete holiday
+                        DatabaseService().deleteHoliday(holiday: holiday) { success, error in
+                            if success {
+                                
+                                DispatchQueue.main.async {
+                                    dismiss()
+                                }
+                                
+                            } else {
+                                // handle error
+                                
+                            }
+                        }
+                        
+                } label: {
+                    
                     Text("Delete")
-                        .font(.title2)
-                        .foregroundColor(.white)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 30)
-                        .background(
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.red)
-                        )
-                
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.bottom, 20)
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 30)
+                            .background(
+                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                    .foregroundColor(.red)
+                            )
+                            .frame(maxWidth: .infinity)
+                    
+                }
+                    
+                 
+            
+            Spacer()
 
             
         }
         .foregroundColor(Color("Green1"))
         .ignoresSafeArea(edges: .top)
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
         
+        }
         
     }
 }

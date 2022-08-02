@@ -14,6 +14,7 @@ struct Holiday: Identifiable, Codable {
     @DocumentID var id: String?
     var title: String
     var isWishlist: Bool
+    var visitedWith: String?
     @ServerTimestamp var date: Date?
     var location: Location
     var thumbnailImage: String?

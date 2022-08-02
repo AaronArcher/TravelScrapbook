@@ -32,6 +32,7 @@ struct RootView: View {
     @State var holidayTitle = ""
     @State var holidayCity = ""
     @State var holidayCountry = ""
+    @State var visitedWith = ""
     @State var holidayDate = Date()
     
     @Namespace var namespace
@@ -162,6 +163,7 @@ struct RootView: View {
                                   holidayTitle: $holidayTitle,
                                   holidayCity: $holidayCity,
                                   holidayCountry: $holidayCountry,
+                                  visitedWith: $visitedWith,
                                   holidayDate: $holidayDate,
                                   namespace: namespace)
 
@@ -187,7 +189,9 @@ struct RootView: View {
                 LoginView(showLogin: $showLogin)
             }
             .onAppear {
-                holidayvm.getholidays()
+                if AuthViewModel.isUserLoggedIn() {
+                    holidayvm.getholidays()
+                }
             }
             .onChange(of: scenePhase) { newPhase in
                 

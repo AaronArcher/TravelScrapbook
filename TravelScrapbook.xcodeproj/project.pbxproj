@@ -41,6 +41,7 @@
 		EEC032EA2864F71000CE6682 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032E92864F71000CE6682 /* RootView.swift */; };
 		EEC032F02864FC4E00CE6682 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032EF2864FC4E00CE6682 /* Constants.swift */; };
 		EEC032F22864FCC600CE6682 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC032F12864FCC600CE6682 /* Extensions.swift */; };
+		EEE7CF222899B2FD00E7783F /* EditHolidayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE7CF212899B2FC00E7783F /* EditHolidayView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		EEC032E92864F71000CE6682 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		EEC032EF2864FC4E00CE6682 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EEC032F12864FCC600CE6682 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		EEE7CF212899B2FC00E7783F /* EditHolidayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHolidayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				EE81F70B2868B92600350CD8 /* HolidayView.swift */,
+				EEE7CF212899B2FC00E7783F /* EditHolidayView.swift */,
 				EE82E45D286E4B6C00AFC543 /* ImageView.swift */,
 			);
 			path = HolidayViews;
@@ -352,6 +355,7 @@
 				EE95739128901EF1006F42FF /* User.swift in Sources */,
 				EE9C0BB82896ECB900F353B2 /* SettingsView.swift in Sources */,
 				EE9C0BAD289281F000F353B2 /* ImageHelper.swift in Sources */,
+				EEE7CF222899B2FD00E7783F /* EditHolidayView.swift in Sources */,
 				EE1066C52888859500F36351 /* RoundedCornerShape.swift in Sources */,
 				EE95739328905114006F42FF /* MainHolidayImage.swift in Sources */,
 				EE82E45E286E4B6C00AFC543 /* ImageView.swift in Sources */,
