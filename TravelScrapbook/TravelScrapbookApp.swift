@@ -11,13 +11,14 @@ import Firebase
 @main
 struct TravelScrapbookApp: App {
     
-//    @StateObject var vm = HolidayViewModel()
+    @StateObject var holidayVM = HolidayViewModel()
+    @StateObject var mapVM = MapViewModel()
     
     var body: some Scene {
         WindowGroup {
             RootView()
-                .environmentObject(HolidayViewModel())
-                .environmentObject(MapViewModel())
+                .environmentObject(holidayVM)
+                .environmentObject(mapVM)
         }
     }
     

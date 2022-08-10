@@ -31,68 +31,7 @@ struct ListView: View {
                 
             } else {
                 
-                switch holidayvm.selectedCategory {
-                    
-                case .all:
-                    List((holidayvm.visited + holidayvm.wishlist)) { holiday in
-                        
-                        Button {
-                            showHoliday = true
-                        } label: {
-                            ListItem(holiday: holiday)
-                                    .padding(.vertical, 5)
-                        }
-                        .fullScreenCover(isPresented: $showHoliday) {
-                            HolidayView(holiday: holiday)
-                        }
-                            
-                        }
-                        .listRowSeparatorTint(Color("Green1"))
-                        .listStyle(.plain)
-                        .padding(.vertical)
-                        
-                    
-                case .visited:
-                    List(holidayvm.visited) { holiday in
-                        
-                        Button {
-                            showHoliday = true
-                        } label: {
-                            ListItem(holiday: holiday)
-                                    .padding(.vertical, 5)
-                        }
-                        .fullScreenCover(isPresented: $showHoliday) {
-                            HolidayView(holiday: holiday)
-                        }
-                            
-                        }
-                        .listRowSeparatorTint(Color("Green1"))
-                        .listStyle(.plain)
-                        .padding(.vertical)
-                        
-                    
-                case .wishlist:
-                    List(holidayvm.wishlist) { holiday in
-                        
-                        Button {
-                            showHoliday = true
-                        } label: {
-                            ListItem(holiday: holiday)
-                                    .padding(.vertical, 5)
-                        }
-                        .fullScreenCover(isPresented: $showHoliday) {
-                            HolidayView(holiday: holiday)
-                        }
-                            
-                        }
-                        .listRowSeparatorTint(Color("Green1"))
-                        .listStyle(.plain)
-                        .padding(.vertical)
-                        
-                    
-                }
-                
-                List((holidayvm.visited + holidayvm.wishlist)) { holiday in
+                List(holidayvm.visited) { holiday in
                     
                     Button {
                         showHoliday = true
@@ -108,7 +47,7 @@ struct ListView: View {
                     .listRowSeparatorTint(Color("Green1"))
                     .listStyle(.plain)
                     .padding(.vertical)
-                    
+                
                     
             }
             

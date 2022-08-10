@@ -197,6 +197,11 @@ struct RootView: View {
                 
                 if newPhase == .active {
                     print("Active")
+                    // if user sends app to background, cached images break and do not reload, call this function when coming back to active to fix this
+                    if AuthViewModel.isUserLoggedIn() {
+                        holidayvm.getholidays()
+                    }
+                    
                 } else if newPhase == .inactive {
                     print("Inactive")
                 } else if newPhase == .background {

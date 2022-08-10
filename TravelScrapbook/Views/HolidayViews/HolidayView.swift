@@ -14,6 +14,7 @@ struct HolidayView: View {
     
     var holiday: Holiday
 
+    @State private var showDelete = false
     
     var body: some View {
         
@@ -34,17 +35,21 @@ struct HolidayView: View {
                     Button {
                         dismiss()
                     } label: {
-                        Image(systemName: "xmark")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 18, height: 18)
-                            .foregroundColor(Color("Green1"))
-                            .background(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(.white)
-                                    .frame(width: 37, height: 37)
-                                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            )
+                        
+                        ZStack {
+                            
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(.white)
+                                .frame(width: 35, height: 35)
+                                .shadow(color: Color("Green1").opacity(0.15), radius: 15, x: 4, y: 4)
+                            
+                            Image(systemName: "xmark")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 18, height: 18)
+                                .foregroundColor(Color("Green1"))
+                        }
+                            
                         
                     }
                         
@@ -56,25 +61,36 @@ struct HolidayView: View {
                         
                         } label: {
                             
-                            Image(systemName: "square.and.pencil")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 23, height: 23)
-                                .foregroundColor(Color("Green1"))
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                        .fill(.white)
-                                        .frame(width: 37, height: 37)
-                                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                )
+                            ZStack {
+                                
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(.white)
+                                    .frame(width: 35, height: 35)
+                                    .shadow(color: Color("Green1").opacity(0.15), radius: 15, x: 4, y: 4)
+                                
+                                Image(systemName: "square.and.pencil")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(Color("Green1"))
+                                    
+                            }
                             
                         }
                                             
                     
                 }
+                    .padding(.horizontal)
+                    .padding(.top, 35)
+                    .padding(.bottom, 10)
+                    .background(
+                    
+                        LinearGradient(colors: [.white.opacity(0.65), .white.opacity(0.01), .white.opacity(0.001)], startPoint: .top, endPoint: .bottom)
+                    
+                    )
                     .frame(maxHeight: .infinity, alignment: .top)
-                    .padding(25)
-                    .padding(.top, 15)
+                    
+
                                     
                     VStack {
                         HStack {
@@ -86,7 +102,8 @@ struct HolidayView: View {
                         }
 
                     }
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
                     .background(
                         Color("Green1").opacity(0.5)
                             .background(.ultraThinMaterial)
@@ -101,7 +118,7 @@ struct HolidayView: View {
             )
             
             
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 15) {
                     
                     HStack {
                         
@@ -182,33 +199,19 @@ struct HolidayView: View {
                             .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                             .frame(height: 50)
                     )
-                    .padding(.vertical, 20)
+                    .padding(.vertical)
 
                     
                 }
                 .padding(.horizontal)
-                .padding(.top, 20)
-                .padding(.bottom, 10)
+                .padding(.top, 10)
             
-        
-
+                Spacer()
                                     
                     // Delete Button
                     Button {
                        
-                        // Delete holiday
-                        DatabaseService().deleteHoliday(holiday: holiday) { success, error in
-                            if success {
-                                
-                                DispatchQueue.main.async {
-                                    dismiss()
-                                }
-                                
-                            } else {
-                                // handle error
-                                
-                            }
-                        }
+                       showDelete = true
                         
                 } label: {
                     
@@ -219,7 +222,7 @@ struct HolidayView: View {
                             .padding(.horizontal, 30)
                             .background(
                                 RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                    .foregroundColor(.red)
+                                    .foregroundColor(Color("Pink1"))
                             )
                             .frame(maxWidth: .infinity)
                     
@@ -235,6 +238,28 @@ struct HolidayView: View {
         .ignoresSafeArea(edges: .top)
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
+        .alert("Are you sure you want to delete this destination?", isPresented: $showDelete) {
+            Button {
+                // Delete holiday
+                DatabaseService().deleteHoliday(holiday: holiday) { success, error in
+                    if success {
+                        
+                        DispatchQueue.main.async {
+                            dismiss()
+                        }
+                        
+                    } else {
+                        // TODO: handle error
+                        
+                    }
+                }
+            } label: {
+                Text("Yes")
+            }
+            
+            Button("Cancel", role: .cancel) { }
+
+        }
         
         }
         

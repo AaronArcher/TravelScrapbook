@@ -33,7 +33,7 @@ struct MapView: View {
             case .all:
                 Map(coordinateRegion: $mapvm.region, annotationItems: (holidayvm.wishlist + holidayvm.visited)) { holiday in
                     MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: holiday.location.latitude, longitude: holiday.location.longitude)) {
-                        MapAnnotationView(holiday: holiday)
+                        MapAnnotationView(holiday: holiday, span: mapvm.region.span.latitudeDelta)
                     }
                 }
                     .disabled(addNewHoliday)
@@ -41,7 +41,7 @@ struct MapView: View {
             case .visited:
                 Map(coordinateRegion: $mapvm.region, annotationItems: holidayvm.visited) { holiday in
                     MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: holiday.location.latitude, longitude: holiday.location.longitude)) {
-                        MapAnnotationView(holiday: holiday)
+                        MapAnnotationView(holiday: holiday, span: mapvm.region.span.latitudeDelta)
                     }
                 }
                     .disabled(addNewHoliday)
@@ -49,7 +49,7 @@ struct MapView: View {
             case .wishlist:
                 Map(coordinateRegion: $mapvm.region, annotationItems: holidayvm.wishlist) { holiday in
                     MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: holiday.location.latitude, longitude: holiday.location.longitude)) {
-                        MapAnnotationView(holiday: holiday)
+                        MapAnnotationView(holiday: holiday, span: mapvm.region.span.latitudeDelta)
                     }
                 }
                     .disabled(addNewHoliday)
@@ -106,7 +106,7 @@ struct MapView: View {
                 Image(systemName: "xmark")
                     .resizable()
                     .scaledToFit()
-                    .foregroundColor(.red)
+                    .foregroundColor(Color("Pink1"))
                     .frame(width: 20, height: 20)
             }
             .padding(15)

@@ -211,7 +211,6 @@ struct EditHolidayView: View {
                     
                     Text("Thumbnail Image:")
                         .foregroundColor(Color("Green1"))
-                        .padding(.leading)
                     
                     Spacer()
                     
@@ -250,9 +249,9 @@ struct EditHolidayView: View {
                         
                     }
 
-
                     
                 }
+                .padding(.horizontal)
                 
             }
             
