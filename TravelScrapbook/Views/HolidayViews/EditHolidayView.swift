@@ -14,6 +14,8 @@ struct EditHolidayView: View {
 
     let holiday: Holiday
     
+    @State private var visited = false
+    
     @State private var newTitle = ""
     @State var newDate: Date
     @State private var newVisitedWith = ""
@@ -54,21 +56,40 @@ struct EditHolidayView: View {
                         cityFocused = false
                         countryFocused = false
                         
-                        
-                        
-                        DatabaseService().editVisitedHoliday(holiday: holiday, title: newTitle, visitedWith: newVisitedWith, city: newCity, country: newCountry, date: newDate, newImage: newThumbnail) { success, error in
+                        if holiday.isWishlist {
                             
-                            if success {
+                            // Edit a wishlist holiday
+                            if !visited {
                                 
-                                dismiss()
+                                // TODO: Update existing wishlist
                                 
                             } else {
-                                // Show error
+                                
+                                // If changing to a Visited holiday, save new visited holiday and delete this from wishlist
+                                
+                                
+                            }
+                                                        
+                            
+                        } else {
+                            
+                            // Editing a visited holiday
+                            DatabaseService().editVisitedHoliday(holiday: holiday, title: newTitle, visitedWith: newVisitedWith, city: newCity, country: newCountry, date: newDate, newImage: newThumbnail) { success, error in
+                                
+                                if success {
+                                    
+                                    dismiss()
+                                    
+                                } else {
+                                    // TODO: Show error
+                                    
+                                }
+                                
                                 
                             }
                             
-                            
                         }
+                        
                         
                     } label: {
                         Text("Save")
@@ -81,6 +102,13 @@ struct EditHolidayView: View {
             .padding(.horizontal)
             
             ScrollView {
+                
+                if holiday.isWishlist {
+                
+                    Toggle("Visited?", isOn: $visited)
+                        .padding(.horizontal, 32)
+                        .padding(.top)
+                }
                 
                 // Title
                 HStack {
@@ -109,8 +137,6 @@ struct EditHolidayView: View {
                         }
                     )
                     .padding(.horizontal)
-                    .padding(.top)
-
                 
                 // Visited With
                 HStack {
@@ -197,61 +223,67 @@ struct EditHolidayView: View {
                     )
                     .padding(.horizontal)
 
-                
-                // Date
-                DatePicker("Holiday Date", selection: $newDate, displayedComponents: .date)
-                    .datePickerStyle(.automatic)
-                    .accentColor(Color("Green1"))
-                    .foregroundColor(Color("Green1"))
-                    .padding()
+                // Show date and image if this is editing a visited holiday or a wishlist holiday changing to a visited holiday
+                if !holiday.isWishlist || (holiday.isWishlist && visited) {
 
-                // Image
-                
-                HStack {
-                    
-                    Text("Thumbnail Image:")
+                    // Date
+                    DatePicker("Holiday Date", selection: $newDate, displayedComponents: .date)
+                        .datePickerStyle(.automatic)
+                        .accentColor(Color("Green1"))
                         .foregroundColor(Color("Green1"))
+                        .padding()
+
+                    // Image
                     
-                    Spacer()
-                    
-                    VStack(spacing: 5) {
+                    HStack {
                         
-                        Button {
+                        Text("Thumbnail Image:")
+                            .foregroundColor(Color("Green1"))
+                        
+                        Spacer()
+                        
+                        VStack(spacing: 5) {
                             
-                            showImagePicker = true
-                            
-                        } label: {
-                            
-                            if newThumbnail == nil {
-                                MainHolidayImage(holiday: holiday, iconSize: 45)
-                                    .frame(width: 100, height: 100)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                            .stroke(Color("Green1"), lineWidth: 1)
-                                    )
-                            } else {
-                             
-                                    Image(uiImage: newThumbnail!)
-                                        .resizable()
-                                        .scaledToFill()
+                            Button {
+                                
+                                showImagePicker = true
+                                
+                            } label: {
+                                
+                                if newThumbnail == nil {
+                                    MainHolidayImage(holiday: holiday, iconSize: 45)
                                         .frame(width: 100, height: 100)
+                                        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                                .strokeBorder(Color("Green1"), lineWidth: 1)
+                                                .stroke(Color("Green1"), lineWidth: 1)
                                         )
-                                        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                                
-                                
-                            }
+                                } else {
+                                 
+                                        Image(uiImage: newThumbnail!)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                                    .strokeBorder(Color("Green1"), lineWidth: 1)
+                                            )
+                                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                                    
+                                    
+                                }
 
+                            }
+                            
                         }
+
                         
                     }
-
+                    .padding(.horizontal)
                     
                 }
-                .padding(.horizontal)
+                
+
                 
             }
             

@@ -17,7 +17,7 @@ struct MainHolidayImage: View {
         ZStack {
             
             // Check if there is an image set
-            if holiday.thumbnailImage == "" {
+            if holiday.thumbnailImage == "" || holiday.thumbnailImage == nil {
                 ZStack {
                     
                     Color("Green1").opacity(0.2)

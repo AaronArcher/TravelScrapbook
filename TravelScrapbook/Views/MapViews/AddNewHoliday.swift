@@ -240,7 +240,7 @@ struct AddNewHoliday: View {
     var segmentBar: some View {
         let options = ["Visited", "Wish List"]
         
-        HStack(spacing: 20) {
+        HStack(spacing: 15) {
             
             Spacer()
             

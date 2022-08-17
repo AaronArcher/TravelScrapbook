@@ -78,7 +78,7 @@ struct RootView: View {
                         .offset(x: showMap ? 0 : 80)
                         
                     }
-                    .padding(11)
+                    .padding(10)
                     .mask({
                         Circle()
                     })
@@ -113,7 +113,7 @@ struct RootView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .padding(11)
+                        .padding(10)
                         .background(
                             Circle()
                                 .foregroundColor(.white)

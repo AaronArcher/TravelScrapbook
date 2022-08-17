@@ -35,21 +35,23 @@ struct ListItem: View {
             VStack(alignment: .leading) {
                 
                 Text(holiday.title)
-                    .font(.title3)
                     .foregroundColor(Color("Green2"))
                     .bold()
                 
-                Spacer()
-                
-//                Text(holiday.date.formatted(date: .numeric, time: .omitted))
-                
-                HStack {
-                    Text(holiday.location.city)
-                    Text(holiday.location.country)
-                        .font(.callout)
-                        .italic()
-                }
+//                Spacer()
                                 
+                HStack(spacing: 5) {
+                    Text("\(holiday.location.city),")
+                    Text(holiday.location.country)
+                        .italic()
+                    
+                    Spacer()
+                }
+                .font(.footnote)
+                            
+                Text(holiday.date!.formatted(date: .numeric, time: .omitted))
+                    .font(.footnote)
+
                 
             }
             .padding(.vertical)

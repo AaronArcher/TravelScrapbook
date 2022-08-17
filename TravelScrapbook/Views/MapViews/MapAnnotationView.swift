@@ -17,6 +17,11 @@ struct MapAnnotationView: View {
     
     var span: Double
     
+    @Namespace var namespace
+    
+    @State private var showWishlist = false
+    @State private var showEditWishlist = false
+    
     
     var body: some View {
         
@@ -35,28 +40,107 @@ struct MapAnnotationView: View {
         
             if holiday.isWishlist {
                 
-                Button {
-
+                VStack(spacing: 2) {
                     
-                } label: {
+                    Button {
 
-                    ZStack {
-                    
-                        Image(systemName: "heart")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(.white)
+                        withAnimation {
+                            showWishlist.toggle()
+                        }
                         
-                        Image(systemName: "heart.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 27, height: 27)
-                            .foregroundColor(Color("Pink1"))
+                    } label: {
+
+                        ZStack {
+                        
+                            Image(systemName: "heart")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 33, height: 33)
+                                .foregroundColor(.white)
+                            
+                            Image(systemName: "heart.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(Color("Pink1"))
+                            
+                        }
+                    }
+                    
+                    if showWishlist {
+                        
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .foregroundColor(.white)
+                                .frame(width: 150, height: 70)
+                            
+                            VStack(spacing: 0) {
+                                
+                                Spacer()
+                                
+                                Text(holiday.title)
+                                    .foregroundColor(Color("Green1"))
+                                    .font(.subheadline)
+                                
+                                Spacer()
+                                
+                                HStack(spacing: 0) {
+                                    
+                                    Button {
+                                        
+                                    } label: {
+                                        
+                                        ZStack {
+                                            
+                                            Rectangle()
+                                                .fill(.red)
+                                                .frame(height: 35)
+                                                               
+                                                Text("DELETE")
+                                                    .font(.footnote)
+                                                    .foregroundColor(.white)
+                                                
+                                        }
+                                    }
+                                                                        
+                                    Button {
+                                        
+                                        showEditWishlist = true
+                                        
+                                    } label: {
+                                        
+                                        ZStack {
+                                            
+                                            Rectangle()
+                                                .fill(Color("Green1"))
+                                                .frame(height: 35)
+                                                                                            
+                                                Text("EDIT")
+                                                    .font(.footnote)
+                                                    .foregroundColor(.white)
+
+                                                
+                                                
+                                        }
+                                    }
+                                    
+                                }
+                                
+                            }
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .shadow(color: Color("Green2").opacity(0.3), radius: 15, x: 5, y: 5)
+                        .transition(.scale)
+                        .sheet(isPresented: $showEditWishlist) {
+                            EditHolidayView(holiday: holiday, newDate: Date())
+                        }
                         
                     }
-
+                        
+                
+                
                 }
+                
                 
             } else {
                 

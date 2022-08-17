@@ -15,6 +15,7 @@ struct HolidayView: View {
     var holiday: Holiday
 
     @State private var showDelete = false
+
     
     var body: some View {
         
@@ -222,7 +223,7 @@ struct HolidayView: View {
                             .padding(.horizontal, 30)
                             .background(
                                 RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                    .foregroundColor(Color("Pink1"))
+                                    .foregroundColor(.red)
                             )
                             .frame(maxWidth: .infinity)
                     
