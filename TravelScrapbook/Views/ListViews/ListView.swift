@@ -39,7 +39,7 @@ struct ListView: View {
                         ListItem(holiday: holiday)
                                 .padding(.vertical, 5)
                     }
-                    .fullScreenCover(isPresented: $showHoliday) {
+                    .sheet(isPresented: $showHoliday) {
                         HolidayView(holiday: holiday)
                     }
                         

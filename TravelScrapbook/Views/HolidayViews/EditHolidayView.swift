@@ -137,6 +137,8 @@ struct EditHolidayView: View {
                         }
                     )
                     .padding(.horizontal)
+                    .padding(.top, !holiday.isWishlist ? 16 : 0)
+
                 
                 // Visited With
                 HStack {
@@ -293,8 +295,6 @@ struct EditHolidayView: View {
         
         }
         .foregroundColor(Color("Green1"))
-        .navigationBarHidden(true)
-        .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(selectedImage: $newThumbnail)
         }

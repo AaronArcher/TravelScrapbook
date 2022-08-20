@@ -15,12 +15,11 @@ struct HolidayView: View {
     var holiday: Holiday
 
     @State private var showDelete = false
+    @State private var showEditHoliday = false
 
     
     var body: some View {
-        
-        NavigationView {
-        
+                
         VStack(alignment: .leading) {
             
             //MARK: Header Image
@@ -56,9 +55,9 @@ struct HolidayView: View {
                         
                         Spacer()
 
-                        NavigationLink {
+                        Button {
                             
-                            EditHolidayView(holiday: holiday, newDate: holiday.date ?? Date())
+                            showEditHoliday = true
                         
                         } label: {
                             
@@ -81,14 +80,7 @@ struct HolidayView: View {
                                             
                     
                 }
-                    .padding(.horizontal)
-                    .padding(.top, 35)
-                    .padding(.bottom, 10)
-                    .background(
-                    
-                        LinearGradient(colors: [.white.opacity(0.65), .white.opacity(0.01), .white.opacity(0.001)], startPoint: .top, endPoint: .bottom)
-                    
-                    )
+                    .padding()
                     .frame(maxHeight: .infinity, alignment: .top)
                     
 
@@ -237,8 +229,9 @@ struct HolidayView: View {
         }
         .foregroundColor(Color("Green1"))
         .ignoresSafeArea(edges: .top)
-        .navigationBarHidden(true)
-        .navigationBarBackButtonHidden(true)
+        .sheet(isPresented: $showEditHoliday, content: {
+            EditHolidayView(holiday: holiday, newDate: holiday.date ?? Date())
+        })
         .alert("Are you sure you want to delete this destination?", isPresented: $showDelete) {
             Button {
                 // Delete holiday
@@ -262,7 +255,6 @@ struct HolidayView: View {
 
         }
         
-        }
         
     }
 }
