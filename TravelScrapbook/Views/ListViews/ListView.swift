@@ -40,7 +40,7 @@ struct ListView: View {
                                 .padding(.vertical, 5)
                     }
                     .sheet(isPresented: $showHoliday) {
-                        HolidayView(holiday: holiday)
+                        HolidayView(holiday: holiday, showHoliday: $showHoliday)
                     }
                         
                     }

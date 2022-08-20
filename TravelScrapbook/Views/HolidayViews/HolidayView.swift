@@ -13,6 +13,7 @@ struct HolidayView: View {
     @Environment(\.dismiss) private var dismiss
     
     var holiday: Holiday
+    @Binding var showHoliday: Bool
 
     @State private var showDelete = false
     @State private var showEditHoliday = false
@@ -237,10 +238,11 @@ struct HolidayView: View {
                 // Delete holiday
                 DatabaseService().deleteHoliday(holiday: holiday) { success, error in
                     if success {
-                        
+//                        print("deletion successful")
                         DispatchQueue.main.async {
                             dismiss()
                         }
+                        showHoliday = false
                         
                     } else {
                         // TODO: handle error

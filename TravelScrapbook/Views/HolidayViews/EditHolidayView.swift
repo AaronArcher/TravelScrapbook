@@ -62,11 +62,53 @@ struct EditHolidayView: View {
                             if !visited {
                                 
                                 // TODO: Update existing wishlist
+                                DatabaseService().editWishlistHoliday(holiday: holiday, title: newTitle, city: newCity, country: newCountry) { success, error in
+                                    
+                                    if success {
+                                        dismiss()
+                                        print("success updating wishlist")
+                                    } else {
+                                        // TODO: Handle error
+                                        
+                                    }
+                                    
+                                }
                                 
                             } else {
                                 
                                 // If changing to a Visited holiday, save new visited holiday and delete this from wishlist
-                                
+                                DatabaseService().createHoliday(title: newTitle == "" ? holiday.title : newTitle,
+                                                                date: newDate,
+                                                                locationID: holiday.location.id,
+                                                                city: newCity == "" ? holiday.location.city : newCity,
+                                                                country: newCountry == "" ? holiday.location.country : newCountry,
+                                                                latitude: holiday.location.latitude,
+                                                                longitude: holiday.location.longitude,
+                                                                visitedWith: newVisitedWith,
+                                                                thumbnailImage: newThumbnail) { success, error in
+                                    
+                                    if success {
+                                        
+                                        DatabaseService().deleteHoliday(holiday: holiday) { success, error in
+                                            
+                                            if success {
+                                            
+                                                dismiss()
+                                                print("Success in deleting holiday")
+                                                
+                                            } else {
+                                                // TODO: Handle error
+                                                print(" Failure deleting holiday - \(error ?? "")")
+                                            }
+                                            
+                                        }
+                                        
+                                    } else {
+                                        // TODO: Handle error
+                                        print("Something went wrong creating new holiday")
+                                    }
+                                    
+                                }
                                 
                             }
                                                         
@@ -139,34 +181,6 @@ struct EditHolidayView: View {
                     .padding(.horizontal)
                     .padding(.top, !holiday.isWishlist ? 16 : 0)
 
-                
-                // Visited With
-                HStack {
-                    Text("Visited with:")
-                    
-                    TextField(holiday.visitedWith ?? "", text: $newVisitedWith)
-                        .focused($visitedWithFocused)
-                        .multilineTextAlignment(.leading)
-
-                }
-                    .padding()
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
-                            
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .trim(from: 0, to: visitedWithFocused ? 1 : 0)
-                                .stroke(Color("Green2"), lineWidth: 1)
-                                .frame(height: 50)
-                                .animation(.easeInOut(duration: 0.8), value: visitedWithFocused)
-                            
-                            
-                        }
-                    )
-                    .padding(.horizontal)
 
                 // City
                 HStack {
@@ -225,9 +239,37 @@ struct EditHolidayView: View {
                     )
                     .padding(.horizontal)
 
-                // Show date and image if this is editing a visited holiday or a wishlist holiday changing to a visited holiday
+                // Show Visited with, date and image if this is editing a visited holiday or a wishlist holiday changing to a visited holiday
                 if !holiday.isWishlist || (holiday.isWishlist && visited) {
 
+                    // Visited With
+                    HStack {
+                        Text("Visited with:")
+                        
+                        TextField(holiday.visitedWith ?? "", text: $newVisitedWith)
+                            .focused($visitedWithFocused)
+                            .multilineTextAlignment(.leading)
+
+                    }
+                        .padding()
+                        .background(
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                    .foregroundColor(.white)
+                                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
+                                    .frame(height: 50)
+                                
+                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                    .trim(from: 0, to: visitedWithFocused ? 1 : 0)
+                                    .stroke(Color("Green2"), lineWidth: 1)
+                                    .frame(height: 50)
+                                    .animation(.easeInOut(duration: 0.8), value: visitedWithFocused)
+                                
+                                
+                            }
+                        )
+                        .padding(.horizontal)
+                    
                     // Date
                     DatePicker("Holiday Date", selection: $newDate, displayedComponents: .date)
                         .datePickerStyle(.automatic)

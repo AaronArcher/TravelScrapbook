@@ -187,7 +187,8 @@ class DatabaseService {
                                            "country" : country,
                                            "latitude" : latitude,
                                            "longitude" : longitude,
-                                            "visitedWith" : visitedWith])
+                                            "visitedWith" : visitedWith,
+                                            "thumbnailImage" : ""])
 
                     if let thumbnailImage = thumbnailImage {
 
@@ -369,6 +370,39 @@ class DatabaseService {
         
     }
     
+    /// Edits a wishlist holiday
+    func editWishlistHoliday(holiday: Holiday, title: String, city: String, country: String, completion: @escaping (Bool, String?) -> Void) {
+        
+        var newTitle = title
+        var newCity = city
+        var newCountry = country
+        if newTitle == "" { newTitle = holiday.title }
+        if newCity == "" { newCity = holiday.location.city }
+        if newCountry == "" { newCountry = holiday.location.country }
+        
+        // Get reference to database
+        let db = Firestore.firestore()
+        
+        // Get specific document
+        let doc = db.collection("users")
+            .document(AuthViewModel.getLoggedInUserID())
+            .collection("wishlist")
+            .document(holiday.id ?? "")
+        
+        doc.setData(["title" : newTitle,
+                     "city" : newCity,
+                     "country" : newCountry], merge: true) { error in
+            
+            if error == nil {
+                completion(true, "")
+            } else {
+                completion(false, error?.localizedDescription)
+            }
+            
+        }
+        
+    }
+    
     /// Deletes the holiday and any thumbnail image passed through
     func deleteHoliday(holiday: Holiday, completion: @escaping (Bool, String?) -> Void) {
         
@@ -391,7 +425,7 @@ class DatabaseService {
             
             if error == nil {
                 
-                if holiday.thumbnailImage != nil {
+                if holiday.thumbnailImage != "" && holiday.thumbnailImage != nil {
                     // need to delete this image from Storage
                     
                     let storageRef = Storage.storage().reference()

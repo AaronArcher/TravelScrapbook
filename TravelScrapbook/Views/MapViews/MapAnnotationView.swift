@@ -21,7 +21,7 @@ struct MapAnnotationView: View {
     
     @State private var showWishlist = false
     @State private var showEditWishlist = false
-    @State private var rerenderView = false
+    @State private var showDelete = false
     
     
     var body: some View {
@@ -109,6 +109,8 @@ struct MapAnnotationView: View {
                             
                             Button {
                                 
+                                showDelete = true
+                                
                             } label: {
                                 
                                 ZStack {
@@ -161,6 +163,26 @@ struct MapAnnotationView: View {
                 
         }
         .offset(y: showWishlist ? 0 : 35)
+        .alert("Are you sure you want to delete this destination?", isPresented: $showDelete) {
+            Button {
+                // Delete holiday
+                DatabaseService().deleteHoliday(holiday: holiday) { success, error in
+                    if success {
+                        
+//
+                        
+                    } else {
+                        // TODO: handle error
+                        
+                    }
+                }
+            } label: {
+                Text("Yes")
+            }
+            
+            Button("Cancel", role: .cancel) { }
+
+        }
         
     }
     
@@ -185,7 +207,7 @@ struct MapAnnotationView: View {
                         
                 )
                 .sheet(isPresented: $showHoliday) {
-                    HolidayView(holiday: holiday)
+                    HolidayView(holiday: holiday, showHoliday: $showHoliday)
                 }
 
         }
