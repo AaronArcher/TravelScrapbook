@@ -60,47 +60,24 @@ struct LoginView: View {
                         TextField("Email", text: $email)
                             .padding(.vertical, 5)
                             .focused($emailFocused)
-                        
-                            .padding()
+                            .padding(.horizontal)
+                            .padding(.vertical, 5)
                             .background(
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                        .foregroundColor(.white)
-                                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                        .frame(height: 50)
-                                    
-                                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                        .trim(from: 0, to: emailFocused ? 1 : 0)
-                                        .stroke(Color("Green2"), lineWidth: 1)
-                                        .frame(height: 50)
-                                        .animation(.easeInOut(duration: 0.8), value: emailFocused)
-                                    
-                                    
-                                }
+                                    TextBackground(isTextfield: true, isFocused: emailFocused)
                             )
+                            .padding(.vertical, 10)
+
                         
                         // Password
                         SecureField("Password", text: $password)
                             .padding(.vertical, 5)
                             .focused($passwordFocused)
-                            .padding()
+                            .padding(.horizontal)
+                            .padding(.vertical, 5)
                             .background(
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                        .foregroundColor(.white)
-                                        .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                        .frame(height: 50)
-                                    
-                                    RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                        .trim(from: 0, to: passwordFocused ? 1 : 0)
-                                        .stroke(Color("Green2"), lineWidth: 1)
-                                        .frame(height: 50)
-                                        .animation(.easeInOut(duration: 0.8), value: passwordFocused)
-                                    
-                                    
-                                }
-                                
+                                    TextBackground(isTextfield: true, isFocused: passwordFocused)
                             )
+                            .padding(.vertical, 10)
                         
                         
                         Button {
@@ -167,6 +144,9 @@ struct LoginView: View {
     }
     
     func login() {
+        emailFocused = false
+        passwordFocused = false
+        
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             
             if error == nil {

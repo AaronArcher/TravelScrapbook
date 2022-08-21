@@ -59,6 +59,7 @@ struct SettingsView: View {
                         
                         dismiss()
                         
+                        holidayViewModel.holidayCleanup()
                         AuthViewModel.logOut()
                         showLogin = !AuthViewModel.isUserLoggedIn()
                         

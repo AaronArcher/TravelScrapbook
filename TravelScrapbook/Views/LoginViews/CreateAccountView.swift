@@ -62,128 +62,60 @@ struct CreateAccountView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     
                     // First Name
-                    VStack(spacing: 0) {
                         TextField("First Name", text: $firstName)
                             .padding(.vertical, 5)
                             .focused($firstNameFocused)
-                        
-                    }
-                    .padding()
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
-                            
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .trim(from: 0, to: firstNameFocused ? 1 : 0)
-                                .stroke(Color("Green2"), lineWidth: 1)
-                                .frame(height: 50)
-                                .animation(.easeInOut(duration: 0.8), value: firstNameFocused)
-                        }
-
-                    )
-                    .padding(.top, 10)
+                            .padding(.horizontal)
+                            .padding(.vertical, 5)
+                            .background(
+                                    TextBackground(isTextfield: true, isFocused: firstNameFocused)
+                            )
+                            .padding(.vertical, 10)
                     
                     // Last Name
-                    VStack(spacing: 0) {
                         TextField("Last Name", text: $lastName)
                             .padding(.vertical, 5)
                             .focused($lastNameFocused)
-                        
-                    }
-                    .padding()
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
-                            
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .trim(from: 0, to: lastNameFocused ? 1 : 0)
-                                .stroke(Color("Green2"), lineWidth: 1)
-                                .frame(height: 50)
-                                .animation(.easeInOut(duration: 0.8), value: lastNameFocused)
-                        }
-
-                    )
+                            .padding(.horizontal)
+                            .padding(.vertical, 5)
+                            .background(
+                                    TextBackground(isTextfield: true, isFocused: lastNameFocused)
+                            )
+                            .padding(.vertical, 10)
                     
                     // Email
-                    VStack(spacing: 0) {
                         TextField("Email", text: $email)
                             .padding(.vertical, 5)
                             .focused($emailFocused)
-                        
-                    }
-                    .padding()
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
-                            
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .trim(from: 0, to: emailFocused ? 1 : 0)
-                                .stroke(Color("Green2"), lineWidth: 1)
-                                .frame(height: 50)
-                                .animation(.easeInOut(duration: 0.8), value: emailFocused)
-                        }
-
-                    )
+                            .padding(.horizontal)
+                            .padding(.vertical, 5)
+                            .background(
+                                    TextBackground(isTextfield: true, isFocused: emailFocused)
+                            )
+                            .padding(.vertical, 10)
                     
                     
                     // Password
-                    VStack(spacing: 0) {
                         SecureField("Password", text: $password)
                             .padding(.vertical, 5)
                             .focused($passwordFocused)
-                        
-                    }
-                    .padding()
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
-                            
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .trim(from: 0, to: passwordFocused ? 1 : 0)
-                                .stroke(Color("Green2"), lineWidth: 1)
-                                .frame(height: 50)
-                                .animation(.easeInOut(duration: 0.8), value: passwordFocused)
-                        }
-
-                    )
+                            .padding(.horizontal)
+                            .padding(.vertical, 5)
+                            .background(
+                                    TextBackground(isTextfield: true, isFocused: passwordFocused)
+                            )
+                            .padding(.vertical, 10)
                     
                     // Confirm Password
-                    VStack(spacing: 0) {
                         SecureField("Confirm Password", text: $confirmPassword)
                             .padding(.vertical, 5)
                             .focused($confirmPasswordFocused)
-                        
-                    }
-                    .padding()
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
-                            
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .trim(from: 0, to: confirmPasswordFocused ? 1 : 0)
-                                .stroke(Color("Green2"), lineWidth: 1)
-                                .frame(height: 50)
-                                .animation(.easeInOut(duration: 0.8), value: confirmPasswordFocused)
-
-                                
-                        }
-
-                    )
+                            .padding(.horizontal)
+                            .padding(.vertical, 5)
+                            .background(
+                                    TextBackground(isTextfield: true, isFocused: confirmPasswordFocused)
+                            )
+                            .padding(.vertical, 10)
                     
                     // Create Account
                     Button {
@@ -247,6 +179,13 @@ struct CreateAccountView: View {
     }
     
     func createAccount() {
+        
+        firstNameFocused = false
+        lastNameFocused = false
+        emailFocused = false
+        passwordFocused = false
+        confirmPasswordFocused = false
+        
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             
             DispatchQueue.main.async {

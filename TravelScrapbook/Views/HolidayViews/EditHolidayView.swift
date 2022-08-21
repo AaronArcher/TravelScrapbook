@@ -161,25 +161,14 @@ struct EditHolidayView: View {
                         .multilineTextAlignment(.leading)
 
                 }
-                    .padding()
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
-                            
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .trim(from: 0, to: titleFocused ? 1 : 0)
-                                .stroke(Color("Green2"), lineWidth: 1)
-                                .frame(height: 50)
-                                .animation(.easeInOut(duration: 0.8), value: titleFocused)
-                            
-                            
-                        }
-                    )
-                    .padding(.horizontal)
-                    .padding(.top, !holiday.isWishlist ? 16 : 0)
+                .padding(.horizontal)
+                .padding(.vertical, 5)
+                .background(
+                        TextBackground(isTextfield: true, isFocused: titleFocused)
+                )
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .padding(.top, !holiday.isWishlist ? 16 : 0)
 
 
                 // City
@@ -191,24 +180,13 @@ struct EditHolidayView: View {
                         .multilineTextAlignment(.leading)
 
                 }
-                    .padding()
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
-                            
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .trim(from: 0, to: cityFocused ? 1 : 0)
-                                .stroke(Color("Green2"), lineWidth: 1)
-                                .frame(height: 50)
-                                .animation(.easeInOut(duration: 0.8), value: cityFocused)
-                            
-                            
-                        }
-                    )
-                    .padding(.horizontal)
+                .padding(.horizontal)
+                .padding(.vertical, 5)
+                .background(
+                        TextBackground(isTextfield: true, isFocused: cityFocused)
+                )
+                .padding(.horizontal)
+                .padding(.vertical, 10)
 
                 
                 // Country
@@ -220,24 +198,13 @@ struct EditHolidayView: View {
                         .multilineTextAlignment(.leading)
 
                 }
-                    .padding()
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundColor(.white)
-                                .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                .frame(height: 50)
-                            
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .trim(from: 0, to: countryFocused ? 1 : 0)
-                                .stroke(Color("Green2"), lineWidth: 1)
-                                .frame(height: 50)
-                                .animation(.easeInOut(duration: 0.8), value: countryFocused)
-                            
-                            
-                        }
-                    )
-                    .padding(.horizontal)
+                .padding(.horizontal)
+                .padding(.vertical, 5)
+                .background(
+                        TextBackground(isTextfield: true, isFocused: countryFocused)
+                )
+                .padding(.horizontal)
+                .padding(.vertical, 10)
 
                 // Show Visited with, date and image if this is editing a visited holiday or a wishlist holiday changing to a visited holiday
                 if !holiday.isWishlist || (holiday.isWishlist && visited) {
@@ -251,24 +218,14 @@ struct EditHolidayView: View {
                             .multilineTextAlignment(.leading)
 
                     }
-                        .padding()
-                        .background(
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                    .foregroundColor(.white)
-                                    .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                                    .frame(height: 50)
-                                
-                                RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                    .trim(from: 0, to: visitedWithFocused ? 1 : 0)
-                                    .stroke(Color("Green2"), lineWidth: 1)
-                                    .frame(height: 50)
-                                    .animation(.easeInOut(duration: 0.8), value: visitedWithFocused)
-                                
-                                
-                            }
-                        )
-                        .padding(.horizontal)
+                    .padding(.horizontal)
+                    .padding(.vertical, 5)
+                    .background(
+                            TextBackground(isTextfield: true, isFocused: visitedWithFocused)
+                    )
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
+                    
                     
                     // Date
                     DatePicker("Holiday Date", selection: $newDate, displayedComponents: .date)

@@ -111,8 +111,10 @@ struct HolidayView: View {
                 RoundedCorner(radius: 20, corners: [.bottomLeft, .bottomRight])
             )
             
+            ScrollView {
             
-                VStack(alignment: .leading, spacing: 15) {
+                VStack(alignment: .leading) {
+                    
                     
                     HStack {
                         
@@ -125,13 +127,11 @@ struct HolidayView: View {
                         
                     }
                     .padding(.horizontal)
+                    .padding(.vertical, 5)
                     .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
-                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            .frame(height: 50)
+                        TextBackground(isTextfield: false)
                     )
-                    .padding(.vertical)
+                    .padding(.vertical, 10)
                     
                     
                     HStack {
@@ -145,13 +145,11 @@ struct HolidayView: View {
                         
                     }
                     .padding(.horizontal)
+                    .padding(.vertical, 5)
                     .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
-                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            .frame(height: 50)
+                        TextBackground(isTextfield: false)
                     )
-                    .padding(.vertical)
+                    .padding(.vertical, 10)
                     
                     HStack {
                         
@@ -164,13 +162,11 @@ struct HolidayView: View {
                         
                     }
                     .padding(.horizontal)
+                    .padding(.vertical, 5)
                     .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
-                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            .frame(height: 50)
+                        TextBackground(isTextfield: false)
                     )
-                    .padding(.vertical)
+                    .padding(.vertical, 10)
                     
                     HStack {
                         
@@ -187,19 +183,18 @@ struct HolidayView: View {
                         
                     }
                     .padding(.horizontal)
+                    .padding(.vertical, 5)
                     .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
-                            .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                            .frame(height: 50)
+                        TextBackground(isTextfield: false)
                     )
-                    .padding(.vertical)
+                    .padding(.vertical, 10)
+                    .padding(.bottom, 10)
 
                     
                 }
                 .padding(.horizontal)
                 .padding(.top, 10)
-            
+                
                 Spacer()
                                     
                     // Delete Button
@@ -213,7 +208,7 @@ struct HolidayView: View {
                             .font(.title2)
                             .foregroundColor(.white)
                             .padding(.vertical, 10)
-                            .padding(.horizontal, 30)
+                            .padding(.horizontal, 35)
                             .background(
                                 RoundedRectangle(cornerRadius: 15, style: .continuous)
                                     .foregroundColor(.red)
@@ -221,10 +216,10 @@ struct HolidayView: View {
                             .frame(maxWidth: .infinity)
                     
                 }
-                    
-                 
+                
+                Spacer()
             
-            Spacer()
+            }
 
             
         }
