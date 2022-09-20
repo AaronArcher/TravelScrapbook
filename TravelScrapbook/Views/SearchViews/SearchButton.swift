@@ -14,16 +14,15 @@ struct SearchButton: View {
     
     let namespace: Namespace.ID
     
+    
     var body: some View {
         Button {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                 openSearch = true
-                
             }
             withAnimation(.default.delay(0.2)) {
                 showSearchContent = true
             }
-            
         } label: {
             Text("SEARCH")
                 .matchedGeometryEffect(id: "search", in: namespace)
@@ -41,6 +40,7 @@ struct SearchButton: View {
                         .matchedGeometryEffect(id: "bg", in: namespace)
                         .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                 )
-        }    }
+        }
+    }
 }
 
