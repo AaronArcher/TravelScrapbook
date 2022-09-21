@@ -72,7 +72,7 @@ struct MapView: View {
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
                     .background(
-                        RoundedCorner(radius: 10, corners: [.bottomLeft, .bottomRight])
+                        RoundedCornerShape(radius: 10, corners: [.bottomLeft, .bottomRight])
                             .foregroundColor(.white)
                             .shadow(color: Color("Green2").opacity(0.15), radius: 10, x: 4, y: 4)
 

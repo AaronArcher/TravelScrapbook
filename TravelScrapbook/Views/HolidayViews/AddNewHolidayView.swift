@@ -1,5 +1,5 @@
 //
-//  AddNewHoliday.swift
+//  AddNewHolidayView.swift
 //  TravelScrapbook
 //
 //  Created by Aaron Johncock on 28/06/2022.
@@ -8,29 +8,25 @@
 import SwiftUI
 import MapKit
 
-struct AddNewHoliday: View {
+struct AddNewHolidayView: View {
     
     @EnvironmentObject var holidayvm: HolidayViewModel
     @EnvironmentObject var mapvm: MapViewModel
-    
 
-    @Binding var addNewHoliday: Bool
+    @Binding var showAddNewHoliday: Bool
     @Binding var showAddNewHolidayContent: Bool
     @Binding var showMarker: Bool
     @Binding var showCancel: Bool
     @Binding var showImagePicker: Bool
     
-//    @State var mainImage: Image?
-//    @State var allImages: [Image] = []
     
     @State var thumbnailImage: UIImage?
-
     
-    @Binding var holidayTitle: String
+    @State var holidayTitle = ""
     @Binding var holidayCity: String
     @Binding var holidayCountry: String
-    @Binding var visitedWith: String
-    @Binding var holidayDate: Date
+    @State var visitedWith = ""
+    @State var holidayDate = Date()
     
     let namespace: Namespace.ID
     
@@ -62,11 +58,11 @@ struct AddNewHoliday: View {
                         Button {
 
                             withAnimation(.easeInOut(duration: 0.1)) {
-                                showAddNewHolidayContent.toggle()
+                                showAddNewHolidayContent = false
                             }
                             
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                    addNewHoliday.toggle()
+                                showAddNewHoliday = false
                                 }
                             
 
@@ -103,7 +99,7 @@ struct AddNewHoliday: View {
                                             if success {
                                                 
                                                 withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                                    addNewHoliday.toggle()
+                                                    showAddNewHoliday = false
                                                     showMarker = false
                                                     showCancel = false
                                                 }
@@ -135,7 +131,7 @@ struct AddNewHoliday: View {
                                             if success {
 
                                                 withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                                    addNewHoliday.toggle()
+                                                    showAddNewHoliday = false
                                                     showMarker = false
                                                     showCancel = false
                                                 }
@@ -221,7 +217,7 @@ struct AddNewHoliday: View {
         .background(
 
             Color.white
-                .cornerRadius(25, corners: [.bottomLeft, .bottomRight])
+                .clippedCornerShape(25, corners: [.bottomLeft, .bottomRight])
                 .matchedGeometryEffect(id: "addbg", in: namespace)
                 .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
 

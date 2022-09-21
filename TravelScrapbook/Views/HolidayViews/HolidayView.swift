@@ -108,7 +108,7 @@ struct HolidayView: View {
             }
             .frame(height: 300)
             .clipShape(
-                RoundedCorner(radius: 20, corners: [.bottomLeft, .bottomRight])
+                RoundedCornerShape(radius: 20, corners: [.bottomLeft, .bottomRight])
             )
             
             ScrollView {

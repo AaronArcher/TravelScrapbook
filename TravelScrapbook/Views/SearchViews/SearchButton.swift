@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchButton: View {
     
-    @Binding var openSearch: Bool
+    @Binding var showSearch: Bool
     @Binding var showSearchContent: Bool
     
     let namespace: Namespace.ID
@@ -18,7 +18,7 @@ struct SearchButton: View {
     var body: some View {
         Button {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                openSearch = true
+                showSearch = true
             }
             withAnimation(.default.delay(0.2)) {
                 showSearchContent = true
