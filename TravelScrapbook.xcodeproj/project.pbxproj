@@ -17,6 +17,7 @@
 		EE5052302857E10000C3DF50 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE50522F2857E10000C3DF50 /* LocationManager.swift */; };
 		EE68E2ED28DA3BD600986D58 /* SearchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE68E2EC28DA3BD600986D58 /* SearchButton.swift */; };
 		EE68E2EF28DA3BE000986D58 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE68E2EE28DA3BE000986D58 /* SearchView.swift */; };
+		EE68E2F128DD039900986D58 /* HolidayTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE68E2F028DD039900986D58 /* HolidayTextField.swift */; };
 		EE81F70C2868B92600350CD8 /* HolidayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE81F70B2868B92600350CD8 /* HolidayView.swift */; };
 		EE81F70E286A392F00350CD8 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE81F70D286A392F00350CD8 /* ImagePicker.swift */; };
 		EE81F713286B7F1E00350CD8 /* AddNewHolidayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE81F712286B7F1E00350CD8 /* AddNewHolidayView.swift */; };
@@ -59,6 +60,7 @@
 		EE50522F2857E10000C3DF50 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		EE68E2EC28DA3BD600986D58 /* SearchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchButton.swift; sourceTree = "<group>"; };
 		EE68E2EE28DA3BE000986D58 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		EE68E2F028DD039900986D58 /* HolidayTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidayTextField.swift; sourceTree = "<group>"; };
 		EE81F70B2868B92600350CD8 /* HolidayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidayView.swift; sourceTree = "<group>"; };
 		EE81F70D286A392F00350CD8 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		EE81F712286B7F1E00350CD8 /* AddNewHolidayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewHolidayView.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				EE82E45D286E4B6C00AFC543 /* ImageView.swift */,
 				EE95739228905114006F42FF /* MainHolidayImage.swift */,
 				EE1066C42888859500F36351 /* RoundedCornerShape.swift */,
+				EE68E2F028DD039900986D58 /* HolidayTextField.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 				EE81F713286B7F1E00350CD8 /* AddNewHolidayView.swift in Sources */,
 				EE81F70E286A392F00350CD8 /* ImagePicker.swift in Sources */,
 				EEC032E82864F52300CE6682 /* ListView.swift in Sources */,
+				EE68E2F128DD039900986D58 /* HolidayTextField.swift in Sources */,
 				EEC032E62864F51C00CE6682 /* MapView.swift in Sources */,
 				EE68E2ED28DA3BD600986D58 /* SearchButton.swift in Sources */,
 				EE95737C288F08A4006F42FF /* DateHelper.swift in Sources */,

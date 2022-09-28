@@ -10,13 +10,12 @@ import SwiftUI
 struct ListView: View {
     
     @EnvironmentObject var holidayvm: HolidayViewModel
-
-    @Binding var showHoliday: Bool
     
-    @Namespace var namespace
+    @State var showHoliday = false
+    
     
     var body: some View {
-            
+        
         ZStack {
             
             Color(.white)
@@ -37,31 +36,24 @@ struct ListView: View {
                         showHoliday = true
                     } label: {
                         ListItem(holiday: holiday)
-                                .padding(.vertical, 5)
+                            .padding(.vertical, 5)
                     }
                     .sheet(isPresented: $showHoliday) {
                         HolidayView(holiday: holiday, showHoliday: $showHoliday)
                     }
-                        
-                    }
-                    .listRowSeparatorTint(Color("Green1"))
-                    .listStyle(.plain)
-                    .padding(.vertical)
-                
-                    
+                }
+                .listRowSeparatorTint(Color("Green1"))
+                .listStyle(.plain)
+                .padding(.vertical)
             }
-            
         }
         .ignoresSafeArea()
-            
-        
     }
-    
     
 }
 
-//struct ListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ListView(showHoliday: .constant(false))
-//    }
-//}
+struct ListView_Previews: PreviewProvider {
+    static var previews: some View {
+        ListView()
+    }
+}

@@ -18,28 +18,22 @@ struct RootView: View {
     //    @State private var showOnboarding = !AuthViewModel.isUserLoggedIn()
     @State private var showLogin = !AuthViewModel.isUserLoggedIn()
     
-    @State var showSearch = false
-    @State var showSearchContent = false
+    @State private var showSearch = false
+    @State private var showSearchContent = false
     
-    @State var showAddNewHoliday = false
-    @State var showAddNewHolidayContent = false
+    @State private var showAddNewHoliday = false
+    @State private var showAddNewHolidayContent = false
     
-    @State var holidayCity = ""
-    @State var holidayCountry = ""
+    @State private var holidayCity = ""
+    @State private var holidayCountry = ""
     
     @Namespace var namespace
-    
-    @State var showMap = true
-    @State var showHoliday = false
-    
-    @State private var image: Image?
-    @State private var inputImage: UIImage?
-    @State private var showImagePicker = false
-    
+
+    @State private var showMap = true
     @State var showMarker = false
     @State var showCancel = false
-    
     @State private var showSetting = false
+    
     
     var body: some View {
         
@@ -135,7 +129,6 @@ struct RootView: View {
                                   showAddNewHolidayContent: $showAddNewHolidayContent,
                                   showMarker: $showMarker,
                                   showCancel: $showCancel,
-                                  showImagePicker: $showImagePicker,
                                   holidayCity: $holidayCity,
                                   holidayCountry: $holidayCountry,
                                   namespace: namespace)
@@ -197,7 +190,7 @@ struct RootView: View {
                     showAddNewHolidayContent: $showAddNewHolidayContent)
             .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
         } else {
-            ListView(showHoliday: $showHoliday)
+            ListView()
                 .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
         }
     }

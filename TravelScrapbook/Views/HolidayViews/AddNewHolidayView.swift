@@ -12,14 +12,13 @@ struct AddNewHolidayView: View {
     
     @EnvironmentObject var holidayvm: HolidayViewModel
     @EnvironmentObject var mapvm: MapViewModel
-
+    
     @Binding var showAddNewHoliday: Bool
     @Binding var showAddNewHolidayContent: Bool
     @Binding var showMarker: Bool
     @Binding var showCancel: Bool
-    @Binding var showImagePicker: Bool
     
-    
+    @State var showImagePicker = false
     @State var thumbnailImage: UIImage?
     
     @State var holidayTitle = ""
@@ -31,43 +30,39 @@ struct AddNewHolidayView: View {
     let namespace: Namespace.ID
     
     @State private var category = "Visited"
-
+    
     @FocusState private var titleFocused: Bool
     @FocusState private var cityFocused: Bool
     @FocusState private var countryFocused: Bool
     @FocusState private var visitedWithFocused: Bool
-
+    
     @State private var isSaving = false
     
     @State private var infoContentSize: CGFloat = .zero
     
     @State private var showalert = false
-    @State private var errorMessage: String?
+    @State private var errorMessage = ""
     
     
     var body: some View {
-
+        
         VStack {
-
             ZStack {
                 VStack(alignment: .leading) {
                     
-                    // Close button, category picker and save button
                     HStack {
-
+                        
                         Button {
-
+                            
                             withAnimation(.easeInOut(duration: 0.1)) {
                                 showAddNewHolidayContent = false
                             }
-                            
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                                 showAddNewHoliday = false
-                                }
+                            }
                             
-
                         } label: {
-
+                            
                             Image(systemName: "xmark")
                                 .resizable()
                                 .frame(width: 17, height: 17)
@@ -79,116 +74,29 @@ struct AddNewHolidayView: View {
                         Spacer()
                         
                         segmentBar
-
+                        
                         Spacer()
                         
-                            // Add button
-                            Button {
-                                titleFocused = false
-                                cityFocused = false
-                                countryFocused = false
-                                visitedWithFocused = false
-                                isSaving = true
-                            
-                                                                
-                                if category == "Visited" {
-                                    // Save Visited item
-                                    DispatchQueue.main.async {
-                                        DatabaseService().createHoliday(title: holidayTitle, date: holidayDate, locationID: UUID().uuidString, city: holidayCity, country: holidayCountry, latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude, visitedWith: visitedWith, thumbnailImage: thumbnailImage) { success, error in
-                                            
-                                            if success {
-                                                
-                                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                                    showAddNewHoliday = false
-                                                    showMarker = false
-                                                    showCancel = false
-                                                }
-                                                withAnimation {
-                                                    showAddNewHolidayContent.toggle()
-                                                }
-                                                
-                                                holidayTitle = ""
-                                                holidayDate = Date()
-                                                holidayCity = ""
-                                                holidayCountry = ""
-                                                
-                                                
-                                            }
-                                            else {
-                                                //  Show error
-                                                isSaving = false
-                                                showalert = true
-                                                errorMessage = error
-                                            }
-                                        }
-                                    }
-
-                                } else {
-                                    // Save wish list item
-                                    DispatchQueue.main.async {
-                                        DatabaseService().createWishlistHoliday(title: holidayTitle, date: holidayDate, locationID: UUID().uuidString, city: holidayCity, country: holidayCountry, latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude) { success, error in
-
-                                            if success {
-
-                                                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                                    showAddNewHoliday = false
-                                                    showMarker = false
-                                                    showCancel = false
-                                                }
-                                                withAnimation {
-                                                    showAddNewHolidayContent.toggle()
-                                                }
-
-                                                holidayTitle = ""
-                                                holidayCity = ""
-                                                holidayCountry = ""
-                                                holidayDate = Date()
-
-
-                                            }
-                                            else {
-                                                // Show error
-                                                isSaving = false
-                                                showalert = true
-                                                errorMessage = error
-                                            }
-                                        }
-                                    }
-
-                                }
-                                
-
-                            } label: {
-                                
-                                Image(systemName: "plus")
-                                    .resizable()
-                                    .matchedGeometryEffect(id: "plus", in: namespace)
-                                    .frame(width: 20, height: 20)
-                            }
-                            .foregroundColor(Color("Green1"))
-                            .disabled(isSaving)
-                            
-
+                        saveButton
+                        
                     }
                     .padding(.bottom, 10)
-
                     
-                        information
-            
+                    information
                     
                 }
                 .opacity(showAddNewHolidayContent ? 1 : 0)
                 .offset(y: showAddNewHolidayContent ? 0 : -10)
-            
+                
                 if isSaving {
                     VStack {
-
+                        
                         ProgressView()
                             .tint(Color("Green2"))
-
+                        
                         Text("Saving...")
                             .font(.title)
-
+                        
                     }
                     .padding(.vertical, 5)
                     .padding(.horizontal, 10)
@@ -196,14 +104,10 @@ struct AddNewHolidayView: View {
                         RoundedRectangle(cornerRadius: 15, style: .continuous)
                             .foregroundColor(.white)
                             .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-                        )
-
+                    )
                 }
-            
             }
             .disabled(isSaving)
-
-
         }
         .foregroundColor(Color("Green2"))
         .frame(maxWidth: .infinity)
@@ -215,21 +119,18 @@ struct AddNewHolidayView: View {
                 .matchedGeometryEffect(id: "maskAddNew", in: namespace)
         }
         .background(
-
             Color.white
                 .clippedCornerShape(25, corners: [.bottomLeft, .bottomRight])
                 .matchedGeometryEffect(id: "addbg", in: namespace)
                 .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
-
         )
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(selectedImage: $thumbnailImage)
         }
-        .alert(errorMessage ?? "", isPresented: $showalert) {
+        .alert(errorMessage, isPresented: $showalert) {
             Button("OK", role: .cancel) { }
         }
-
-
+        
     }
     
     @ViewBuilder
@@ -240,9 +141,8 @@ struct AddNewHolidayView: View {
             
             Spacer()
             
-            
             ForEach(options, id: \.self) { tab in
-
+                
                 if category == tab {
                     Text(tab)
                         .foregroundColor(.white)
@@ -253,8 +153,6 @@ struct AddNewHolidayView: View {
                                 .fill(Color("Green1"))
                                 .matchedGeometryEffect(id: "tab", in: namespace)
                         )
-
-
                 } else {
                     Text(tab)
                         .foregroundColor(Color("Green1"))
@@ -270,7 +168,7 @@ struct AddNewHolidayView: View {
                             }
                         }
                 }
-
+                
             }
             
             Spacer()
@@ -279,110 +177,110 @@ struct AddNewHolidayView: View {
         
     }
     
-    var information: some View {
-                
-            VStack(alignment: .leading, spacing: 10) {
+    var saveButton: some View {
+        Button {
+            titleFocused = false
+            cityFocused = false
+            countryFocused = false
+            visitedWithFocused = false
+            isSaving = true
             
-            // Title
-            VStack(spacing: 0) {
-                TextField("Holiday Title", text: $holidayTitle)
-                    .padding(.vertical, 5)
-                    .focused($titleFocused)
-                
-                ZStack(alignment: .leading) {
-                    Rectangle()
-                        .frame(height: 2)
-                        .foregroundColor(.gray.opacity(0.5))
-                        .cornerRadius(5)
-                    
-                    Rectangle()
-                        .frame(height: 2)
-                        .frame(maxWidth: titleFocused || !holidayTitle.isEmpty ? .infinity : 0)
-                        .animation(.easeInOut, value: titleFocused)
-                        .foregroundColor(Color("Green1"))
-                        .cornerRadius(5)
-
-                }
-                .padding(.trailing)
-            }
-                
-                // City and Country
-                HStack {
-                    
-                    VStack(spacing: 0) {
-                        TextField("City", text: $holidayCity)
-                            .padding(.vertical, 5)
-                            .focused($cityFocused)
-                        
-                        ZStack(alignment: .leading) {
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundColor(.gray.opacity(0.5))
-                                .cornerRadius(5)
-                            
-                            Rectangle()
-                                .frame(height: 2)
-                                .frame(maxWidth: cityFocused || !holidayCity.isEmpty ? .infinity : 0)
-                                .animation(.easeInOut, value: cityFocused)
-                                .foregroundColor(Color("Green1"))
-                                .cornerRadius(5)
-
-                        }
-                        .padding(.trailing)
-                    }
-                    
-                    Spacer()
-
-                    VStack(spacing: 0) {
-                        TextField("Country", text: $holidayCountry)
-                            .padding(.vertical, 5)
-                            .focused($countryFocused)
-                        
-                        ZStack(alignment: .leading) {
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundColor(.gray.opacity(0.5))
-                                .cornerRadius(5)
-                            
-                            Rectangle()
-                                .frame(height: 2)
-                                .frame(maxWidth: countryFocused || !holidayCountry.isEmpty ? .infinity : 0)
-                                .animation(.easeInOut, value: countryFocused)
-                                .foregroundColor(Color("Green1"))
-                                .cornerRadius(5)
-
-                        }
-                        .padding(.trailing)
-                    
-                }
-                
             
-            }
-
             if category == "Visited" {
                 
-                // Title
-                VStack(spacing: 0) {
-                    TextField("Visited With:", text: $visitedWith)
-                        .padding(.vertical, 5)
-                        .focused($visitedWithFocused)
+                DatabaseService().createHoliday(title: holidayTitle, date: holidayDate, locationID: UUID().uuidString, city: holidayCity, country: holidayCountry, latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude, visitedWith: visitedWith, thumbnailImage: thumbnailImage) { success, error in
                     
-                    ZStack(alignment: .leading) {
-                        Rectangle()
-                            .frame(height: 2)
-                            .foregroundColor(.gray.opacity(0.5))
-                            .cornerRadius(5)
+                    if success {
                         
-                        Rectangle()
-                            .frame(height: 2)
-                            .frame(maxWidth: visitedWithFocused || !visitedWith.isEmpty ? .infinity : 0)
-                            .animation(.easeInOut, value: visitedWithFocused)
-                            .foregroundColor(Color("Green1"))
-                            .cornerRadius(5)
-
+                        DispatchQueue.main.async {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                showAddNewHoliday = false
+                                showMarker = false
+                                showCancel = false
+                            }
+                            withAnimation {
+                                showAddNewHolidayContent.toggle()
+                            }
+                            
+                            holidayTitle = ""
+                            holidayDate = Date()
+                            holidayCity = ""
+                            holidayCountry = ""
+                        }
+                        
                     }
-                    .padding(.trailing)
+                    else {
+                        
+                        DispatchQueue.main.async {
+                            isSaving = false
+                            showalert = true
+                            errorMessage = error ?? ""
+                        }
+                    }
                 }
+                
+            } else {
+                
+                DatabaseService().createWishlistHoliday(title: holidayTitle, date: holidayDate, locationID: UUID().uuidString, city: holidayCity, country: holidayCountry, latitude: mapvm.region.center.latitude, longitude: mapvm.region.center.longitude) { success, error in
+                    
+                    if success {
+                        
+                        DispatchQueue.main.async {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                showAddNewHoliday = false
+                                showMarker = false
+                                showCancel = false
+                            }
+                            withAnimation {
+                                showAddNewHolidayContent.toggle()
+                            }
+                            
+                            holidayTitle = ""
+                            holidayCity = ""
+                            holidayCountry = ""
+                            holidayDate = Date()
+                        }
+                        
+                    } else {
+                        
+                        DispatchQueue.main.async {
+                            isSaving = false
+                            showalert = true
+                            errorMessage = error ?? ""
+                        }
+                        
+                    }
+                }
+            }
+        } label: {
+            
+            Image(systemName: "plus")
+                .resizable()
+                .matchedGeometryEffect(id: "plus", in: namespace)
+                .frame(width: 20, height: 20)
+        }
+        .foregroundColor(Color("Green1"))
+        .disabled(isSaving)
+    }
+    
+    var information: some View {
+        
+        VStack(alignment: .leading, spacing: 10) {
+            
+            HolidayTextField(placeholderText: "Holiday Title", text: $holidayTitle, isFocused: $titleFocused)
+            
+            HStack {
+                
+                HolidayTextField(placeholderText: "City", text: $holidayCity, isFocused: $cityFocused)
+                                
+                Spacer()
+                
+                HolidayTextField(placeholderText: "Country", text: $holidayCountry, isFocused: $countryFocused)
+            }
+            
+            if category == "Visited" {
+                
+                HolidayTextField(placeholderText: "Visited With", text: $visitedWith, isFocused: $visitedWithFocused)
                 
                 thumbnailImageSection
                     .padding(.vertical, 5)
@@ -391,13 +289,9 @@ struct AddNewHolidayView: View {
                     .datePickerStyle(.automatic)
                     .accentColor(Color("Green1"))
                     .foregroundColor(Color("Green1"))
-
                 
             }
-                
-            
         }
-        
     }
     
     var thumbnailImageSection: some View {
@@ -409,65 +303,42 @@ struct AddNewHolidayView: View {
             
             Spacer()
             
-            VStack(spacing: 5) {
-                Button {
+            Button {
+                
+                showImagePicker = true
+                
+            } label: {
+                
+                if thumbnailImage == nil {
                     
-                    showImagePicker = true
-                    
-                } label: {
-                    
-                    if thumbnailImage == nil {
+                    ZStack {
                         
-                        ZStack {
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(Color("Green1").opacity(0.1))
+                            .frame(width: 90, height: 90)
                         
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(Color("Green1").opacity(0.2))
-                                .frame(width: 90, height: 90)
-
-                            Image(systemName: "photo.fill")
-                                .font(.title)
-                                .foregroundColor(Color("Green2"))
-                            
+                        Image(systemName: "photo.fill")
+                            .font(.title)
+                            .foregroundColor(Color("Green2"))
+                        
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .strokeBorder(Color("Green1"), lineWidth: 1)
+                            .frame(width: 90, height: 90)
+                        
+                    }
+                } else {
+                    Image(uiImage: thumbnailImage!)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 90, height: 90)
+                        .overlay(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .strokeBorder(Color("Green1"), lineWidth: 1)
-                                .frame(width: 90, height: 90)
-
-                        }
-                        
-                    } else {
-                        Image(uiImage: thumbnailImage!)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 90, height: 90)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .strokeBorder(Color("Green1"), lineWidth: 1)
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    }
-                    
-            }
-                
-                if thumbnailImage != nil {
-                    Button {
-                        thumbnailImage = nil
-                    } label: {
-                        Text("Clear")
-                            .foregroundColor(Color("Green1"))
-                            .font(.caption)
-                    }
-
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 }
-                
             }
-            
-
-            
         }
-        
     }
     
-    
 }
-
-
