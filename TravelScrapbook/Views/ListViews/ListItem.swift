@@ -21,37 +21,35 @@ struct ListItem: View {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 50, height: 50)
-                    .frame(width: 90, height: 90)
+                    .frame(width: 40, height: 40)
+                    .frame(width: 80, height: 80)
                 
             } else {
-                MainHolidayImage(holiday: holiday, iconSize: 50)
-                    .frame(width: 90, height: 90)
+                MainHolidayImage(holiday: holiday, iconSize: 40)
+                    .frame(width: 80, height: 80)
                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     .padding(.trailing)
             }
-            
             
             VStack(alignment: .leading) {
                 
                 Text(holiday.title)
                     .foregroundColor(Color("Green2"))
                     .bold()
-                
-//                Spacer()
-                                
-                HStack(spacing: 5) {
-                    Text("\(holiday.location.city),")
-                    Text(holiday.location.country)
-                        .italic()
-                    
-                    Spacer()
+                                      
+                if holiday.location.city != "" && holiday.location.country != "" {
+                    HStack(spacing: 10) {
+                        Text(holiday.location.city)
+                        Text(holiday.location.country)
+                            .italic()
+                        
+                        Spacer()
+                    }
+                    .font(.footnote)
                 }
-                .font(.footnote)
                             
                 Text(holiday.date!.formatted(date: .numeric, time: .omitted))
                     .font(.footnote)
-
                 
             }
             .padding(.vertical)
@@ -59,8 +57,8 @@ struct ListItem: View {
             Spacer()
             
             Image(systemName: "chevron.right")
-                .font(.largeTitle)
-                .padding(.trailing)
+                .font(.largeTitle.weight(.ultraLight))
+                .padding(.trailing, 10)
         }
         .foregroundColor(Color("Green1"))
 

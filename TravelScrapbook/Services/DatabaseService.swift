@@ -15,6 +15,7 @@ class DatabaseService {
     var visitedListener = [ListenerRegistration]()
     var wishlistListener = [ListenerRegistration]()
 
+    let db = Firestore.firestore()
     
     func setUserProfile(firstname: String, lastname: String, email: String, completion: @escaping (Bool) -> Void) {
      
@@ -45,6 +46,7 @@ class DatabaseService {
         
     }
     
+    
     /// This method gets all visited items from the database created by the signed in user
     func getVisited(completion: @escaping ([Holiday]) -> Void ) {
      
@@ -63,7 +65,7 @@ class DatabaseService {
             if snapshot != nil && error == nil {
                 
                 var holidays = [Holiday]()
-                
+                                
                 for doc in snapshot!.documents {
                     
                     let data = doc.data()
@@ -219,7 +221,6 @@ class DatabaseService {
                                             if error == nil {
                                                 // Main image Success, notify caller
                                                 completion(true, "")
-
 
                                             }
                                         }

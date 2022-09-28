@@ -22,12 +22,12 @@ struct HolidayTextField: View {
             
             ZStack(alignment: .leading) {
                 Rectangle()
-                    .frame(height: 2)
+                    .frame(height: 1.5)
                     .foregroundColor(.gray.opacity(0.5))
                     .cornerRadius(5)
                 
                 Rectangle()
-                    .frame(height: 2)
+                    .frame(height: 1.5)
                     .frame(maxWidth: isFocused || !text.isEmpty ? .infinity : 0)
                     .animation(.easeInOut, value: isFocused)
                     .foregroundColor(Color("Green1"))
