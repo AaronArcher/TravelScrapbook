@@ -29,6 +29,7 @@ struct EditHolidayView: View {
     @FocusState private var countryFocused: Bool
 
     @State private var showImagePicker = false
+    @State private var showDelete = false
 
 
     var body: some View {
@@ -134,7 +135,7 @@ struct EditHolidayView: View {
                         
                         
                     } label: {
-                        Text("Save")
+                        Text("Update")
                             .font(.callout)
                     }
                     
@@ -284,11 +285,34 @@ struct EditHolidayView: View {
                     
                 }
                 
+                Spacer()
+                
+                if holiday.isWishlist {
+                                        
+                    Button {
+                        
+                        showDelete = true
+                        
+                    } label: {
+                        
+                        Text("Delete")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .padding(.vertical, 10)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                    .foregroundColor(.red)
+                            )
+                            .padding(.horizontal)
+                            .padding(.vertical, 30)
+                        
+                    }
+                    
+                }
 
                 
             }
-            
-            
             
             Spacer()
         
@@ -296,6 +320,23 @@ struct EditHolidayView: View {
         .foregroundColor(Color("Green1"))
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(selectedImage: $newThumbnail)
+        }
+        .alert("Are you sure you want to delete this destination?", isPresented: $showDelete) {
+            Button {
+                DatabaseService().deleteHoliday(holiday: holiday) { success, error in
+                    if success {
+                        dismiss()
+                        
+                    } else {
+                
+                    }
+                }
+            } label: {
+                Text("Yes")
+            }
+            
+            Button("Cancel", role: .cancel) { }
+
         }
 
         

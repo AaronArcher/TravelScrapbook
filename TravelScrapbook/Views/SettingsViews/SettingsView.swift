@@ -13,48 +13,51 @@ struct SettingsView: View {
     @EnvironmentObject var holidayViewModel: HolidayViewModel
     
     @Binding var showLogin: Bool
+    @State private var filterOptions = ["All Locations", "Visited Locations", "Wishlist Locations"]
+    @State private var selectedFilter = "All Locations"
+
     
     var body: some View {
         
+        NavigationView {
             
-            VStack {
-                
-                Button {
-                    dismiss()
-                } label: {
+            List {
+            
+                HStack {
                     
-                    Text("Close")
-                        .foregroundColor(.red)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                }
-
-                
-                Text("Show:")
-                HStack(spacing: 20) {
-                    
-                    Button {
-                        holidayViewModel.selectedCategory = .all
-                    } label: {
-                        Text("All")
-                    }
-                    
-                    Button {
-                        holidayViewModel.selectedCategory = .visited
-                    } label: {
-                        Text("Visited")
-                    }
-
-                    Button {
-                        holidayViewModel.selectedCategory = .wishlist
-                    } label: {
-                        Text("Wishlist")
-                    }
-                    
-                }
+                    Text("Filter By:")
+                        .foregroundColor(Color("Green2"))
                     
                     Spacer()
                     
+                    Picker("Filter by:", selection: $holidayViewModel.selectedCategory) {
+                        ForEach(SelectedCategory.allCases, id: \.self) { category in
+                            Text(category.rawValue)
+                                .foregroundColor(Color("Green1"))
+                        }
+                    }
+                    .accentColor(Color("Green1"))
+                    .pickerStyle(.menu)
+                }
+                
+            
+            }
+            .listStyle(.plain)
+            .padding(.top)
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.headline)
+                            .foregroundColor(.red)
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         
                         dismiss()
@@ -64,29 +67,15 @@ struct SettingsView: View {
                         showLogin = !AuthViewModel.isUserLoggedIn()
                         
                     } label: {
-                        Text("Sign Out")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .padding(.vertical, 5)
-                            .padding(.horizontal)
-                            .background(
-                                Capsule()
-                                    .foregroundColor(.red)
-                                    .frame(maxWidth: .infinity)
-                            )
-                    }
-                    .padding(.bottom, 30)
-                
-                
-                
-                
-
+                        Text("Log Out")
+                            .font(.callout)
+                            .foregroundColor(Color("Green1"))
+                        }
+                }
                 
             }
-            .padding()
-            .padding(.top)
             
-        
+        }
         
     }
 }

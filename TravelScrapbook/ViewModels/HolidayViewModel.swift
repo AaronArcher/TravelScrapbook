@@ -9,17 +9,15 @@ import Foundation
 import CoreLocation
 import UIKit
 
-enum selectedCategory {
-    case all
-    case wishlist
-    case visited
+enum SelectedCategory: String, CaseIterable {
+    case all = "All Locations"
+    case visited = "Visited Locations"
+    case wishlist = "Wishlist Locations"
 }
 
 class HolidayViewModel: ObservableObject {
     
-
-    
-    @Published var selectedCategory: selectedCategory = .all
+    @Published var selectedCategory: SelectedCategory = .all
         
     @Published var allHolidays: [Holiday] = []
     @Published var visited: [Holiday] = []

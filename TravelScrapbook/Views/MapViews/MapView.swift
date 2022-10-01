@@ -24,6 +24,7 @@ struct MapView: View {
     
     @Binding var addNewHoliday: Bool
     @Binding var showAddNewHolidayContent: Bool
+
     
     var body: some View {
         
@@ -82,7 +83,6 @@ struct MapView: View {
             
             newHolidayButton
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-            
             
         }
         

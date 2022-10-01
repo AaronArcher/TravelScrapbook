@@ -23,7 +23,6 @@ struct MapAnnotationView: View {
     @State private var showEditWishlist = false
     @State private var showDelete = false
     
-    
     var body: some View {
         
         if span > 50 {
@@ -63,11 +62,7 @@ struct MapAnnotationView: View {
             
             Button {
                 
-                DispatchQueue.main.async {
-                    withAnimation {
-                        showWishlist.toggle()
-                    }
-                }
+                showEditWishlist = true
                 
             } label: {
 
@@ -88,8 +83,6 @@ struct MapAnnotationView: View {
                 }
             }
             
-//            if showWishlist {
-                // If I show this ZStack only with showWishList is true, the buttons are not tappable until you move the map slightly and re render the view so instead, permanently show this view and just scale is when showWishList is true. However this also centers the point in the wrong location so I have used an offset to update location
                 ZStack {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .foregroundColor(.white)
@@ -154,13 +147,10 @@ struct MapAnnotationView: View {
                 .scaleEffect(showWishlist ? 1 : 0.001, anchor: .center)
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 .shadow(color: Color("Green2").opacity(0.3), radius: 15, x: 5, y: 5)
-//                .transition(.scale)
                 .sheet(isPresented: $showEditWishlist) {
                     EditHolidayView(holiday: holiday, newDate: Date())
                 }
-                
-//            }
-                
+                        
         }
         .offset(y: showWishlist ? 0 : 35)
         .alert("Are you sure you want to delete this destination?", isPresented: $showDelete) {
