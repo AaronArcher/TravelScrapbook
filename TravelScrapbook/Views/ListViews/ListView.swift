@@ -12,7 +12,15 @@ struct ListView: View {
     @EnvironmentObject var holidayvm: HolidayViewModel
     
     @State var showHoliday = false
+    @Namespace private var namespace
     
+    @State private var category = "Visited"
+    
+//    private var listData: [Holiday] {
+//        if holidayvm.selectedCategory == .all {
+//            return holidayvm.wishlist + holidayvm.visited
+//        }
+//    }
     
     var body: some View {
         
@@ -20,7 +28,7 @@ struct ListView: View {
             
             Color(.white)
             
-            if holidayvm.allHolidays.count == 0 {
+            if holidayvm.visited.count == 0 && holidayvm.wishlist.count == 0 {
                 
                 Text("You haven't created any holidays yet!")
                     .font(.title2)
@@ -30,25 +38,97 @@ struct ListView: View {
                 
             } else {
                 
-                List(holidayvm.visited) { holiday in
+                VStack(spacing: 5) {
                     
-                    Button {
-                        showHoliday = true
-                    } label: {
-                        ListItem(holiday: holiday)
-                            .padding(.vertical, 5)
+                    segmentBar
+                        .padding(.top)
+                    
+                    if category == "Visited" {
+                        List(holidayvm.visited.sorted()) { holiday in
+                            
+                            Button {
+                                showHoliday = true
+                            } label: {
+                                ListItem(holiday: holiday)
+                                    .padding(.vertical, 5)
+                            }
+                            .sheet(isPresented: $showHoliday) {
+                                HolidayView(holiday: holiday, showHoliday: $showHoliday)
+                            }
+                        }
+                        .listRowSeparatorTint(Color("Green1"))
+                        .listStyle(.plain)
+                        .padding(.vertical)
+                    } else {
+                        List(holidayvm.wishlist.sorted()) { holiday in
+                            
+                            Button {
+                                showHoliday = true
+                            } label: {
+                                ListItem(holiday: holiday)
+                                    .padding(.vertical, 5)
+                            }
+                            .sheet(isPresented: $showHoliday) {
+                                EditHolidayView(holiday: holiday, newDate: Date())
+                            }
+                        }
+                        .listRowSeparatorTint(Color("Green1"))
+                        .listStyle(.plain)
+                        .padding(.vertical)
                     }
-                    .sheet(isPresented: $showHoliday) {
-                        HolidayView(holiday: holiday, showHoliday: $showHoliday)
-                    }
+                    
+                    
                 }
-                .listRowSeparatorTint(Color("Green1"))
-                .listStyle(.plain)
-                .padding(.vertical)
+                
             }
         }
         .ignoresSafeArea()
     }
+    
+    @ViewBuilder
+    var segmentBar: some View {
+        let options = ["Visited", "Wish List"]
+        
+        HStack(spacing: 15) {
+            
+            Spacer()
+            
+            ForEach(options, id: \.self) { tab in
+                
+                if category == tab {
+                    Text(tab)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color("Green1"))
+                                .matchedGeometryEffect(id: "tab", in: namespace)
+                        )
+                } else {
+                    Text(tab)
+                        .foregroundColor(Color("Green1"))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(.clear)
+                        )
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                                category = tab
+                            }
+                        }
+                }
+                
+            }
+            
+            Spacer()
+            
+        }
+        
+    }
+
     
 }
 

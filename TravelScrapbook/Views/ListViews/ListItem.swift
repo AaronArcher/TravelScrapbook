@@ -21,8 +21,8 @@ struct ListItem: View {
                 Image(systemName: "heart.fill")
                     .resizable()
                     .scaledToFit()
+                    .foregroundColor(Color("Pink1"))
                     .frame(width: 40, height: 40)
-                    .frame(width: 80, height: 80)
                 
             } else {
                 MainHolidayImage(holiday: holiday, iconSize: 40)
@@ -48,8 +48,10 @@ struct ListItem: View {
                     .font(.footnote)
                 }
                             
-                Text(holiday.date!.formatted(date: .numeric, time: .omitted))
-                    .font(.footnote)
+                if !holiday.isWishlist {
+                    Text(holiday.date!.formatted(date: .numeric, time: .omitted))
+                        .font(.footnote)
+                }
                 
             }
             .padding(.vertical)

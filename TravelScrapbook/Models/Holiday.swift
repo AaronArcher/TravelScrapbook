@@ -10,7 +10,15 @@ import FirebaseFirestoreSwift
 import FirebaseFirestore
 
 
-struct Holiday: Identifiable, Codable {
+struct Holiday: Identifiable, Codable, Comparable {
+    static func == (lhs: Holiday, rhs: Holiday) -> Bool {
+        return lhs.title == rhs.title
+    }
+    
+    static func < (lhs: Holiday, rhs: Holiday) -> Bool {
+        return lhs.title < rhs.title
+    }
+    
     @DocumentID var id: String?
     var title: String
     var isWishlist: Bool

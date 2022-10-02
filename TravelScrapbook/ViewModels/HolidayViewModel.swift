@@ -32,7 +32,7 @@ class HolidayViewModel: ObservableObject {
         
         
         databaseService.getVisited { holidays in
-            self.allHolidays = holidays
+
             self.visited = holidays
             
         }

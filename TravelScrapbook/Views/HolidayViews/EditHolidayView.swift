@@ -148,7 +148,7 @@ struct EditHolidayView: View {
                 
                 if holiday.isWishlist {
                 
-                    Toggle("Visited?", isOn: $visited)
+                    Toggle("Visited this destination?", isOn: $visited)
                         .padding(.horizontal, 32)
                         .padding(.top)
                 }
