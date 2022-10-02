@@ -16,11 +16,6 @@ struct ListView: View {
     
     @State private var category = "Visited"
     
-//    private var listData: [Holiday] {
-//        if holidayvm.selectedCategory == .all {
-//            return holidayvm.wishlist + holidayvm.visited
-//        }
-//    }
     
     var body: some View {
         
@@ -76,13 +71,11 @@ struct ListView: View {
                         .listStyle(.plain)
                         .padding(.vertical)
                     }
-                    
-                    
                 }
-                
             }
         }
         .ignoresSafeArea()
+        
     }
     
     @ViewBuilder
@@ -128,12 +121,11 @@ struct ListView: View {
         }
         
     }
-
     
 }
 
-struct ListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListView()
-    }
-}
+//struct ListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ListView()
+//    }
+//}

@@ -15,69 +15,82 @@ struct SettingsView: View {
     @Binding var showLogin: Bool
     @State private var filterOptions = ["All Locations", "Visited Locations", "Wishlist Locations"]
     @State private var selectedFilter = "All Locations"
-
+    
     
     var body: some View {
         
         NavigationView {
             
             List {
-            
-                HStack {
-                    
-                    Text("Filter By:")
-                        .foregroundColor(Color("Green2"))
-                    
-                    Spacer()
-                    
-                    Picker("Filter by:", selection: $holidayViewModel.selectedCategory) {
-                        ForEach(SelectedCategory.allCases, id: \.self) { category in
-                            Text(category.rawValue)
-                                .foregroundColor(Color("Green1"))
-                        }
-                    }
-                    .accentColor(Color("Green1"))
-                    .pickerStyle(.menu)
-                }
                 
+                Section("Profile") {
+                    NavigationLink {
+                        
+                    } label: {
+                        Text("Edit Profile")
+                    }
+                    
+                }
             
+                Section("Preferences") {
+                    HStack {
+                        
+                        Text("Filter By:")
+                            .foregroundColor(Color("Green2"))
+                        
+                        Spacer()
+                        
+                        Picker("Filter by:", selection: $holidayViewModel.selectedCategory) {
+                            ForEach(SelectedCategory.allCases, id: \.self) { category in
+                                Text(category.rawValue)
+                                    .foregroundColor(Color("Green1"))
+                            }
+                        }
+                        .accentColor(Color("Green1"))
+                        .pickerStyle(.menu)
+                    }
+
+                }
+            
+            
+            
+        }
+        .listStyle(.insetGrouped)
+        .padding(.top)
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.headline)
+                        .foregroundColor(.red)
+                }
             }
-            .listStyle(.plain)
-            .padding(.top)
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.headline)
-                            .foregroundColor(.red)
-                    }
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    
+                    dismiss()
+                    
+                    holidayViewModel.holidayCleanup()
+                    AuthViewModel.logOut()
+                    showLogin = !AuthViewModel.isUserLoggedIn()
+                    
+                } label: {
+                    Text("Log Out")
+                        .font(.callout)
+                        .foregroundColor(Color("Green1"))
                 }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        
-                        dismiss()
-                        
-                        holidayViewModel.holidayCleanup()
-                        AuthViewModel.logOut()
-                        showLogin = !AuthViewModel.isUserLoggedIn()
-                        
-                    } label: {
-                        Text("Log Out")
-                            .font(.callout)
-                            .foregroundColor(Color("Green1"))
-                        }
-                }
-                
             }
             
         }
         
     }
+    
+}
 }
 
 //struct SettingsView_Previews: PreviewProvider {

@@ -10,8 +10,8 @@ import SwiftUI
 struct EditHolidayView: View {
     
     @Environment(\.dismiss) private var dismiss
-
-
+    
+    
     let holiday: Holiday
     
     @State private var visited = false
@@ -27,11 +27,11 @@ struct EditHolidayView: View {
     @FocusState private var visitedWithFocused: Bool
     @FocusState private var cityFocused: Bool
     @FocusState private var countryFocused: Bool
-
+    
     @State private var showImagePicker = false
     @State private var showDelete = false
-
-
+    
+    
     var body: some View {
         
         VStack {
@@ -49,96 +49,96 @@ struct EditHolidayView: View {
                 Spacer()
                 
                 // Save button
+                
+                Button {
                     
-                    Button {
+                    titleFocused = false
+                    visitedWithFocused = false
+                    cityFocused = false
+                    countryFocused = false
+                    
+                    if holiday.isWishlist {
                         
-                        titleFocused = false
-                        visitedWithFocused = false
-                        cityFocused = false
-                        countryFocused = false
-                        
-                        if holiday.isWishlist {
+                        // Edit a wishlist holiday
+                        if !visited {
                             
-                            // Edit a wishlist holiday
-                            if !visited {
+                            // TODO: Update existing wishlist
+                            DatabaseService().editWishlistHoliday(holiday: holiday, title: newTitle, city: newCity, country: newCountry) { success, error in
                                 
-                                // TODO: Update existing wishlist
-                                DatabaseService().editWishlistHoliday(holiday: holiday, title: newTitle, city: newCity, country: newCountry) { success, error in
-                                    
-                                    if success {
-                                        dismiss()
-                                        print("success updating wishlist")
-                                    } else {
-                                        // TODO: Handle error
-                                        
-                                    }
-                                    
-                                }
-                                
-                            } else {
-                                
-                                // If changing to a Visited holiday, save new visited holiday and delete this from wishlist
-                                DatabaseService().createHoliday(title: newTitle == "" ? holiday.title : newTitle,
-                                                                date: newDate,
-                                                                locationID: holiday.location.id,
-                                                                city: newCity == "" ? holiday.location.city : newCity,
-                                                                country: newCountry == "" ? holiday.location.country : newCountry,
-                                                                latitude: holiday.location.latitude,
-                                                                longitude: holiday.location.longitude,
-                                                                visitedWith: newVisitedWith,
-                                                                thumbnailImage: newThumbnail) { success, error in
-                                    
-                                    if success {
-                                        
-                                        DatabaseService().deleteHoliday(holiday: holiday) { success, error in
-                                            
-                                            if success {
-                                            
-                                                dismiss()
-                                                print("Success in deleting holiday")
-                                                
-                                            } else {
-                                                // TODO: Handle error
-                                                print(" Failure deleting holiday - \(error ?? "")")
-                                            }
-                                            
-                                        }
-                                        
-                                    } else {
-                                        // TODO: Handle error
-                                        print("Something went wrong creating new holiday")
-                                    }
+                                if success {
+                                    dismiss()
+                                    print("success updating wishlist")
+                                } else {
+                                    // TODO: Handle error
                                     
                                 }
                                 
                             }
-                                                        
                             
                         } else {
                             
-                            // Editing a visited holiday
-                            DatabaseService().editVisitedHoliday(holiday: holiday, title: newTitle, visitedWith: newVisitedWith, city: newCity, country: newCountry, date: newDate, newImage: newThumbnail) { success, error in
+                            // If changing to a Visited holiday, save new visited holiday and delete this from wishlist
+                            DatabaseService().createHoliday(title: newTitle == "" ? holiday.title : newTitle,
+                                                            date: newDate,
+                                                            locationID: holiday.location.id,
+                                                            city: newCity == "" ? holiday.location.city : newCity,
+                                                            country: newCountry == "" ? holiday.location.country : newCountry,
+                                                            latitude: holiday.location.latitude,
+                                                            longitude: holiday.location.longitude,
+                                                            visitedWith: newVisitedWith,
+                                                            thumbnailImage: newThumbnail) { success, error in
                                 
                                 if success {
                                     
-                                    dismiss()
+                                    DatabaseService().deleteHoliday(holiday: holiday) { success, error in
+                                        
+                                        if success {
+                                            
+                                            dismiss()
+                                            print("Success in deleting holiday")
+                                            
+                                        } else {
+                                            // TODO: Handle error
+                                            print(" Failure deleting holiday - \(error ?? "")")
+                                        }
+                                        
+                                    }
                                     
                                 } else {
-                                    // TODO: Show error
-                                    
+                                    // TODO: Handle error
+                                    print("Something went wrong creating new holiday")
                                 }
-                                
                                 
                             }
                             
                         }
                         
                         
-                    } label: {
-                        Text("Update")
-                            .font(.callout)
+                    } else {
+                        
+                        // Editing a visited holiday
+                        DatabaseService().editVisitedHoliday(holiday: holiday, title: newTitle, visitedWith: newVisitedWith, city: newCity, country: newCountry, date: newDate, newImage: newThumbnail) { success, error in
+                            
+                            if success {
+                                
+                                dismiss()
+                                
+                            } else {
+                                // TODO: Show error
+                                
+                            }
+                            
+                            
+                        }
+                        
                     }
                     
+                    
+                } label: {
+                    Text("Update")
+                        .font(.callout)
+                }
+                
                 
             }
             .padding(.top)
@@ -147,7 +147,7 @@ struct EditHolidayView: View {
             ScrollView {
                 
                 if holiday.isWishlist {
-                
+                    
                     Toggle("Visited this destination?", isOn: $visited)
                         .padding(.horizontal, 32)
                         .padding(.top)
@@ -160,18 +160,18 @@ struct EditHolidayView: View {
                     TextField(holiday.title, text: $newTitle)
                         .focused($titleFocused)
                         .multilineTextAlignment(.leading)
-
+                    
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 5)
                 .background(
-                        TextBackground(isTextfield: true, isFocused: titleFocused)
+                    TextBackground(isTextfield: true, isFocused: titleFocused)
                 )
                 .padding(.horizontal)
                 .padding(.vertical, 10)
                 .padding(.top, !holiday.isWishlist ? 16 : 0)
-
-
+                
+                
                 // City
                 HStack {
                     Text("City:")
@@ -179,16 +179,16 @@ struct EditHolidayView: View {
                     TextField(holiday.location.city, text: $newCity)
                         .focused($cityFocused)
                         .multilineTextAlignment(.leading)
-
+                    
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 5)
                 .background(
-                        TextBackground(isTextfield: true, isFocused: cityFocused)
+                    TextBackground(isTextfield: true, isFocused: cityFocused)
                 )
                 .padding(.horizontal)
                 .padding(.vertical, 10)
-
+                
                 
                 // Country
                 HStack {
@@ -197,45 +197,48 @@ struct EditHolidayView: View {
                     TextField(holiday.location.country, text: $newCountry)
                         .focused($countryFocused)
                         .multilineTextAlignment(.leading)
-
+                    
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 5)
                 .background(
-                        TextBackground(isTextfield: true, isFocused: countryFocused)
+                    TextBackground(isTextfield: true, isFocused: countryFocused)
                 )
                 .padding(.horizontal)
                 .padding(.vertical, 10)
-
+                
                 // Show Visited with, date and image if this is editing a visited holiday or a wishlist holiday changing to a visited holiday
                 if !holiday.isWishlist || (holiday.isWishlist && visited) {
-
-                    // Visited With
+                    
                     HStack {
                         Text("Visited with:")
                         
                         TextField(holiday.visitedWith ?? "", text: $newVisitedWith)
                             .focused($visitedWithFocused)
                             .multilineTextAlignment(.leading)
-
+                        
                     }
                     .padding(.horizontal)
                     .padding(.vertical, 5)
                     .background(
-                            TextBackground(isTextfield: true, isFocused: visitedWithFocused)
+                        TextBackground(isTextfield: true, isFocused: visitedWithFocused)
                     )
                     .padding(.horizontal)
                     .padding(.vertical, 10)
                     
-                    
-                    // Date
                     DatePicker("Holiday Date", selection: $newDate, displayedComponents: .date)
                         .datePickerStyle(.automatic)
                         .accentColor(Color("Green1"))
                         .foregroundColor(Color("Green1"))
-                        .padding()
+                        .padding(.leading)
+                        .padding(.trailing, 10)
+                        .padding(.vertical, 10)
+                        .background(
+                            TextBackground(isTextfield: false)
+                        )
+                        .padding(.horizontal)
+                        .padding(.vertical, 5)
 
-                    // Image
                     
                     HStack {
                         
@@ -261,34 +264,35 @@ struct EditHolidayView: View {
                                                 .stroke(Color("Green1"), lineWidth: 1)
                                         )
                                 } else {
-                                 
-                                        Image(uiImage: newThumbnail!)
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 100, height: 100)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                                    .strokeBorder(Color("Green1"), lineWidth: 1)
-                                            )
-                                            .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                                     
-                                    
+                                    Image(uiImage: newThumbnail!)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                                .strokeBorder(Color("Green1"), lineWidth: 1)
+                                        )
+                                        .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                                 }
-
                             }
-                            
                         }
-
-                        
                     }
+                    .padding(.leading)
+                    .padding(.trailing, 10)
+                    .padding(.vertical, 10)
+                    .background(
+                        TextBackground(isTextfield: false)
+                    )
                     .padding(.horizontal)
+                    .padding(.vertical, 5)
                     
                 }
                 
                 Spacer()
                 
                 if holiday.isWishlist {
-                                        
+                    
                     Button {
                         
                         showDelete = true
@@ -310,12 +314,12 @@ struct EditHolidayView: View {
                     }
                     
                 }
-
+                
                 
             }
             
             Spacer()
-        
+            
         }
         .foregroundColor(Color("Green1"))
         .sheet(isPresented: $showImagePicker) {
@@ -328,7 +332,7 @@ struct EditHolidayView: View {
                         dismiss()
                         
                     } else {
-                
+                        
                     }
                 }
             } label: {
@@ -336,9 +340,9 @@ struct EditHolidayView: View {
             }
             
             Button("Cancel", role: .cancel) { }
-
+            
         }
-
+        
         
     }
 }
