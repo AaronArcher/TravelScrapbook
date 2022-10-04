@@ -21,13 +21,13 @@ struct ListView: View {
         
         ZStack {
             
-            Color(.white)
+//            Color("Background")
             
             if holidayvm.visited.count == 0 && holidayvm.wishlist.count == 0 {
                 
                 Text("You haven't created any holidays yet!")
                     .font(.title2)
-                    .foregroundColor(Color("Green1"))
+                    .foregroundColor(Color("Text"))
                     .multilineTextAlignment(.center)
                     .padding()
                 
@@ -47,6 +47,7 @@ struct ListView: View {
                                 ListItem(holiday: holiday)
                                     .padding(.vertical, 5)
                             }
+                            .listRowBackground(Color("Background"))
                             .sheet(isPresented: $showHoliday) {
                                 HolidayView(holiday: holiday, showHoliday: $showHoliday)
                             }
@@ -67,7 +68,7 @@ struct ListView: View {
                                 EditHolidayView(holiday: holiday, newDate: Date())
                             }
                         }
-                        .listRowSeparatorTint(Color("Green1"))
+                        .listRowSeparatorTint(Color("Text"))
                         .listStyle(.plain)
                         .padding(.vertical)
                     }
@@ -75,6 +76,7 @@ struct ListView: View {
             }
         }
         .ignoresSafeArea()
+        .background(Color("Background"))
         
     }
     

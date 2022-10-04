@@ -195,6 +195,7 @@
 				EE95739228905114006F42FF /* MainHolidayImage.swift */,
 				EE1066C42888859500F36351 /* RoundedCornerShape.swift */,
 				EE68E2F028DD039900986D58 /* HolidayTextField.swift */,
+				EEB04A4128B23FBE00D3C887 /* TextBackground.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -267,7 +268,6 @@
 				EEC032F12864FCC600CE6682 /* Extensions.swift */,
 				EE95737B288F08A4006F42FF /* DateHelper.swift */,
 				EE9C0BAC289281F000F353B2 /* ImageHelper.swift */,
-				EEB04A4128B23FBE00D3C887 /* TextBackground.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";

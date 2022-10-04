@@ -192,6 +192,7 @@ struct HolidayView: View {
 
                     
                 }
+                .foregroundColor(Color("PrimaryGreen"))
                 .padding(.horizontal)
                 .padding(.top, 10)
                 
@@ -224,6 +225,7 @@ struct HolidayView: View {
             
         }
         .foregroundColor(Color("Green1"))
+        .background(Color("Background"))
         .ignoresSafeArea(edges: .top)
         .sheet(isPresented: $showEditHoliday, content: {
             EditHolidayView(holiday: holiday, newDate: holiday.date ?? Date())

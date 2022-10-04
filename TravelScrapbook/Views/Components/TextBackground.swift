@@ -21,7 +21,7 @@ struct TextBackground: View {
             ZStack {
                 
                 RoundedRectangle(cornerRadius: 15, style: .continuous)
-                    .foregroundColor(.white)
+                    .foregroundColor(Color("TextBackground"))
                     .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                     .frame(minHeight: smallHeight ? 35 : 45)
                 
@@ -36,7 +36,7 @@ struct TextBackground: View {
         } else {
             
             RoundedRectangle(cornerRadius: 15, style: .continuous)
-                .foregroundColor(.white)
+                .foregroundColor(Color("TextBackground"))
                 .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                 .frame(minHeight: smallHeight ? 35 : 45)
 

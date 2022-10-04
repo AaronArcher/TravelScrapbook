@@ -34,7 +34,6 @@ struct ListItem: View {
             VStack(alignment: .leading) {
                 
                 Text(holiday.title)
-                    .foregroundColor(Color("Green2"))
                     .bold()
                                       
                 if holiday.location.city != "" && holiday.location.country != "" {
@@ -62,8 +61,10 @@ struct ListItem: View {
                 .font(.largeTitle.weight(.ultraLight))
                 .padding(.trailing, 10)
         }
-        .foregroundColor(Color("Green1"))
+        .foregroundColor(Color("PrimaryGreen"))
+        .background(Color("Background"))
 
+        
     }
 }
 

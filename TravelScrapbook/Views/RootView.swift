@@ -54,13 +54,13 @@ struct RootView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 25, height: 25)
-                                .offset(x: showMap ? 0 : 80)
+                                .offset(x: showMap ? -80 : 0)
                             
                             Image(systemName: "list.bullet")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 25, height: 25)
-                                .offset(x: showMap ? -80 : 0)
+                                .offset(x: showMap ? 0 : 80)
                         }
                         .padding(10)
                         .mask({ Circle() })
@@ -78,9 +78,8 @@ struct RootView: View {
                         SearchButton(showSearch: $showSearch,
                                      showSearchContent: $showSearchContent,
                                      namespace: namespace)
-                        .offset(y: showAddNewHoliday ? -80 : 0)
+                        .offset(y: showAddNewHoliday || !showMap ? -100 : 0)
                         .disabled(!showMap)
-                        .opacity(showMap ? 1 : 0.5)
                     }
                     
                     Spacer()
@@ -146,7 +145,7 @@ struct RootView: View {
             .foregroundColor(Color("Green1"))
             .ignoresSafeArea()
             .background(
-                LinearGradient(colors: [Color("Green3").opacity(0.03), Color("Green3")], startPoint: .top, endPoint: .bottom)
+                LinearGradient(colors: [Color("Background"), Color("Green3"), Color("Green3")], startPoint: .top, endPoint: .bottom)
             )
 //            .fullScreenCover(isPresented: $showLogin, onDismiss: {
 //                holidayvm.getholidays()

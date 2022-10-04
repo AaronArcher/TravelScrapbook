@@ -26,7 +26,7 @@ struct MainHolidayImage: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: iconSize, height: iconSize)
-                        .foregroundColor(Color("Green2"))
+                        .foregroundColor(Color("PrimaryGreen"))
                 }
 
             } else {
