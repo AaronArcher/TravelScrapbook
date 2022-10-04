@@ -23,6 +23,7 @@ struct ListItem: View {
                     .scaledToFit()
                     .foregroundColor(Color("Pink1"))
                     .frame(width: 40, height: 40)
+                    .padding(.trailing)
                 
             } else {
                 MainHolidayImage(holiday: holiday, iconSize: 40)

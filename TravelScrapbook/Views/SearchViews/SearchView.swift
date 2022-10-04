@@ -37,42 +37,23 @@ struct SearchView: View {
                 } label: {
                     Image(systemName: "xmark")
                         .resizable()
-                        .scaledToFit()
-                        .frame(height: 20)
+                        .frame(width: 17, height: 17)
+                        .foregroundColor(.red)
                 }
                 .opacity(showSearchContent ? 1 : 0)
                 .offset(y: showSearchContent ? 0 : -10)
                 .padding(.trailing, 5)
                 
-                ZStack {
-                    
-                    TextField("Enter Location", text: $searchText)
-                        .padding(5)
-                        .background(
-                            RoundedRectangle(cornerRadius: 5, style: .continuous)
-                                .foregroundColor(.gray.opacity(0.08))
-                        )
-                    
-                    Button {
-                        withAnimation(.spring()) {
-                            searchLocations = [Location]()
-                            searchText = ""
-                        }
-                    } label: {
-                        Image(systemName: "xmark")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 15)
-                            .foregroundColor(.gray.opacity(0.8))
-                    }
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding(.trailing, 10)
-                    
-                }
-                .frame(height: 30)
-                .opacity(showSearchContent ? 1 : 0)
-                .offset(y: showSearchContent ? 0 : -10)
-                .padding(.trailing, 5)
+                TextField("Enter Location", text: $searchText)
+                    .padding(5)
+                    .background(
+                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                            .foregroundColor(.gray.opacity(0.08))
+                    )
+                    .frame(height: 30)
+                    .opacity(showSearchContent ? 1 : 0)
+                    .offset(y: showSearchContent ? 0 : -10)
+                    .padding(.trailing, 5)
                 
                 Button {
                     if !searchText.isEmpty {
@@ -87,10 +68,8 @@ struct SearchView: View {
                     }
                 } label: {
                     Text("SEARCH")
-                        .foregroundColor(Color("Green2"))
                         .matchedGeometryEffect(id: "search", in: namespace)
                         .font(.callout)
-                        .foregroundColor(Color("Green2"))
                 }
                 
             }
@@ -129,7 +108,7 @@ struct SearchView: View {
             .opacity(showSearchContent ? 1 : 0)
             .offset(y: showSearchContent ? 0 : -10)
         }
-        .foregroundColor(Color("Green2"))
+        .foregroundColor(Color("PrimaryGreen"))
         .frame(maxWidth: .infinity)
         .padding(.bottom)
         .frame(minHeight: 135)
@@ -138,7 +117,7 @@ struct SearchView: View {
                 .matchedGeometryEffect(id: "mask", in: namespace)
         }
         .background(
-            Color.white
+            Color("Background")
                 .clippedCornerShape(25, corners: [.bottomLeft, .bottomRight])
                 .matchedGeometryEffect(id: "bg", in: namespace)
                 .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)

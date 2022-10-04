@@ -64,6 +64,7 @@ struct ListView: View {
                                 ListItem(holiday: holiday)
                                     .padding(.vertical, 5)
                             }
+                            .listRowBackground(Color("Background"))
                             .sheet(isPresented: $showHoliday) {
                                 EditHolidayView(holiday: holiday, newDate: Date())
                             }
@@ -82,12 +83,10 @@ struct ListView: View {
     
     @ViewBuilder
     var segmentBar: some View {
-        let options = ["Visited", "Wish List"]
+        let options = ["Visited", "Wishlist"]
         
-        HStack(spacing: 15) {
-            
-            Spacer()
-            
+        HStack(spacing: 10) {
+                        
             ForEach(options, id: \.self) { tab in
                 
                 if category == tab {
@@ -102,7 +101,7 @@ struct ListView: View {
                         )
                 } else {
                     Text(tab)
-                        .foregroundColor(Color("Green1"))
+                        .foregroundColor(Color("PrimaryGreen"))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                         .background(
@@ -117,10 +116,12 @@ struct ListView: View {
                 }
                 
             }
-            
-            Spacer()
-            
+                        
         }
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .foregroundColor(Color("SliderBackground"))
+        )
         
     }
     

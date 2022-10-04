@@ -149,6 +149,7 @@ struct EditHolidayView: View {
                 if holiday.isWishlist {
                     
                     Toggle("Visited this destination?", isOn: $visited)
+                        .tint(Color("Green1"))
                         .padding(.horizontal, 32)
                         .padding(.top)
                 }
@@ -228,8 +229,8 @@ struct EditHolidayView: View {
                     
                     DatePicker("Holiday Date", selection: $newDate, displayedComponents: .date)
                         .datePickerStyle(.automatic)
-                        .accentColor(Color("Green1"))
-                        .foregroundColor(Color("Green1"))
+                        .accentColor(Color("PrimaryGreen"))
+//                        .foregroundColor(Color("Green1"))
                         .padding(.leading)
                         .padding(.trailing, 10)
                         .padding(.vertical, 10)
@@ -243,7 +244,7 @@ struct EditHolidayView: View {
                     HStack {
                         
                         Text("Thumbnail Image:")
-                            .foregroundColor(Color("Green1"))
+                            .foregroundColor(Color("PrimaryGreen"))
                         
                         Spacer()
                         
@@ -321,7 +322,7 @@ struct EditHolidayView: View {
             Spacer()
             
         }
-        .foregroundColor(Color("Green1"))
+        .foregroundColor(Color("PrimaryGreen"))
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(selectedImage: $newThumbnail)
         }

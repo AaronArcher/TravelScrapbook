@@ -26,7 +26,7 @@ struct SearchButton: View {
         } label: {
             Text("SEARCH")
                 .matchedGeometryEffect(id: "search", in: namespace)
-                .foregroundColor(Color("Green1"))
+                .foregroundColor(Color("PrimaryGreen"))
                 .font(.callout)
                 .padding(6)
                 .padding(.horizontal)
@@ -36,7 +36,7 @@ struct SearchButton: View {
                 }
                 .background(
                     RoundedRectangle(cornerRadius: 15, style: .continuous)
-                        .foregroundColor(.white)
+                        .foregroundColor(Color("ButtonBackground"))
                         .matchedGeometryEffect(id: "bg", in: namespace)
                         .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                 )

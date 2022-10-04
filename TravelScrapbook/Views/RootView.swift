@@ -53,12 +53,14 @@ struct RootView: View {
                             Image(systemName: "map")
                                 .resizable()
                                 .scaledToFit()
+                                .foregroundColor(Color("PrimaryGreen"))
                                 .frame(width: 25, height: 25)
                                 .offset(x: showMap ? -80 : 0)
                             
                             Image(systemName: "list.bullet")
                                 .resizable()
                                 .scaledToFit()
+                                .foregroundColor(Color("PrimaryGreen"))
                                 .frame(width: 25, height: 25)
                                 .offset(x: showMap ? 0 : 80)
                         }
@@ -66,7 +68,7 @@ struct RootView: View {
                         .mask({ Circle() })
                         .background(
                             Circle()
-                                .foregroundColor(.white)
+                                .foregroundColor(Color("ButtonBackground"))
                                 .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                         )
                     }
@@ -90,11 +92,12 @@ struct RootView: View {
                         Image(systemName: "gearshape")
                             .resizable()
                             .scaledToFit()
+                            .foregroundColor(Color("PrimaryGreen"))
                             .frame(width: 25, height: 25)
                             .padding(10)
                             .background(
                                 Circle()
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Color("ButtonBackground"))
                                     .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                             )
                     }
@@ -112,7 +115,7 @@ struct RootView: View {
                 .shadow(color: Color("Green2").opacity(0.3), radius: 15, x: 5, y: 5)
                 .overlay {
                     if showAddNewHoliday || showSearch {
-                        Color.gray.opacity(0.5)
+                        Color("Overlay").opacity(0.5)
                     }
                 }
                 
@@ -145,7 +148,7 @@ struct RootView: View {
             .foregroundColor(Color("Green1"))
             .ignoresSafeArea()
             .background(
-                LinearGradient(colors: [Color("Background"), Color("Green3"), Color("Green3")], startPoint: .top, endPoint: .bottom)
+                LinearGradient(colors: [Color("Background"), Color("Green3")], startPoint: .top, endPoint: .bottom)
             )
 //            .fullScreenCover(isPresented: $showLogin, onDismiss: {
 //                holidayvm.getholidays()

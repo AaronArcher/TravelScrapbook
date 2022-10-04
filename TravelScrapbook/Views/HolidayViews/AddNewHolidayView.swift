@@ -92,7 +92,7 @@ struct AddNewHolidayView: View {
                     VStack {
                         
                         ProgressView()
-                            .tint(Color("Green2"))
+                            .tint(Color("PrimaryGreen"))
                         
                         Text("Saving...")
                             .font(.title)
@@ -102,24 +102,24 @@ struct AddNewHolidayView: View {
                     .padding(.horizontal, 10)
                     .background(
                         RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundColor(.white)
+                            .foregroundColor(Color("ButtonBackground"))
                             .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
                     )
                 }
             }
             .disabled(isSaving)
         }
-        .foregroundColor(Color("Green2"))
+        .foregroundColor(Color("PrimaryGreen"))
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 25)
         .padding(.top, Constants.isScreenLarge ? 60 : 40)
-        .padding(.bottom, 15)
+        .padding(.bottom, 20)
         .mask {
             RoundedRectangle(cornerRadius: 25, style: .continuous)
                 .matchedGeometryEffect(id: "maskAddNew", in: namespace)
         }
         .background(
-            Color.white
+            Color("Background")
                 .clippedCornerShape(25, corners: [.bottomLeft, .bottomRight])
                 .matchedGeometryEffect(id: "addbg", in: namespace)
                 .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
@@ -135,12 +135,10 @@ struct AddNewHolidayView: View {
     
     @ViewBuilder
     var segmentBar: some View {
-        let options = ["Visited", "Wish List"]
+        let options = ["Visited", "Wishlist"]
         
-        HStack(spacing: 15) {
-            
-            Spacer()
-            
+        HStack(spacing: 10) {
+                        
             ForEach(options, id: \.self) { tab in
                 
                 if category == tab {
@@ -155,7 +153,7 @@ struct AddNewHolidayView: View {
                         )
                 } else {
                     Text(tab)
-                        .foregroundColor(Color("Green1"))
+                        .foregroundColor(Color("PrimaryGreen"))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                         .background(
@@ -170,10 +168,12 @@ struct AddNewHolidayView: View {
                 }
                 
             }
-            
-            Spacer()
-            
+                        
         }
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .foregroundColor(Color("SliderBackground"))
+        )
         
     }
     
@@ -259,7 +259,7 @@ struct AddNewHolidayView: View {
                 .matchedGeometryEffect(id: "plus", in: namespace)
                 .frame(width: 20, height: 20)
         }
-        .foregroundColor(Color("Green1"))
+        .foregroundColor(Color("PrimaryGreen"))
         .disabled(isSaving)
     }
     
@@ -287,8 +287,7 @@ struct AddNewHolidayView: View {
                 
                 DatePicker("Holiday Date", selection: $holidayDate, displayedComponents: .date)
                     .datePickerStyle(.automatic)
-                    .accentColor(Color("Green1"))
-                    .foregroundColor(Color("Green1"))
+                    .foregroundColor(Color("PrimaryGreen"))
                 
             }
         }
@@ -299,7 +298,7 @@ struct AddNewHolidayView: View {
         HStack {
             
             Text("Thumbnail Image")
-                .foregroundColor(Color("Green1"))
+                .foregroundColor(Color("PrimaryGreen"))
             
             Spacer()
             
@@ -319,7 +318,7 @@ struct AddNewHolidayView: View {
                         
                         Image(systemName: "photo.fill")
                             .font(.title)
-                            .foregroundColor(Color("Green2"))
+                            .foregroundColor(Color("PrimaryGreen"))
                         
                         RoundedRectangle(cornerRadius: 10, style: .continuous)
                             .strokeBorder(Color("Green1"), lineWidth: 1)
@@ -333,7 +332,7 @@ struct AddNewHolidayView: View {
                         .frame(width: 90, height: 90)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .strokeBorder(Color("Green1"), lineWidth: 1)
+                                .strokeBorder(Color("PrimaryGreen"), lineWidth: 1)
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 }

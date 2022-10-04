@@ -69,12 +69,12 @@ struct MapView: View {
             
                 Text("Confirm your holiday location")
                     .font(.footnote)
-                    .foregroundColor(Color("Green1"))
+                    .foregroundColor(Color("PrimaryGreen"))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
                     .background(
                         RoundedCornerShape(radius: 10, corners: [.bottomLeft, .bottomRight])
-                            .foregroundColor(.white)
+                            .foregroundColor(Color("ButtonBackground"))
                             .shadow(color: Color("Green2").opacity(0.15), radius: 10, x: 4, y: 4)
 
                     )
@@ -106,13 +106,13 @@ struct MapView: View {
                 Image(systemName: "xmark")
                     .resizable()
                     .scaledToFit()
-                    .foregroundColor(Color("Pink1"))
+                    .foregroundColor(.red)
                     .frame(width: 20, height: 20)
             }
             .padding(15)
             .background(
                 Circle()
-                    .foregroundColor(.white)
+                    .foregroundColor(Color("TextBackground"))
                     .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
 
             )
@@ -152,7 +152,7 @@ struct MapView: View {
                         Image(systemName: "plus")
                             .resizable()
                             .matchedGeometryEffect(id: "plus", in: namespace)
-                            .foregroundColor(Color("Green1"))
+                            .foregroundColor(Color("PrimaryGreen"))
                             .scaledToFit()
                             .frame(width: 25, height: 25)
 
@@ -168,7 +168,7 @@ struct MapView: View {
                 .background(
                     RoundedRectangle(cornerRadius: 35, style: .continuous)
                         .matchedGeometryEffect(id: "addbg", in: namespace)
-                        .foregroundColor(.white)
+                        .foregroundColor(Color("ButtonBackground"))
                         .shadow(color: Color("Green2").opacity(0.15), radius: 15, x: 4, y: 4)
 
                 )
