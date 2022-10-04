@@ -33,12 +33,6 @@ struct SettingsView: View {
                 }
             
                 Section("Preferences") {
-                    HStack {
-                        
-                        Text("Filter By:")
-                            .foregroundColor(Color("Green2"))
-                        
-                        Spacer()
                         
                         Picker("Filter by:", selection: $holidayViewModel.selectedCategory) {
                             ForEach(SelectedCategory.allCases, id: \.self) { category in
@@ -48,7 +42,7 @@ struct SettingsView: View {
                         }
                         .accentColor(Color("Green1"))
                         .pickerStyle(.menu)
-                    }
+                    
 
                 }
             
